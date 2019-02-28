@@ -1,0 +1,7 @@
+<router-outlet></router-outlet>
+<div class="attachable card shadow d-flex justify-content-center p-2 align-items-center flex-row" *ngIf="examService.questionToAttach">
+        <div class="m-5" *ngIf="examService.questionToAttach">
+                <strong [innerHtml]="examService.questionToAttach.questionBankVo.questionStatment | replace"></strong> 
+       </div>
+       <i-x (click)="detach()"></i-x>
+</div>

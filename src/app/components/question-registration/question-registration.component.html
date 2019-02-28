@@ -1,0 +1,176 @@
+<div class="container">
+    <div class="row">
+      <div class="modal-title w-100 d-flex justify-content-between align-items-center">
+        <span>{{title}}</span>
+        
+        <i-x (click)="bsModalRef.hide()"></i-x>
+      </div>
+      <div class="col-sm-12 d-flex justify-content-center flex-column">
+          <button *ngIf="examService.questionToAttach" (click)="attach()" class="btn btn-sm btn-outline-primary m-2" type="button" (click)="attach()">Attach Here</button>
+        
+        <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" class="p-3">
+  
+      
+    
+          <div class="form-group row">
+            <label for="inputCategory" class="col-sm-2 col-form-label">Question Category</label>
+            <div class="col-sm-10">
+              <select [ngClass]="{ 'is-invalid': submitted && f.category?.errors }"
+               formControlName="categoryId" class="form-control"
+                id="inputCategory" required>
+                <option value="">--SELECT CATEGORY --</option>
+                <option *ngFor="let category of categoryList" [ngValue]="category.questionSubCategoryId">{{ category.questionSubCategoryName }}</option>
+              </select>
+              <div *ngIf="submitted && f.category?.errors" class="invalid-feedback">
+                <div *ngIf="f.category?.errors.required">Question Category is required</div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="form-group row">
+              <label for="inputDescription" class="col-sm-2 col-form-label">Question Description</label>
+              <div class="col-sm-10 h-100-p">
+                  <quill-editor
+                  formControlName="description"
+                  [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                   id="inputDescription"
+                   required
+                   ></quill-editor>
+                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                  <div *ngIf="f.description.errors.required">Question Description is required</div>
+                </div>
+              </div>
+    
+            </div>
+
+            <div class="form-group row">
+                <label for="inputStatement" class="col-sm-2 col-form-label">Question Statement</label>
+                <div class="col-sm-10 h-100-p">
+                    <quill-editor
+                    formControlName="statement"
+                    [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                     id="inputStatement"
+                     required
+                     ></quill-editor>
+                  <div *ngIf="submitted && f.statement.errors" class="invalid-feedback">
+                    <div *ngIf="f.statement.errors.required">Question Statement is required</div>
+                  </div>
+                </div>
+      
+              </div>
+  
+        
+  
+  
+              <div class="form-group row" *ngIf="!isQuestionBank">
+                  <label for="inputQuestionNumber" class="col-sm-2 col-form-label">Question Number</label>
+                  <div class="col-sm-10">
+                    <input [ngClass]="{ 'is-invalid': submitted && f.questionNumber.errors }"
+                     type="number" class="form-control" id="inputQuestionCount"
+                      formControlName="questionNumber" required>
+                    <div *ngIf="submitted && f.questionNumber.errors" class="invalid-feedback">
+                      <div *ngIf="f.questionNumber.errors.required">Question Number is required</div>
+                    </div>
+                  </div>
+              </div>
+  
+                <div class="form-group row"  *ngIf="!isQuestionBank">
+                    <label for="inputMarks" class="col-sm-2 col-form-label">Marks</label>
+                    <div class="col-sm-10">
+                      <input [ngClass]="{ 'is-invalid': submitted && f.marks.errors }"
+                       type="number" class="form-control" id="inputMarks"
+                        formControlName="marks" required>
+                      <div *ngIf="submitted && f.marks.errors" class="invalid-feedback">
+                        <div *ngIf="f.totalMarks.marks.required">Marks is required</div>
+                      </div>
+                    </div>
+          
+                  </div>
+                <div class="form-group row"  *ngIf="!isQuestionBank">
+                    <label for="inputNegativeMarks" class="col-sm-2 col-form-label">Negative Marks</label>
+                    <div class="col-sm-10">
+                      <input [ngClass]="{ 'is-invalid': submitted && f.negativeMarks.errors }"
+                       type="number" class="form-control" id="inputNegativeMarks"
+                        formControlName="negativeMarks" required>
+                      <div *ngIf="submitted && f.negativeMarks.errors" class="invalid-feedback">
+                        <div *ngIf="f.negativeMarks.errors.required">Negative Marks is required</div>
+                      </div>
+                    </div>
+          
+                  </div>
+                  <div class="form-group row">
+                  <div formArrayName="options">
+                    
+                      <div class="mb-2 d-flex justify-content-start" *ngFor="let option of options.controls; let i=index">
+                          <label for="i" class="col-sm-2 col-form-label">Option {{i}}</label>
+                          <div class="col-sm-10 h-100-p float-right">
+                          <quill-editor
+                          [formControlName]="i"
+                          [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                            id="i"
+                            required
+                            ></quill-editor>
+                          </div>
+                      
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group row">
+                      <label for="inputCorrectOption" class="col-sm-2 col-form-label">Correct Option</label>
+                      <div class="col-sm-10">
+                        <div *ngFor="let o of optionRadio;let i=index" >
+                        <label class="col-sm-2 col-form-label">Option {{i}}</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && f.correct.errors }"
+                         type="radio"  name="correct" [value]="o"
+                         formControlName="correct" required>
+                        </div>
+        
+                      </div>
+            
+                    </div>
+
+                 
+                
+
+
+
+  
+                  
+            
+  
+                  <div class="form-group row">
+                      <label for="inputExplanation" class="col-sm-2 col-form-label">Question Explanation</label>
+                      <div class="col-sm-10 h-100-p">
+                          <quill-editor
+                          formControlName="explanation"
+                          [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                           id="inputExplanation"
+                           required
+                           ></quill-editor>
+                        <div *ngIf="submitted && f.explanation.errors" class="invalid-feedback">
+                          <div *ngIf="f.explanation.errors.required">Question Explanation is required</div>
+                        </div>
+                      </div>
+            
+                    </div>
+  
+                    
+               
+  
+                 
+  
+  
+          <div class="form-group row">
+            <div class="col-sm-10 d-flex justify-content-center">
+              <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="bsModalRef.hide()">Back</button>
+              <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

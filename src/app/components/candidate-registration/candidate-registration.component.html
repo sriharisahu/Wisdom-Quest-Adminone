@@ -1,0 +1,195 @@
+
+
+  <div class="container">
+      <div class="row">
+        <div class="modal-title w-100 d-flex justify-content-between align-items-center">
+          <span>{{title}}</span>
+          <i-x (click)="bsModalRef.hide()"></i-x>
+        </div>
+        <div class="col-sm-12">
+          <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()" class="p-3">
+    
+            <div class="form-group row">
+              <label for="inputFirstName" class="col-sm-2 col-form-label">First Name</label>
+              <div class="col-sm-10">
+                <input 
+                      [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
+                      type="text"
+                      class="form-control"
+                      id="inputFirstName" 
+                      formControlName="firstName"
+                      required>
+                      <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                          <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                      </div>
+              </div>
+             
+            </div>
+
+            <div class="form-group row">
+                <label for="inputMiddleName" class="col-sm-2 col-form-label">Middle Name</label>
+                <div class="col-sm-10">
+                  <input 
+                        [ngClass]="{ 'is-invalid': submitted && f.middleName.errors }"
+                        type="text"
+                        class="form-control"
+                        id="inputMiddleName" 
+                        formControlName="middleName"
+                        required>
+                        <div *ngIf="submitted && f.middleName.errors" class="invalid-feedback">
+                            <div *ngIf="f.middleName.errors.required">Middle Name is required</div>
+                        </div>
+                </div>
+               
+              </div>
+  
+  
+            <div class="form-group row">
+                <label for="inputLastName" class="col-sm-2 col-form-label">Last Name</label>
+                <div class="col-sm-10">
+                  <input 
+                        [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
+                        type="text"
+                        class="form-control"
+                        id="inputLastName" 
+                        formControlName="lastName"
+                        required>
+                        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                            <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+                        </div>
+                </div>
+               
+              </div>
+
+              <div class="form-group row">
+                  <label for="inputGender" class="col-sm-2 col-form-label">Gender</label>
+                  <div class="col-sm-10">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input"  formControlName="gender" type="radio" name="gender" id="inputGenderMale" value="MALE" checked>
+                        <label class="form-check-label" for="inputGenderMale">
+                          Male
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input"  formControlName="gender" type="radio" name="gender" id="inputGenderFemale" value="FEMALE">
+                        <label class="form-check-label" for="inputGenderFemale">
+                          Female
+                        </label>
+                      </div>
+                  </div>
+                 
+                </div>
+
+                <div class="form-group row">
+                    <label for="inputDateOfBirth" class="col-sm-2 col-form-label">D.O.B</label>
+                    <div class="col-sm-10">
+                      <input 
+                            [ngClass]="{ 'is-invalid': submitted && f.dateOfBirth.errors }"
+                            type="text"
+                            class="form-control"
+                            id="inputDateOfBirth" 
+                            formControlName="dateOfBirth"
+                            bsDatepicker
+                            required>
+                            <div *ngIf="submitted && f.dateOfBirth.errors" class="invalid-feedback">
+                                <div *ngIf="f.dateOfBirth.errors.required">D.O.B is required</div>
+                            </div>
+                    </div>
+                   
+                  </div>
+  
+              <div class="form-group row">
+                  <label for="inputContactEmail" class="col-sm-2 col-form-label">Email</label>
+                  <div class="col-sm-10">
+                    <input 
+                          [ngClass]="{ 'is-invalid': submitted && f.contactEmail.errors }"
+                          type="text"
+                          class="form-control"
+                          id="inputContactEmail" 
+                          formControlName="contactEmail"
+                          required>
+                          <div *ngIf="submitted && f.contactEmail.errors" class="invalid-feedback">
+                              <div *ngIf="f.contactEmail.errors.required">Email is required</div>
+                          </div>
+                  </div>
+                 
+                </div>
+
+                <div class="form-group row">
+                  <label for="inputContactNumber" class="col-sm-2 col-form-label">Contact Number</label>
+                  <div class="col-sm-10">
+                    <input 
+                          [ngClass]="{ 'is-invalid': submitted && f.contactNumber.errors }"
+                          type="text"
+                          class="form-control"
+                          id="inputContactNumber" 
+                          formControlName="contactNumber"
+                          required>
+                          <div *ngIf="submitted && f.contactNumber.errors" class="invalid-feedback">
+                              <div *ngIf="f.contactNumber.errors.required">Contact Number is required</div>
+                          </div>
+                  </div>
+                 
+                </div>
+  
+            
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                      <input 
+                            [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                            type="text"
+                            class="form-control"
+                            id="inputPassword" 
+                            formControlName="password"
+                            >
+                            
+                    </div>
+                   
+                  </div>
+
+                  <div class="form-group row">
+                      <label for="inputCollage" class="col-sm-2 col-form-label">Collage</label>
+                      <div class="col-sm-10">
+                        <select [ngClass]="{ 'is-invalid': submitted && f.collegeId?.errors }"
+                         formControlName="collegeId" class="form-control"
+                          id="inputCollage" required>
+                          <option value="">--SELECT COLLEGE --</option>
+                          <option *ngFor="let college of collegeList" [ngValue]="college.collegeId">{{ college.collegeName }}</option>
+                        </select>
+                        <div *ngIf="submitted && f.collegeId?.errors" class="invalid-feedback">
+                          <div *ngIf="f.collegeId?.errors.required">College is required</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="inputSpecialization" class="col-sm-2 col-form-label">Specialization</label>
+                        <div class="col-sm-10">
+                          <select [ngClass]="{ 'is-invalid': submitted && f.specializationId?.errors }"
+                           formControlName="specializationId" class="form-control"
+                            id="inputSpecialization" required>
+                            <option value="">--SELECT SPECIALIZATION --</option>
+                            <option *ngFor="let specialization of specializationList" [ngValue]="specialization.specializationId">{{ specialization.specializationName }}</option>
+                          </select>
+                          <div *ngIf="submitted && f.specializationId?.errors" class="invalid-feedback">
+                            <div *ngIf="f.specializationId?.errors.required">Specialization is required</div>
+                          </div>
+                        </div>
+                      </div>
+  
+         
+  
+    
+            <div class="form-group row">
+              <div class="col-sm-10 d-flex justify-content-center">
+                <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="bsModalRef.hide()">Back</button>
+                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+  

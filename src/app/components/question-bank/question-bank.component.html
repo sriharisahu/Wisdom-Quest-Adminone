@@ -1,0 +1,44 @@
+<app-header (toggleSideMenu)="toggleSideMenu($event)"></app-header>
+<div class="wrapper">
+  <app-side-bar [toggle]="toggle" style="height:100vh;"></app-side-bar>
+
+    <!-- Page Content  -->
+    <div id="content" [ngClass]="{'w-adjust': toggle}">
+
+       
+            <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
+                    <h5 class="mr-auto">Question Bank</h5>
+                    <div *ngIf="questionBankList && questionBankList.length">
+                      <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="add()">Add Question</button>
+                    </div>
+                    <app-search-bar ></app-search-bar>
+                  </div>
+                  
+                  <table class="table table-bordered table-hover "
+                        infiniteScroll
+                        [infiniteScrollDistance]="2"
+                        [infiniteScrollThrottle]="50"
+                        [infiniteScrollDisabled]="listEnd || loading"
+                        (scrolled)="onScroll()"
+                  >
+                     
+                      <tbody>
+                        <tr *ngFor="let question of questionBankList; let i = index">
+                          <td>
+                            <app-question-host  [question]="question" [isAttachable]="true" [index]="i"></app-question-host>
+                          </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" >
+                                 <strong *ngIf="listEnd">End Of List </strong>
+                                 <p>showing {{questionBankList.length}} of {{totalCount}}</p>
+                            </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                  <app-empty-list *ngIf="!(questionBankList && questionBankList.length) && !loading" (add$)="add()"></app-empty-list>
+                  <app-loading *ngIf="loading"></app-loading>
+                  
+        
+    </div>
+</div>

@@ -1,0 +1,138 @@
+  <!-- Sidebar  -->
+  <nav id="sidebar" [ngClass]="{'active':toggle}">
+    <div class="sidebar-header d-none" >
+            <!-- <img class="mr-2" src="assets/images/logo.jpg" alt="" width="22" height="22"> -->
+        <h4>  <span style="font-family: sans-serif;font-weight: 500">Wisdom Quest</span></h4>
+        <strong>WQ</strong>
+        <!-- <img class="mr-2" src="assets/images/logo.jpg" alt="" width="32" height="32"> -->
+    </div>
+
+    <ul class="list-unstyled components">
+       
+        <li>
+            <a href="javascript:void(0)">
+                <i-settings></i-settings>
+                <span> Configuration </span>
+            </a>
+
+
+            <ul class="list-unstyled components">
+       
+                <li routerLink="/college" [routerLinkActive]="'active'">
+                    <a href="javascript:void(0)">
+                        <i-settings></i-settings>
+                        <span> College </span>
+                    </a>
+                </li>
+                <li routerLink="/permission" [routerLinkActive]="'active'">
+                        <a >
+                           <i-settings></i-settings>
+                            <span> Permission </span>
+                            
+                        </a>
+                </li>
+                <li routerLink="/specialization" [routerLinkActive]="'active'">
+                    <a href="javascript:void(0)">
+                        <i-settings></i-settings>
+                        <span> Specialization </span>
+                        
+                    </a>
+            </li>
+            <li routerLink="/exam-category" [routerLinkActive]="'active'">
+                <a href="javascript:void(0)">
+                    <i-settings></i-settings>
+                    <span> Exam Catgory </span>
+                    
+                </a>
+        </li>
+        <li routerLink="/section-category" [routerLinkActive]="'active'">
+            <a href="javascript:void(0)">
+                <i-settings></i-settings>
+                <span> Section Category </span>
+                
+            </a>
+    </li>
+                
+                
+            </ul>
+        
+        </li>
+        
+     
+        
+        <li>
+            <a href="javascript:void(0)">
+                <i-user></i-user>
+                <span> User </span>
+            </a>
+
+
+            <ul class="list-unstyled components">
+       
+                <li routerLink="/candidate" [routerLinkActive]="'active'">
+                    <a href="javascript:void(0)">
+                        <i-user></i-user>
+                        <span> Candidate </span>
+                    </a>
+                </li>
+                <li routerLink="/examiner" [routerLinkActive]="'active'">
+                        <a>
+                            <i-user></i-user>
+                            <span> Examiner </span>
+                            
+                        </a>
+                </li>
+                <li routerLink="/client" [routerLinkActive]="'active'">
+                    <a href="javascript:void(0)">
+                        <i-user></i-user>
+                        <span> Client </span>
+                        
+                    </a>
+            </li>
+           
+                
+                
+            </ul>
+        
+        </li>
+        <li>
+            <a href="javascript:void(0)">
+                <i-hash></i-hash>
+                <span> Exam Manager </span>
+            </a>
+
+
+            <ul class="list-unstyled components">
+       
+                <li routerLink="/exam" [routerLinkActive]="'active'">
+                    <a href="javascript:void(0)">
+                        <i-hash></i-hash>
+                        <span> Exams </span>
+                    </a>
+                </li>
+                <!-- <li routerLink="/section" [routerLinkActive]="'active'">
+                        <a>
+                            <i-hash></i-hash>
+                            <span> Section </span>
+                            
+                        </a>
+                </li> -->
+                <li routerLink="/question-bank" [routerLinkActive]="'active'">
+                    <a href="javascript:void(0)">
+                        <i-hash></i-hash>
+                        <span> Question Bank </span>
+                        
+                    </a>
+            </li> 
+           
+                
+                
+            </ul>
+        
+        </li>
+     
+        
+    </ul>
+
+
+</nav>

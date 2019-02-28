@@ -1,0 +1,158 @@
+<div class="container">
+  <div class="row">
+    <div class="modal-title w-100 d-flex justify-content-between align-items-center">
+      <span>{{title}}</span>
+      <i-x (click)="bsModalRef.hide()"></i-x>
+    </div>
+    <div class="col-sm-12">
+      
+      <form [formGroup]="examForm" (ngSubmit)="onSubmit()" class="p-3">
+
+        <div class="form-group row">
+          <label for="inputExamName" class="col-sm-2 col-form-label">Exam Name</label>
+          <div class="col-sm-10">
+            <input [ngClass]="{ 'is-invalid': submitted && f.examName.errors }" type="text" class="form-control" id="inputExamName"
+              formControlName="examName" required>
+            <div *ngIf="submitted && f.examName.errors" class="invalid-feedback">
+              <div *ngIf="f.examName.errors.required">Exam Name is required</div>
+            </div>
+          </div>
+
+        </div>
+  
+        <div class="form-group row">
+          <label for="inputCategory" class="col-sm-2 col-form-label">Exam Category</label>
+          <div class="col-sm-10">
+            <select [ngClass]="{ 'is-invalid': submitted && f.category?.errors }"
+             formControlName="category" class="form-control"
+             (change)="getSubCategoryList()"
+              id="inputCategory" required>
+              <option value="">--SELECT CATEGORY --</option>
+              <option *ngFor="let category of categoryList" [ngValue]="category">{{ category.examCategoryName }}</option>
+            </select>
+            <div *ngIf="submitted && f.category?.errors" class="invalid-feedback">
+              <div *ngIf="f.category?.errors.required">Exam Category is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="inputSubCategory" class="col-sm-2 col-form-label">Exam Sub Category</label>
+            <div class="col-sm-10">
+              <select [ngClass]="{ 'is-invalid': submitted && f.subCategory?.errors }" 
+              formControlName="subCategory" class="form-control"
+                id="inputsubCategory" required>
+                <option value="">--SELECT SUB CATEGORY --</option>
+                <option *ngFor="let subCategory of subCategoryList" [ngValue]="subCategory">{{ subCategory.examSubCategoryName }}</option>
+              </select>
+              <div *ngIf="submitted && f.subCategory?.errors" class="invalid-feedback">
+                <div *ngIf="f.subCategory?.errors.required">Exam Sub Category is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+              <label for="inputSectionCount" class="col-sm-2 col-form-label">Section Count</label>
+              <div class="col-sm-10">
+                <input [ngClass]="{ 'is-invalid': submitted && f.sectionCount.errors }"
+                 type="number" class="form-control" id="inputSectionCount"
+                  formControlName="sectionCount" required>
+                <div *ngIf="submitted && f.sectionCount.errors" class="invalid-feedback">
+                  <div *ngIf="f.sectionCount.errors.required">Section Count is required</div>
+                </div>
+              </div>
+    
+            </div>
+
+            <div class="form-group row">
+                <label for="inputQuestionCount" class="col-sm-2 col-form-label">Question Count</label>
+                <div class="col-sm-10">
+                  <input [ngClass]="{ 'is-invalid': submitted && f.questionCount.errors }"
+                   type="number" class="form-control" id="inputQuestionCount"
+                    formControlName="questionCount" required>
+                  <div *ngIf="submitted && f.questionCount.errors" class="invalid-feedback">
+                    <div *ngIf="f.questionCount.errors.required">Question Count is required</div>
+                  </div>
+                </div>
+      
+              </div>
+
+              <div class="form-group row">
+                  <label for="inputTotalMarks" class="col-sm-2 col-form-label">Total Marks</label>
+                  <div class="col-sm-10">
+                    <input [ngClass]="{ 'is-invalid': submitted && f.totalMarks.errors }"
+                     type="number" class="form-control" id="inputTotalMarks"
+                      formControlName="totalMarks" required>
+                    <div *ngIf="submitted && f.totalMarks.errors" class="invalid-feedback">
+                      <div *ngIf="f.totalMarks.errors.required">Total Marks is required</div>
+                    </div>
+                  </div>
+        
+                </div>
+
+                
+              <div class="form-group row">
+                  <label for="inputDuration" class="col-sm-2 col-form-label">Duration</label>
+                  <div class="col-sm-10">
+                      <timepicker 
+                      formControlName="duration"
+                      [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                       id="inputDuration"
+                      [min]="minTime"
+                      [max]="maxTime"
+                      [showMeridian]="false"
+                       required
+                       ></timepicker>
+                    <div *ngIf="submitted && f.duration.errors" class="invalid-feedback">
+                      <div *ngIf="f.duration.errors.required">Duration is required</div>
+                    </div>
+                  </div>
+        
+                </div>
+
+                <div class="form-group row">
+                    <label for="inputExamDescription" class="col-sm-2 col-form-label">Exam Description</label>
+                    <div class="col-sm-10 h-100-p">
+                        <quill-editor
+                        formControlName="examDescription"
+                        [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                         id="inputExamDescription"
+                         required
+                         ></quill-editor>
+                      <div *ngIf="submitted && f.examDescription.errors" class="invalid-feedback">
+                        <div *ngIf="f.examDescription.errors.required">Exam Description is required</div>
+                      </div>
+                    </div>
+          
+                  </div>
+
+                  
+                <div class="form-group row">
+                    <label for="inputExamInstructions" class="col-sm-2 col-form-label">Exam Instructions</label>
+                    <div class="col-sm-10 h-100-p">
+                        <quill-editor
+                        formControlName="examInstructions"
+                        [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                         id="inputExamInstructions"
+                         required
+                         ></quill-editor>
+                      <div *ngIf="submitted && f.examInstructions.errors" class="invalid-feedback">
+                        <div *ngIf="f.examInstructions.errors.required">Exam Instructions is required</div>
+                      </div>
+                    </div>
+          
+                  </div>
+
+               
+
+
+        <div class="form-group row">
+          <div class="col-sm-10 d-flex justify-content-center">
+            <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="bsModalRef.hide()">Back</button>
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

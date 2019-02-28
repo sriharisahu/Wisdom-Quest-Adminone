@@ -1,0 +1,65 @@
+<app-header (toggleSideMenu)="toggleSideMenu($event)"></app-header>
+<div class="wrapper">
+  <app-side-bar [toggle]="toggle" style="height:100vh;"></app-side-bar>
+
+    <!-- Page Content  -->
+    <div id="content" [ngClass]="{'w-adjust': toggle}">
+
+       
+            <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
+                    <h5 class="mr-auto">License</h5>
+                    <div *ngIf="licenseList && licenseList.length">
+                      <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="add()">Add License</button>
+                    </div>
+                    <app-search-bar ></app-search-bar>
+                  </div>
+                  
+                  <table class="table table-bordered table-hover "
+                        infiniteScroll
+                        [infiniteScrollDistance]="2"
+                        [infiniteScrollThrottle]="50"
+                        [infiniteScrollDisabled]="listEnd || loading"
+                        (scrolled)="onScroll()"
+                  >
+                      <thead>
+                        <tr>
+                        
+                          <th>Exam Name</th>
+                          <th>Exam Code</th>
+                          <th>Remaining License Count</th>
+                          <th>License Count</th>
+                      
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let license of licenseList;let i = index">
+                          <td>
+                          <i-shield title="pemission" (click)="permission(license)"></i-shield>
+                            <i-edit-2 title="edit" (click)="edit(license)"></i-edit-2>
+                            <i-trash-2 title="delete" (click)="delete(license)"></i-trash-2>
+                            
+                            {{license.examVo.examName}}</td>
+                            <td>
+                                <i-user-check title="candidate"  *ngIf="!currentParams.candidateId" (click)="candidate(license)"></i-user-check>
+                                
+                              {{license.examVo.testCode}}</td>
+                            <td>{{license.remainingLicenseCount}}</td>
+                            <td>{{license.licenseCount}}</td>
+                          
+                          
+
+                        </tr>
+                        <tr>
+                            <td colspan="4" >
+                                 <strong *ngIf="listEnd">End Of List </strong>
+                                 <p>showing {{licenseList.length}} of {{totalCount}}</p>
+                            </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                  <app-empty-list *ngIf="!(licenseList && licenseList.length) && !loading" (add$)="add()"></app-empty-list>
+                  <app-loading *ngIf="loading"></app-loading>
+                  
+        
+    </div>
+</div>

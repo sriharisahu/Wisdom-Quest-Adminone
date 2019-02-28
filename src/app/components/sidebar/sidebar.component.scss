@@ -1,0 +1,20 @@
+:host{
+    position: sticky;
+    top: 0px;
+
+    
+}
+ul>li>ul>li>a{
+background: #007bff;
+background: #212529;
+color:white;
+}
+ul>li>ul{
+    background: white;
+    border-top: 1px solid #eee;
+    padding: 0;
+}
+ul>li>ul>li.active>a{
+    background: white;
+    color:#333;
+}

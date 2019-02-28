@@ -1,0 +1,59 @@
+
+
+  <div class="container">
+    <div class="row">
+      <div class="modal-title w-100 d-flex justify-content-between align-items-center">
+        <span>{{title}}</span>
+        <i-x (click)="bsModalRef.hide()"></i-x>
+      </div>
+      <div class="col-sm-12">
+        <form [formGroup]="specializationForm" (ngSubmit)="onSubmit()" class="p-3">
+  
+          <div class="form-group row">
+            <label for="inputSpecializationName" class="col-sm-2 col-form-label">Specialization Name</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.specializationName.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputSpecializationName" 
+                    formControlName="specializationName"
+                    required>
+                    <div *ngIf="submitted && f.specializationName.errors" class="invalid-feedback">
+                        <div *ngIf="f.specializationName.errors.required">Specialization Name is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+
+          <div class="form-group row">
+            <label for="inputSpecializationCode" class="col-sm-2 col-form-label">Specialization Code</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.specializationCode.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputSpecializationCode" 
+                    formControlName="specializationCode"
+                    required>
+                    <div *ngIf="submitted && f.specializationCode.errors" class="invalid-feedback">
+                        <div *ngIf="f.specializationCode.errors.required">Specialization Code is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+
+  
+          <div class="form-group row">
+            <div class="col-sm-10 d-flex justify-content-center">
+              <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="bsModalRef.hide()">Back</button>
+              <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

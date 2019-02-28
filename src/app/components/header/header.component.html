@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+
+    
+          
+          
+    <button type="button" id="sidebarCollapse" class="navbar-btn" [ngClass]="{'active':switchSideBar}" (click)="toggleSideBar()">
+          <span></span>
+          <span></span>
+          <span></span>
+      </button>
+      <h4 class="m-0">  <span style="color:#fff;font-family: sans-serif;font-weight: 500">Wisdom Quest</span></h4>
+      
+   
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item active">
+                  <a class="nav-link d-flex p-2 justify-content-center align-items-center" href="javascript:void();">
+                    <img src="assets/images/default-user.jpg" class="img-fluid img-circle mr-2" height="32px" width="32px" alt="Responsive image">
+                   <div class="d-flex flex-column justify-content-center align-items-start">
+                        <strong class="text-capitalize">{{currentUser.firstName + ' ' + currentUser.lastName}}</strong>  
+                        <small>{{currentUser.adminType}}</small>
+                   </div> 
+                </a>
+              </li>
+              <li class="nav-item" (click)="logout()">
+                    <a class="nav-link" href="javascript:void();">
+                        <span class="mt-2 logout text-white">
+                            <i-power></i-power>
+                        </span>
+                    </a>
+                </li>
+          </ul>
+      </div>
+</nav>

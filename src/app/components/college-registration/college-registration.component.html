@@ -1,0 +1,145 @@
+
+
+  <div class="container">
+    <div class="row">
+      <div class="modal-title w-100 d-flex justify-content-between align-items-center">
+        <span>{{title}}</span>
+        <i-x (click)="bsModalRef.hide()"></i-x>
+      </div>
+      <div class="col-sm-12">
+        <form [formGroup]="collegeRegistrationForm" (ngSubmit)="onSubmit()" class="p-3">
+  
+          <div class="form-group row">
+            <label for="inputCollegeName" class="col-sm-2 col-form-label">College Name</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.collegeName.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputCollegeName" 
+                    formControlName="collegeName"
+                    required>
+                    <div *ngIf="submitted && f.collegeName.errors" class="invalid-feedback">
+                        <div *ngIf="f.collegeName.errors.required">College Name is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+
+          <div class="form-group row">
+            <label for="inputAddressLine1" class="col-sm-2 col-form-label">Address Line1</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.addressLine1.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputAddressLine1" 
+                    formControlName="addressLine1"
+                    required>
+                    <div *ngIf="submitted && f.addressLine1.errors" class="invalid-feedback">
+                        <div *ngIf="f.addressLine1.errors.required">Address Line 1 is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+          <div class="form-group row">
+            <label for="inputAddressLine2" class="col-sm-2 col-form-label">Address Line2</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.addressLine2.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputAddressLine2" 
+                    formControlName="addressLine2"
+                    required>
+                    <div *ngIf="submitted && f.addressLine2.errors" class="invalid-feedback">
+                        <div *ngIf="f.addressLine2.errors.required">Address Line 2 is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+          
+          <div class="form-group row">
+            <label for="inputCity" class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.city.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputCity" 
+                    formControlName="city"
+                    required>
+                    <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                        <div *ngIf="f.city.errors.required">City is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+          <div class="form-group row">
+            <label for="inputPinCode" class="col-sm-2 col-form-label">Pin Code</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.pinCode.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputPinCode" 
+                    formControlName="pinCode"
+                    required>
+                    <div *ngIf="submitted && f.pinCode.errors" class="invalid-feedback">
+                        <div *ngIf="f.pinCode.required">Pin Code is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+          <div class="form-group row">
+            <label for="inputState" class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.state.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputState" 
+                    formControlName="state"
+                    required>
+                    <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+                        <div *ngIf="f.state.required">State is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+
+          <div class="form-group row">
+            <label for="inputCountry" class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-10">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.pinCode.errors }"
+                    type="text"
+                    class="form-control"
+                    id="inputCountry" 
+                    formControlName="country"
+                    required>
+                    <div *ngIf="submitted && f.country.errors" class="invalid-feedback">
+                        <div *ngIf="f.country.required">Country is required</div>
+                    </div>
+            </div>
+           
+          </div>
+
+  
+          <div class="form-group row">
+            <div class="col-sm-10 d-flex justify-content-center">
+              <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="bsModalRef.hide()">Back</button>
+              <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

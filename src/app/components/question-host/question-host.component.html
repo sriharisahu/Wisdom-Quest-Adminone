@@ -1,0 +1,29 @@
+
+<div *ngIf="question" class="container d-flex flex-column align-items-start quiz-container">
+    <div class="m-5" *ngIf="question?.questionBankVo?.questionDescriptionVo?.descriptionText">
+                <strong [innerHtml]="question.questionBankVo.questionDescriptionVo.descriptionText | replace"></strong> 
+    </div>
+    <div class="m-5 d-flex justify-content-center align-items-center">
+        <strong class="mr-2 d-flex justify-content-center align-items-center">{{index + 1}}.</strong>
+     <strong [innerHtml]="question.questionBankVo.questionStatment | replace"></strong> 
+    </div>
+
+    <div  class="row answers d-flex flex-column justify-content-center align-items-start">
+      <div class="p-2 col-12" *ngFor="let answer of question.questionBankVo.options; let i = index">
+   <strong class="mr-2">{{label[i]}}</strong>
+        <label for="{{i}}" class="m-2" [innerHtml]="answer.optionValue | replace"></label>
+        <img *ngIf="answer.optionName === question.questionBankVo.correctAnswer" class="ml-2" src="assets/images/tick1.png"  height="28" width="28"/>
+      
+    </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="attach(question)">Attach</button>
+        <button class="btn btn-sm btn-outline-secondary mr-2" type="button" (click)="edit(question)">Edit</button>
+        <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="exaplanation()">Exaplation</button>
+      </div>
+
+</div>
+
+
+ 
