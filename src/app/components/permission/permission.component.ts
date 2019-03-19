@@ -68,6 +68,8 @@ export class PermissionComponent implements OnInit {
       (request) => {
         this.configurationService.createPermission(request).subscribe(
           (response) => {
+            this.permissionList = [];
+            this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
           }

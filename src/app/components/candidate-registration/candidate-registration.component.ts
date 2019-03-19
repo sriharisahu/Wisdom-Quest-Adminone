@@ -13,6 +13,7 @@ import {
   BsModalRef
 } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
+import { AuthenticationService } from 'src/app/service/authentecation.service';
 
 
 @Component({
@@ -41,9 +42,16 @@ export class CandidateRegistrationComponent implements OnInit {
     }
 
     const requestPayload = JSON.parse(JSON.stringify(this.candidateForm.value));
+    if (this.authenticationService.currentUser.adminType === 'SUPERADMIN') {
     requestPayload.collegeVo  = {
       collegeId: this.candidateForm.value.collegeId
     };
+  } else {
+    requestPayload.collegeVo  = {
+      collegeId: this.authenticationService.currentUser.collegeVo.collegeId
+    };
+  }
+
     requestPayload.specializationVo  = {
       specializationId: this.candidateForm.value.specializationId
     };
@@ -54,7 +62,9 @@ export class CandidateRegistrationComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     public bsModalRef: BsModalRef,
-    private configurationService: ConfigurationService) {
+    private configurationService: ConfigurationService,
+    public authenticationService: AuthenticationService
+    ) {
   }
 
   ngOnInit() {
@@ -68,7 +78,6 @@ export class CandidateRegistrationComponent implements OnInit {
         addressLine2: [this.selectedCandidate.addressLine2],
         adhaarNumber: [this.selectedCandidate.adhaarNumber],
         city: [this.selectedCandidate.city],
-        collegeId: [this.selectedCandidate.collegeVo.collegeId, Validators.required],
         contactEmail: [this.selectedCandidate.contactEmail, Validators.required],
         contactNumber: [this.selectedCandidate.contactNumber, Validators.required],
         country: [this.selectedCandidate.country],
@@ -83,6 +92,9 @@ export class CandidateRegistrationComponent implements OnInit {
         state: [this.selectedCandidate.state],
         tenthPercentage: [this.selectedCandidate.tenthPercentage]
       };
+      if (this.authenticationService.currentUser.adminType === 'SUPERADMIN') {
+        candidateForm['collegeId']  =  [this.selectedCandidate.collegeVo.collegeId, Validators.required];
+      }
     } else {
 
 
@@ -92,7 +104,6 @@ export class CandidateRegistrationComponent implements OnInit {
         addressLine2: [''],
         adhaarNumber: [''],
         city: [''],
-        collegeId: ['', Validators.required],
         contactEmail: ['', Validators.required],
         contactNumber: ['', Validators.required],
         country: [''],
@@ -107,11 +118,17 @@ export class CandidateRegistrationComponent implements OnInit {
         state: [''],
         tenthPercentage: ['']
       };
+
+      if (this.authenticationService.currentUser.adminType === 'SUPERADMIN') {
+        candidateForm['collegeId']  =  ['', Validators.required];
+      }
     }
 
-    this.candidateForm = this.formBuilder.group(candidateForm);
-    this.getCollegeList();
+    if (this.authenticationService.currentUser.adminType === 'SUPERADMIN'){
+      this.getCollegeList();
+    }
     this.getSpecializationList();
+    this.candidateForm = this.formBuilder.group(candidateForm);
   }
 
   getCollegeList(): void {

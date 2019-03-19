@@ -17,6 +17,9 @@ export class ExamComponent implements OnInit {
   toggle = false;
   loading = false;
   examList = [];
+  listEnd = true;
+  totalCount = 0;
+  pageNo = 1;
 
   ngOnInit() {
     this.get();
@@ -29,14 +32,23 @@ export class ExamComponent implements OnInit {
     this.loading = true;
     const req = {
       pageNo: 1,
-      pageSize: 10,
+      pageSize: 100,
       searchKey: '',
       active: true};
     this.examService.getExamList(req).subscribe(
       (response) => {
         this.loading = false;
         if (response['status'] === 'success') {
-                this.examList = response['object']['examVoList'];
+                this.examList = [...this.examList, ...response['object']['examVoList']];
+                // if (req.pageNo === 1) {
+                //   this.totalCount = response['object']['count'];
+                // }
+                  this.totalCount = this.examList.length;
+                if ((req.pageNo * req.pageSize) >= this.totalCount) {
+                   this.listEnd = true;
+                } else {
+                  this.listEnd = false;
+                }
         }
       }
     );
@@ -56,6 +68,10 @@ export class ExamComponent implements OnInit {
       (request) => {
         this.examService.createExam(request).subscribe(
           (response) => {
+            this.examList = [];
+            this.pageNo = 1;
+            this.get();
+            this.bsModalService.hide(1);
             this.bsModalService.hide(1);
           }
         );
@@ -78,6 +94,10 @@ export class ExamComponent implements OnInit {
       (request) => {
         this.examService.updateExam(request).subscribe(
           (response) => {
+            this.examList = [];
+            this.pageNo = 1;
+            this.get();
+            this.bsModalService.hide(1);
             this.bsModalService.hide(1);
           }
         );

@@ -9,7 +9,7 @@
 
     <ul class="list-unstyled components">
        
-        <li>
+        <li *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'">
             <a href="javascript:void(0)">
                 <i-settings></i-settings>
                 <span> Configuration </span>
@@ -75,14 +75,24 @@
                         <span> Candidate </span>
                     </a>
                 </li>
-                <li routerLink="/examiner" [routerLinkActive]="'active'">
+                <!-- <li routerLink="/examiner" [routerLinkActive]="'active'">
                         <a>
                             <i-user></i-user>
                             <span> Examiner </span>
                             
                         </a>
-                </li>
-                <li routerLink="/client" [routerLinkActive]="'active'">
+                </li> -->
+                 <li  *ngIf="authenticationService?.currentUser?.adminType === 'ADMIN'" routerLink="/license" 
+                 
+                 [queryParams]="{clientId: authenticationService?.currentUser?.testConductorId}"
+                 [routerLinkActive]="'active'">
+                        <a>
+                            <i-user></i-user>
+                            <span> License </span>
+                            
+                        </a>
+                </li> 
+                <li *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'" routerLink="/client" [routerLinkActive]="'active'">
                     <a href="javascript:void(0)">
                         <i-user></i-user>
                         <span> Client </span>
@@ -95,7 +105,7 @@
             </ul>
         
         </li>
-        <li>
+        <li *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'">
             <a href="javascript:void(0)">
                 <i-hash></i-hash>
                 <span> Exam Manager </span>

@@ -5,6 +5,7 @@ import { GlobalVariable } from '../constant/global.variable';
 const GET_CLIENT_LIST = 'test-conductor/list';
 const GET_EXAMINER_LIST = 'test-conductor/list';
 const GET_CANDIDATE_LIST = 'user/list';
+const GET_FILTER_CANDIDATE_LIST = 'exam/result-list';
 const GET_LICENSE_LIST = 'license/list';
 const GET_EXTERNAL_LICENSE_LIST = 'test-conductor-license/external-license-list';
 const GET_EXAMINER_LICENSE_LIST = 'test-conductor-license/list-by-tc-id';
@@ -15,19 +16,25 @@ const GET_CLIENT_EXAMINER_LIST = 'test-conductor/tc-list';
 
 const CREATE_CLIENT = 'test-conductor/create';
 const CREATE_EXAMINER = 'test-conductor/create';
-const CREATE_CANDIDATE = 'candidate/create';
+const CREATE_CANDIDATE = 'user/create';
 const CREATE_LICENSE = 'test-conductor-license/admin-assign-license';
+const CREATE_TC_LICENSE = 'test-conductor-licence/tc-assign-license';
 const CREATE_EXTERNAL_LICENSE_LIST = 'test-conductor-license/external-license-assign';
 
 const UPDATE_CLIENT = 'test-conductor/update';
 const UPDATE_EXAMINER = 'examiner/update';
 const UPDATE_CANDIDATE = 'user/update';
 const UPDATE_LICENSE = 'test-conductor-license/update';
+const ALLOCATE_CANDIDATE = 'test-conductor-test-code/test-code-assign-user';
 
 const DELETE_CLIENT = 'client/update';
 const DELETE_EXAMINER = 'examiner/update';
-const DELETE_CANDIDATE = 'candidate/update';
+const DELETE_CANDIDATE = 'user/update';
 const DELETE_LICENSE = 'license/update';
+
+const GENERATE_KEY = 'exam-license/publish';
+const VIEW_KEY = 'exam-license/read';
+const DISABLE_KEY = 'exam-license/deactivate';
 
 
 
@@ -39,6 +46,18 @@ const DELETE_LICENSE = 'license/update';
 export class UserService {
 
   constructor(private http: HttpClient) { }
+
+
+
+  generateLicenseKey(request) {
+    return this.http.post(`${GlobalVariable.BASE_API_URL}${GENERATE_KEY}`, request);
+  }
+  viewLicenseKey(request) {
+    return this.http.get(`${GlobalVariable.BASE_API_URL}${VIEW_KEY}/${request.testConductorLicenseId}`);
+  }
+  disableLicenseKey(request) {
+    return this.http.get(`${GlobalVariable.BASE_API_URL}${DISABLE_KEY}/${request.testConductorLicenseId}`);
+  }
 
 
   getClientList(request) {
@@ -57,6 +76,9 @@ export class UserService {
 
   getCandidateList(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${GET_CANDIDATE_LIST}`, request);
+  }
+  getFilterCandidateList(request) {
+    return this.http.post(`${GlobalVariable.BASE_API_URL}${GET_FILTER_CANDIDATE_LIST}`, request);
   }
   getLicenseCandidateList(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${GET_LICENSE_CANDIDATE_LIST}`, request);
@@ -96,6 +118,12 @@ export class UserService {
   }
   createExatenalLicense(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${CREATE_EXTERNAL_LICENSE_LIST}`, request);
+  }
+  allocateCandidate(request) {
+    return this.http.post(`${GlobalVariable.BASE_API_URL}${ALLOCATE_CANDIDATE}`, request);
+  }
+  createTcLicense(request) {
+    return this.http.post(`${GlobalVariable.BASE_API_URL}${CREATE_TC_LICENSE}`, request);
   }
   updateClient(request) {
     const requestPayload = {...request, adminType: 'ADMIN'};

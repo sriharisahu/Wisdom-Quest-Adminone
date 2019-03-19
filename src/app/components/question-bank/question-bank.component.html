@@ -25,12 +25,16 @@
                       <tbody>
                         <tr *ngFor="let question of questionBankList; let i = index">
                           <td>
-                            <app-question-host  [question]="question" [isAttachable]="true" [index]="i"></app-question-host>
+                            <app-question-host  [question]="question" [isAttachable]="true" [isQuestionBank]="true" [index]="i"></app-question-host>
                           </td>
                         </tr>
                         <tr>
                             <td colspan="4" >
                                  <strong *ngIf="listEnd">End Of List </strong>
+                                 <strong *ngIf="!listEnd" (click)="loadMore()">
+                                    <i-arrow-down></i-arrow-down>
+                                     Load More 
+                                    </strong>
                                  <p>showing {{questionBankList.length}} of {{totalCount}}</p>
                             </td>
                         </tr>

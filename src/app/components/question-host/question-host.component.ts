@@ -13,6 +13,8 @@ export class QuestionHostComponent implements OnInit {
   @Input() public question: any;
   @Input() public index: any;
   @Input() isAttachable;
+  @Input() isQuestionBank;
+  @Input() section;
   label = ['A', 'B', 'C', 'D'];
 
   constructor(
@@ -31,7 +33,8 @@ export class QuestionHostComponent implements OnInit {
       initialState : {
         title: 'Question Registration Form',
         selectedQuestion: question,
-        isQuestionBank: true
+        isQuestionBank: this.isQuestionBank,
+        section: this.section
       },
       class: 'modal-lg'
     };
@@ -40,11 +43,17 @@ export class QuestionHostComponent implements OnInit {
     .submit$
     .subscribe(
       (request) => {
-        // this.examService.updateQuestion(request).subscribe(
-        //   (response) => {
-        //     this.bsModalService.hide(1);
-        //   }
-        // );
+        if (this.section) {
+
+          request.examSectionVo = {
+            examSectionId : this.section.examSectionId
+          };
+          this.examService.updateQuestion(request).subscribe(
+            (response) => {
+              this.bsModalService.hide(1);
+            }
+          );
+        }
       }
     );
   }

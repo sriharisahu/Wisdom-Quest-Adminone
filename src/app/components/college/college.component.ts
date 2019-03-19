@@ -3,6 +3,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { CollegeRegistrationComponent } from '../college-registration/college-registration.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { AuthenticationService } from 'src/app/service/authentecation.service';
 
 @Component({
   selector: 'app-college',
@@ -13,7 +14,8 @@ export class CollegeComponent implements OnInit {
 
   constructor(
     private bsModalService: BsModalService,
-    private configurationService: ConfigurationService) { }
+    private configurationService: ConfigurationService,
+    public authenticationService: AuthenticationService) { }
 
   toggle = false;
   loading = false;
@@ -68,6 +70,8 @@ export class CollegeComponent implements OnInit {
         this.configurationService.createCollege(request).subscribe(
           (response) => {
             if (response['status'] === 'success') {
+              this.collegeList = [];
+              this.pageNo = 1;
               this.get();
               this.bsModalService.hide(1);
             }
@@ -92,7 +96,8 @@ export class CollegeComponent implements OnInit {
       (request) => {
         this.configurationService.updateCollege(request).subscribe(
           (response) => {
-            this.totalCount += 1;
+            this.collegeList = [];
+            this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
           }

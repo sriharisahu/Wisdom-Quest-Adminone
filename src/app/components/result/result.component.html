@@ -1,0 +1,98 @@
+<div class="container" *ngIf="result">
+    <div class="row">
+      <div class="modal-title w-100 d-flex justify-content-between align-items-center">
+        <span>{{title}}</span>
+        <i-x (click)="bsModalRef.hide()"></i-x>
+      </div>
+      <div class="shadow-sm  col-sm-12 col-md-12 col-lg-12 card d-flex flex-column align-items-center">
+
+      <img  src="assets/images/logo.jpg" height="45" width="45" class="rounded m-3"/>
+      <h4>Wisdom Quest</h4>
+      <div class="col-sm-12">
+          <table class="table table-borderless">
+            
+              <tbody>
+                <tr>
+                  <td>{{result.candidateFirstName +' '+ result.candidateLastName}}</td>
+                  <td>{{result.examName}}</td>
+                </tr>
+                <tr>
+                  <td>{{result.certificateCode}}</td>
+                  <td>{{result.examCategoryName}}</td>
+                </tr>
+              
+              </tbody>
+            </table>
+            <table class="table table-bordered">
+                <thead class="bg-primary text-white">
+                  <tr>
+                    <th scope="col">Section Name</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Percentile</th>
+                  
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-template ngFor let-section [ngForOf]="result?.sectionResultList">
+                  <tr>
+                    <th>{{section.examSectionName}}</th>
+                    <th>{{section.grade}}</th>
+                    <th>{{section.percentile}}</th>
+                   
+                  </tr>
+                  <!-- <tr>
+                    <td colspan="2">
+                    <table class="table table-bordered ">
+                        <thead class="bg-white text-dark">
+                            <tr>
+                              <td scope="col">Sub Section</td>
+                              <td scope="col">Attempt</td>
+                              <td scope="col">Correct</td>
+                            </tr>
+                          </thead>
+                
+                      <tbody>
+                        <ng-template ngFor let-sub [ngForOf]="Object.values(section?.questionCategoryVoList)">
+                        <tr>
+                          <td>{{sub.questionSubCategoryName}}</td>
+                          <td>{{sub.totalAttempt}}</td>
+                          <td>{{sub.totalCorrectAnswer}}</td>
+                         
+                        </tr>
+                        <tr>
+      
+                          
+                        </tr>
+                      </ng-template>
+                      </tbody>
+                    </table>
+                    </td>
+
+                  </tr> -->
+                </ng-template>
+                </tbody>
+              </table>
+
+              <table class="table table-bordered" *ngIf="eai.length">
+                <thead class="bg-primary text-white">
+                  <tr>
+                    <th>Designation</th>
+                    <th>Level &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th>Job Eligibility</th>
+                  
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr *ngFor="let e of eai">
+                    <td>{{e.designation}}</td>
+                    <td>{{e.level}}</td>
+                    <td>{{e.jobEligibility}}</td>
+                  </tr>
+                </tbody>
+              </table>
+       
+      </div>
+      </div>
+    </div>
+  </div>

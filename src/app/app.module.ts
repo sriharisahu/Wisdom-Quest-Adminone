@@ -57,6 +57,11 @@ import { QuestionBankComponent } from './components/question-bank/question-bank.
 import { ErrorInterceptor } from './service/error.interceptor';
 import { ErrorMsgComponent } from './components/error-msg/error-msg.component';
 import { LicensePermissionMappingComponent } from './components/license-permission-mapping/license-permission-mapping.component';
+import { ResultComponent } from './components/result/result.component';
+import { LicenseCandidateMappingComponent } from './license-candidate-mapping/license-candidate-mapping.component';
+import { CertificateComponent } from './components/certificate/certificate.component';
+import { LicenseKeyComponent } from './components/license-key/license-key.component';
+import { CandidateFilterComponent } from './components/candidate-filter/candidate-filter.component';
 
 
 @NgModule({
@@ -99,7 +104,13 @@ import { LicensePermissionMappingComponent } from './components/license-permissi
     DeleteConfirmationComponent,
     QuestionBankComponent,
     ErrorMsgComponent,
-    LicensePermissionMappingComponent
+    LicensePermissionMappingComponent,
+    ResultComponent,
+    CertificateComponent,
+    CandidateComponent,
+    LicenseCandidateMappingComponent,
+    LicenseKeyComponent,
+    CandidateFilterComponent
   ],
   imports: [
     BrowserModule,
@@ -160,7 +171,13 @@ import { LicensePermissionMappingComponent } from './components/license-permissi
     LicenseRegistrationComponent,
     CandidateRegistrationComponent,
     ErrorMsgComponent,
-    LicensePermissionMappingComponent
+    LicensePermissionMappingComponent,
+    ResultComponent,
+    CandidateComponent,
+    LicenseCandidateMappingComponent,
+    CertificateComponent,
+    LicenseKeyComponent,
+    CandidateFilterComponent
   ]
 })
 export class AppModule { }

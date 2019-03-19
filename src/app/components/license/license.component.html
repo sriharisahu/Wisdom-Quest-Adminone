@@ -9,7 +9,7 @@
             <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
                     <h5 class="mr-auto">License</h5>
                     <div *ngIf="licenseList && licenseList.length">
-                      <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="add()">Add License</button>
+                      <button class="btn btn-sm btn-outline-primary mr-2"  *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'" type="button" (click)="add()">Add License</button>
                     </div>
                     <app-search-bar ></app-search-bar>
                   </div>
@@ -34,14 +34,22 @@
                       <tbody>
                         <tr *ngFor="let license of licenseList;let i = index">
                           <td>
-                          <i-shield title="pemission" (click)="permission(license)"></i-shield>
+                              <i-bar-chart-2 title="exam progress" (click)="filter(license)"></i-bar-chart-2>
+                        
+                              <i-award   *ngIf="license?.examVo?.examStatus === 'COMPLETED'"  title="certificate" (click)="showCertificate(exam)"></i-award>
+                              <i-bar-chart-2   *ngIf="license?.examVo?.examStatus === 'COMPLETED'" title="result" (click)="showResult(exam)"></i-bar-chart-2>
+                              
+                              <i-shield title="pemission" (click)="permission(license)"></i-shield>
                             <i-edit-2 title="edit" (click)="edit(license)"></i-edit-2>
                             <i-trash-2 title="delete" (click)="delete(license)"></i-trash-2>
+                        
                             
                             {{license.examVo.examName}}</td>
                             <td>
                                 <i-user-check title="candidate"  *ngIf="!currentParams.candidateId" (click)="candidate(license)"></i-user-check>
-                                
+                                <i-hash title="generate key"  *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'" (click)="generateKey(license)"></i-hash>
+                                <i-hash title="disable key" *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'"  (click)="disableKey(license)"></i-hash>
+                                <i-hash title="view key" *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'"  (click)="viewKey(license)"></i-hash>
                               {{license.examVo.testCode}}</td>
                             <td>{{license.remainingLicenseCount}}</td>
                             <td>{{license.licenseCount}}</td>

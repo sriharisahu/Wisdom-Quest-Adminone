@@ -18,6 +18,7 @@
                         infiniteScroll
                         [infiniteScrollDistance]="2"
                         [infiniteScrollThrottle]="50"
+                        [infiniteScrollDisabled]="listEnd || loading"
                         (scrolled)="onScroll()"
                   >
                       <thead>
@@ -52,6 +53,12 @@
                           <td>{{exam.durationInSeconds}}</td>
                           
 
+                        </tr>
+                        <tr>
+                            <td colspan="8" >
+                                 <strong *ngIf="listEnd">End Of List </strong>
+                                 <p>showing {{examList.length}} of {{totalCount}}</p>
+                            </td>
                         </tr>
                       </tbody>
                   </table>

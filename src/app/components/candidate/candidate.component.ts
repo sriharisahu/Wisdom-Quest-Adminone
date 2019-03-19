@@ -5,6 +5,11 @@ import { CandidateRegistrationComponent } from '../candidate-registration/candid
 import { UserService } from 'src/app/service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { LicenseCandidateMappingComponent } from 'src/app/license-candidate-mapping/license-candidate-mapping.component';
+import { AuthenticationService } from 'src/app/service/authentecation.service';
+import { CertificateComponent } from '../certificate/certificate.component';
+import { ResultComponent } from '../result/result.component';
+import { CandidateFilterComponent } from '../candidate-filter/candidate-filter.component';
 
 @Component({
   selector: 'app-candidate',
@@ -19,6 +24,7 @@ export class CandidateComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    public authenticationService: AuthenticationService
     ) { }
 
   toggle = false;
@@ -29,6 +35,7 @@ export class CandidateComponent implements OnInit {
   listEnd = true;
   totalCount = 0;
   pageNo = 1;
+  searchKey = '';
 
   ngOnInit() {
     this.route.queryParams.pipe()
@@ -41,13 +48,26 @@ export class CandidateComponent implements OnInit {
   toggleSideMenu(event) {
     this.toggle = !this.toggle;
   }
+  search(searchKey): void {
+console.log(searchKey);
+this.searchKey = searchKey;
+this.pageNo = 1;
+this.get();
+
+  }
   get(): void {
+    if (this.pageNo === 1) {
+      this.licenseList = [];
+      this.candidateList = [];
+    }
+
     this.loading = true;
     if (this.currentParams.licenseId) {
       const req = {
         pageNo: this.pageNo,
         pageSize: 10,
         testConductorLicenseId: this.currentParams.licenseId,
+        searchKey: this.searchKey
         };
 
       this.userService.getLicenseCandidateList(req).subscribe(
@@ -56,6 +76,8 @@ export class CandidateComponent implements OnInit {
           if (response['status'] === 'success') {
                   this.licenseList = [...this.licenseList, ...response['object']['testConductorHasTestCodeVoList']];
                   for (const license of this.licenseList) {
+                    license.examVo.status = license.status;
+                    license.userVo.exam = license.examVo;
                     this.candidateList.push(license.userVo);
                   }
                   if (req.pageNo === 1) {
@@ -72,9 +94,9 @@ export class CandidateComponent implements OnInit {
 
     } else {
       const req = {
-        pageNo: 1,
+        pageNo: this.pageNo,
         pageSize: 10,
-        searchKey: '',
+        searchKey: this.searchKey,
         active: true};
       this.userService.getCandidateList(req).subscribe(
         (response) => {
@@ -98,26 +120,82 @@ export class CandidateComponent implements OnInit {
 
   }
 
-  add(): void {
+  showCertificate(req): void {
     const configuartion = {
       initialState : {
-        title: 'Candidate Registration Form'
+        examId: req.examId,
+        candidateId: req.candidateId
       },
       class: 'modal-lg'
     };
-    this.bsModalService.show(CandidateRegistrationComponent, configuartion)
-    .content
-    .submit$
-    .subscribe(
-      (request) => {
-        this.userService.createCandidate(request).subscribe(
-          (response) => {
-            this.get();
-            this.bsModalService.hide(1);
-          }
-        );
-      }
-    );
+    this.bsModalService.show(CertificateComponent, configuartion);
+
+  }
+
+  showResult(req): void {
+    const configuartion = {
+      initialState : {
+        examId: req.exam.examId,
+        candidateId: req.userId
+      },
+      class: 'modal-lg'
+    };
+    this.bsModalService.show(ResultComponent, configuartion);
+
+  }
+
+  add(): void {
+    if (this.currentParams.clientId && this.currentParams.licenseId) {
+      const configuartion = {
+        initialState : {
+          title: 'Allocate Candidate'
+        },
+        class: 'modal-lg'
+      };
+      this.bsModalService.show(LicenseCandidateMappingComponent, configuartion)
+      .content
+      .submit$
+      .subscribe(
+        (request) => {
+          request.testConductorLicenseId = Number(this.currentParams.licenseId);
+          this.userService.allocateCandidate(request).subscribe(
+            (response) => {
+              this.licenseList = [];
+              this.candidateList = [];
+              this.pageNo = 1;
+              this.get();
+              this.bsModalService.hide(1);
+            }
+          );
+        }
+      );
+
+
+    } else {
+      const configuartion = {
+        initialState : {
+          title: 'Candidate Registration Form'
+        },
+        class: 'modal-lg'
+      };
+      this.bsModalService.show(CandidateRegistrationComponent, configuartion)
+      .content
+      .submit$
+      .subscribe(
+        (request) => {
+          this.userService.createCandidate(request).subscribe(
+            (response) => {
+              this.licenseList = [];
+              this.candidateList = [];
+              this.pageNo = 1;
+              this.get();
+              this.bsModalService.hide(1);
+            }
+          );
+        }
+      );
+
+    }
   }
 
   edit(selectedCandidate): void {
@@ -135,6 +213,7 @@ export class CandidateComponent implements OnInit {
       (request) => {
         this.userService.updateCandidate(request).subscribe(
           (response) => {
+            this.licenseList = [];
             this.candidateList = [];
             this.pageNo = 1;
             this.get();
@@ -186,6 +265,9 @@ export class CandidateComponent implements OnInit {
   }
 
   onScroll() {
+  }
+
+  loadMore() {
     this.pageNo += 1;
     this.get();
   }

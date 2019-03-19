@@ -9,9 +9,10 @@
             <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
                     <h5 class="mr-auto">Candidate</h5>
                     <div *ngIf="candidateList && candidateList.length">
+                      
                       <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="add()">Add Candidate</button>
                     </div>
-                    <app-search-bar ></app-search-bar>
+                    <app-search-bar (searchKey)="search($event)"></app-search-bar>
                   </div>
                   
                   <table class="table table-bordered table-hover "
@@ -27,23 +28,24 @@
                         <th>Candidate Name</th>
                         <th>Email</th>
                         <th>Contact</th>
-                        <th>College Name</th>
+                        <th *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'">College Name</th>
                       
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let candidate of candidateList;let i = index">
                           <td>
-                         
+                            <!-- <i-award   *ngIf="license?.examVo?.examStatus === 'COMPLETED'"  title="certificate" (click)="showCertificate(exam)"></i-award> -->
+                            <i-bar-chart-2   *ngIf="candidate.exam && candidate?.exam?.status === 'COMPLETED'" title="result" (click)="showResult(candidate)"></i-bar-chart-2>
                             <i-edit-2 title="edit" (click)="edit(candidate)"></i-edit-2>
                             <i-trash-2 title="delete" (click)="delete(candidate)"></i-trash-2>
-                            <i-credit-card title="license" (click)="license(candidate)"></i-credit-card>
+                            <i-credit-card  *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'" title="license" (click)="license(candidate)"></i-credit-card>
                             
                             {{candidate.firstName + ' ' + candidate.middleName+
                             ' ' + candidate.lastName}}</td>
                             <td>{{candidate.contactEmail}}</td>
                             <td>{{candidate.contactNumber}}</td>
-                            <td>{{candidate.collegeVo?.collegeName}}</td>
+                            <td *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'">{{candidate.collegeVo?.collegeName}}</td>
                           
                           
 
@@ -51,6 +53,10 @@
                         <tr>
                             <td colspan="4" >
                                  <strong *ngIf="listEnd">End Of List </strong>
+                                 <strong *ngIf="!listEnd" (click)="loadMore()">
+                                 <i-arrow-down></i-arrow-down>
+                                  Load More 
+                                 </strong>
                                  <p>showing {{candidateList.length}} of {{totalCount}}</p>
                             </td>
                         </tr>

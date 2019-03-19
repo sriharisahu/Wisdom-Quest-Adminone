@@ -8,6 +8,11 @@ import { Location } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { LicensePermissionMappingComponent } from '../license-permission-mapping/license-permission-mapping.component';
+import { CertificateComponent } from '../certificate/certificate.component';
+import { ResultComponent } from '../result/result.component';
+import { AuthenticationService } from 'src/app/service/authentecation.service';
+import { LicenseKeyComponent } from '../license-key/license-key.component';
+import { CandidateFilterComponent } from '../candidate-filter/candidate-filter.component';
 
 @Component({
   selector: 'app-license',
@@ -22,7 +27,8 @@ export class LicenseComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private configurationService: ConfigurationService) { }
+    private configurationService: ConfigurationService,
+    public authenticationService: AuthenticationService) { }
 
   toggle = false;
   loading = false;
@@ -44,6 +50,51 @@ export class LicenseComponent implements OnInit {
   toggleSideMenu(event) {
     this.toggle = !this.toggle;
   }
+
+  showCertificate(req): void {
+    const configuartion = {
+      initialState : {
+        examId: req.examId,
+        candidateId: req.candidateId
+      },
+      class: 'modal-lg'
+    };
+    this.bsModalService.show(CertificateComponent, configuartion);
+
+  }
+
+  showResult(req): void {
+    const configuartion = {
+      initialState : {
+        examId: req.examId,
+        candidateId: req.candidateId
+      },
+      class: 'modal-lg'
+    };
+    this.bsModalService.show(ResultComponent, configuartion);
+
+  }
+
+  filter(license): void {
+
+    const configuartion = {
+      initialState : {
+        title: 'Candidate Filter & Export ',
+        examId: license.examVo.examId
+      },
+      class: 'modal-lg'
+    };
+    this.bsModalService.show(CandidateFilterComponent, configuartion)
+    .content
+    .submit$
+    .subscribe(
+      (confirm) => {
+           if (confirm) {
+      }
+    }
+    );
+  }
+
   get(): void {
     this.loading = true;
 
@@ -84,7 +135,15 @@ export class LicenseComponent implements OnInit {
           (response) => {
             this.loading = false;
             if (response['status'] === 'success') {
-                    this.licenseList = response['object']['testConductorLicenseVoList'];
+                    this.licenseList = [...this.licenseList, ...response['object']['testConductorLicenseVoList']];
+                    if (req.pageNo === 1) {
+                      this.totalCount = response['object']['count'];
+                    }
+                    if ((req.pageNo * req.pageSize) >= this.totalCount) {
+                       this.listEnd = true;
+                    } else {
+                      this.listEnd = false;
+                    }
             }
           }
         );
@@ -101,7 +160,15 @@ export class LicenseComponent implements OnInit {
           (response) => {
             this.loading = false;
             if (response['status'] === 'success') {
-                    this.licenseList = response['object']['testConductorLicenseVoList'];
+                    this.licenseList = [...this.licenseList, ...response['object']['testConductorLicenseVoList']];
+                    if (req.pageNo === 1) {
+                      this.totalCount = response['object']['count'];
+                    }
+                    if ((req.pageNo * req.pageSize) >= this.totalCount) {
+                       this.listEnd = true;
+                    } else {
+                      this.listEnd = false;
+                    }
             }
           }
         );
@@ -139,27 +206,42 @@ export class LicenseComponent implements OnInit {
             testConductorId: this.currentParams.examinerId
           };
         }
-        if (this.currentParams.candidateId) {
-          request = {
-            candidateId: Number(this.currentParams.candidateId),
-            examId: request.examId
+        if (this.currentParams.examinerId && this.currentParams.clientId) {
+          request.testConductorVo = {
+            testConductorId: this.currentParams.examinerId
           };
-          this.userService.createExatenalLicense(request).subscribe(
-            (response) => {
-              this.get();
-              this.bsModalService.hide(1);
-            }
-          );
+          request.parentTestConductorId = this.currentParams.clientId;
 
-        } else {
           this.userService.createLicense(request).subscribe(
             (response) => {
               this.get();
               this.bsModalService.hide(1);
             }
           );
+        } else {
+
+          if (this.currentParams.candidateId) {
+            request = {
+              candidateId: Number(this.currentParams.candidateId),
+              examId: request.examId
+            };
+            this.userService.createExatenalLicense(request).subscribe(
+              (response) => {
+                this.get();
+                this.bsModalService.hide(1);
+              }
+            );
+          } else {
+            this.userService.createLicense(request).subscribe(
+              (response) => {
+                this.get();
+                this.bsModalService.hide(1);
+              }
+            );
+          }
 
         }
+
 
       }
     );
@@ -241,6 +323,52 @@ export class LicenseComponent implements OnInit {
       }
     );
   }
+
+  viewKey(selectedLicense): void {
+
+
+    const configuartion = {
+      initialState : {
+        title: 'License Key',
+        license: selectedLicense
+      },
+      class: 'modal-sm'
+    };
+    this.bsModalService.show(LicenseKeyComponent, configuartion)
+    .content
+    .submit$
+    .subscribe(
+      (confirm) => {
+           this.bsModalService.hide(1);
+      }
+    );
+  }
+
+  generateKey(license) {
+     const request = {
+       testConductorLicenseId: license.testConductorLicenseId
+     };
+    this.userService.generateLicenseKey(request).subscribe(
+      (response) => {
+        if (response['status'] === 'success') {
+          }
+      }
+    );
+
+  }
+
+  disableKey(license) {
+    const request = {
+      testConductorLicenseId: license.testConductorLicenseId
+    };
+   this.userService.disableLicenseKey(request).subscribe(
+     (response) => {
+       if (response['status'] === 'success') {
+         }
+     }
+   );
+
+ }
   candidate(selectedLicense): void {
   this.router.navigate(['/candidate'], {
      queryParams: { licenseId : selectedLicense.testConductorLicenseId,

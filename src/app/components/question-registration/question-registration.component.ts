@@ -58,80 +58,110 @@ export class QuestionRegistrationComponent implements OnInit {
 
     if (this.examService.questionToAttach) {
       const target = {
-        examSectionVo: { examSectionId: this.section.examSectionId},
         questionNumber: this.questionForm.value.questionNumber,
         marks: this.questionForm.value.marks,
         negativeMarks: this.questionForm.value.negativeMarks,
         active: true,
         questionBankVo: {
-          questionId:  this.examService.questionToAttach.questionBankVo.questionId
+          questionId: this.examService.questionToAttach.questionBankVo.questionId
         }
-          };
+      };
       const requestPayload = JSON.parse(JSON.stringify(target));
       this.submit$.emit(requestPayload);
 
     } else {
       const questionDescriptionVo = {
         descriptionText: this.questionForm.value.description,
+        description: this.questionForm.value.description,
         descriptionTextType: true,
         descriptionId: null
-     };
-     const options = [];
-     this.questionForm.value.options.forEach((option, i) => {
-      const o = {
-        marks: null,
-        optionName: this.optionRadio[i],
-        optionType: false,
-        optionValue: option,
-        questionOptionId: null
       };
-      options.push(o);
-     });
+      const options = [];
+      this.questionForm.value.options.forEach((option, i) => {
+        const o = {
+          marks: null,
+          optionName: this.optionRadio[i],
+          optionType: false,
+          optionValue: option
+        };
+        options.push(o);
+      });
 
-     const explanation = {
-      explanationText: this.questionForm.value.explanation,
-      explanationTextType: true
-     };
-     const correctAnswer = this.questionForm.value.correct;
-     const correctOption = options[this.optionRadio.indexOf(correctAnswer)];
-     const questionCategoryVo = {
-      questionCategoryId: this.questionForm.value.categoryId
-     } ;
-     let target;
-     if (this.isQuestionBank) {
-       target = {
-        examSectionVo: { examSectionId: this.section.examSectionId},
-        active: true,
-        questionBankVo: {
-          questionDescriptionVo: questionDescriptionVo,
-          questionCategoryVo: questionCategoryVo,
-          questionStatment: this.questionForm.value.statement,
-          options: options,
-          explanation: explanation,
-          correctOption: correctOption,
-          correctAnswer: correctAnswer
-        }
+      const explanation = {
+        explanationText: this.questionForm.value.explanation,
+        explanationTextType: true
+      };
+      const correctAnswer = this.questionForm.value.correct;
+      const correctOption = options[this.optionRadio.indexOf(correctAnswer)];
+      const questionCategoryVo = {
+        questionCategoryId: this.questionForm.value.categoryId
+      };
+      let target;
+      if (this.isQuestionBank) {
+        target = {
+          active: true,
+          questionBankVo: {
+            questionDescriptionVo: questionDescriptionVo,
+            questionCategoryVo: questionCategoryVo,
+            questionStatment: this.questionForm.value.statement,
+            options: options,
+            explanation: explanation,
+            correctOption: correctOption,
+            correctAnswer: correctAnswer
+          }
+        };
+
+      } else {
+        target = {
+          examSectionVo: {
+            examSectionId: this.section.examSectionId
+          },
+          examSectionHasQuestionId: this.selectedQuestion.examSectionHasQuestionId,
+          questionNumber: this.questionForm.value.questionNumber,
+          marks: this.questionForm.value.marks,
+          negativeMarks: this.questionForm.value.negativeMarks,
+          active: true,
+          questionBankVo: {
+            questionDescriptionVo: questionDescriptionVo,
+            questionCategoryVo: questionCategoryVo,
+            questionStatment: this.questionForm.value.statement,
+            options: options,
+            explanation: explanation,
+            correctOption: correctOption,
+            correctAnswer: correctAnswer
+          }
+        };
+        if (this.selectedQuestion) {
+          debugger;
+          target.questionBankVo = {
+            ...this.selectedQuestion.questionBankVo,
+            ...target.questionBankVo
           };
 
-     } else {
-       target = {
-        examSectionVo: { examSectionId: this.section.examSectionId},
-        questionNumber: this.questionForm.value.questionNumber,
-        marks: this.questionForm.value.marks,
-        negativeMarks: this.questionForm.value.negativeMarks,
-        active: true,
-        questionBankVo: {
-          questionDescriptionVo: questionDescriptionVo,
-          questionCategoryVo: questionCategoryVo,
-          questionStatment: this.questionForm.value.statement,
-          options: options,
-          explanation: explanation,
-          correctOption: correctOption,
-          correctAnswer: correctAnswer
-        }
-          };
+          target.questionBankVo.questionStatmentData = null;
+          if (target.questionBankVo.options) {
+            target.questionBankVo.options.forEach((option, i) => {
+              options['optionValueData'] = null;
+              this.selectedQuestion.questionBankVo.options.forEach((o, j) => {
+                options['optionValueData'] = null;
+                if (o.optionName === option.optionName) {
+                  option['questionOptionId'] = o.questionOptionId;
+                }
+              });
+            });
+          }
 
-     }
+          if (target.questionBankVo.questionDescriptionVo) {
+            target.questionBankVo.questionDescriptionVo.descriptionData = null;
+            target.questionBankVo.questionDescriptionVo.descriptionTextData = null;
+          }
+          if (target.questionBankVo.explanation) {
+            target.questionBankVo.explanation.explanationData = null;
+            target.questionBankVo.explanation.explanationTextData = null;
+          }
+        }
+
+      }
       const requestPayload = JSON.parse(JSON.stringify(target));
       this.submit$.emit(requestPayload);
 
@@ -153,15 +183,15 @@ export class QuestionRegistrationComponent implements OnInit {
     if (this.examService.questionToAttach) {
       const questionForm = {
         categoryId: [this.examService.questionToAttach.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
-        statement : [this.examService.questionToAttach.questionBankVo.questionStatment, Validators.required],
+        statement: [atob(this.examService.questionToAttach.questionBankVo.questionStatmentData), Validators.required],
         description: ['', Validators.required],
         questionNumber: ['', Validators.required],
         marks: ['', Validators.required],
         options: this.formBuilder.array([
-          this.formBuilder.control(this.examService.questionToAttach.questionBankVo.options[0].optionValue),
-          this.formBuilder.control(this.examService.questionToAttach.questionBankVo.options[1].optionValue),
-          this.formBuilder.control(this.examService.questionToAttach.questionBankVo.options[2].optionValue),
-          this.formBuilder.control(this.examService.questionToAttach.questionBankVo.options[3].optionValue)
+          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[0].optionValueData)),
+          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[1].optionValueData)),
+          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[2].optionValueData)),
+          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[3].optionValueData))
         ]),
         correct: [this.examService.questionToAttach.questionBankVo.correctOption.optionName],
         correctOption: [this.examService.questionToAttach.questionBankVo.correctOption],
@@ -169,7 +199,7 @@ export class QuestionRegistrationComponent implements OnInit {
         explanation: [''],
       };
       this.questionForm = this.formBuilder.group(questionForm);
-  }
+    }
   }
 
   ngOnInit() {
@@ -180,13 +210,13 @@ export class QuestionRegistrationComponent implements OnInit {
 
         questionForm = {
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
-          statement : [this.selectedQuestion.questionBankVo.questionStatment, Validators.required],
+          statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
           description: ['', Validators.required],
           options: this.formBuilder.array([
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[0].optionValue),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[1].optionValue),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[2].optionValue),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[3].optionValue)
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],
@@ -198,15 +228,15 @@ export class QuestionRegistrationComponent implements OnInit {
 
         questionForm = {
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
-          statement : [this.selectedQuestion.questionBankVo.questionStatment, Validators.required],
+          statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
           description: ['', Validators.required],
           questionNumber: [this.selectedQuestion.questionNumber, Validators.required],
           marks: [this.selectedQuestion.marks, Validators.required],
           options: this.formBuilder.array([
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[0].optionValue),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[1].optionValue),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[2].optionValue),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[3].optionValue)
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],
@@ -220,7 +250,7 @@ export class QuestionRegistrationComponent implements OnInit {
 
       questionForm = {
         categoryId: [''],
-        statement : [''],
+        statement: [''],
         description: [''],
         questionNumber: [''],
         marks: [''],
@@ -252,9 +282,11 @@ export class QuestionRegistrationComponent implements OnInit {
 
   getCategoryList() {
     const req = {
-    questionCategoryId: this.section ? this.section.questionCategoryVo.questionCategoryId :
-     this.selectedQuestion.examSectionVo ? this.selectedQuestion.examSectionVo.questionCategoryVo.questionCategoryId :
-     this.selectedQuestion.questionBankVo.questionCategoryVo.questionCategoryId
+      questionCategoryId: this.section ?
+      this.section.questionCategoryVo.questionCategoryId :
+       this.selectedQuestion.examSectionVo ?
+        this.selectedQuestion.examSectionVo.questionCategoryVo.questionCategoryId :
+        this.selectedQuestion.questionBankVo.questionCategoryVo.questionCategoryId
     };
     this.examService.getQuestionCategoryList(req).subscribe(
       (response) => {

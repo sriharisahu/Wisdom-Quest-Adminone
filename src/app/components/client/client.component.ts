@@ -99,6 +99,8 @@ export class ClientComponent implements OnInit {
         this.userService.createClient(request).subscribe(
           (response) => {
             if (response['status'] === 'success') {
+              this.clientList = [];
+              this.pageNo = 1;
                 this.get();
             }
             this.bsModalService.hide(1);
@@ -125,6 +127,8 @@ export class ClientComponent implements OnInit {
         this.userService.updateClient(request).subscribe(
           (response) => {
             if (response['status'] === 'success') {
+              this.clientList = [];
+              this.pageNo = 1;
               this.get();
           }
             this.bsModalService.hide(1);

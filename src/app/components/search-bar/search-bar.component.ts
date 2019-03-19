@@ -17,9 +17,8 @@ export class SearchBarComponent implements OnInit {
   }
 
 
-  @HostListener('keyup')
-  keyup() {
-    this.searchKey.emit(this.search.nativeElement.value);
-  }
+trigger() {
+  this.searchKey.emit(this.search.nativeElement.value);
+}
 
 }

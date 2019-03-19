@@ -59,7 +59,8 @@ return formData;
     return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_EXAM}`, request);
   }
   updateQuestion(request) {
-    return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_QUESTION}`, request);
+    const requestPayload = this.toFormData(request);
+    return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_QUESTION}`, requestPayload);
   }
   getSubSectionList(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${GET_SUB_SECTION}`, request);

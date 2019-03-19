@@ -22,7 +22,10 @@ import {
   IconUserPlus,
   IconShield,
   IconCheckSquare,
-  IconSquare
+  IconSquare,
+  IconAward,
+  IconBarChart2,
+  IconFilter
 } from 'angular-feather';
 
 const icons = [
@@ -46,7 +49,10 @@ const icons = [
   IconUserPlus,
   IconShield,
   IconCheckSquare,
-  IconSquare
+  IconSquare,
+  IconAward,
+  IconBarChart2,
+  IconFilter
 ];
 
 @NgModule({

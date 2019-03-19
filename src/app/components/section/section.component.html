@@ -67,7 +67,7 @@
                       </ng-template>
                         <tr *ngIf="questionList.length" [@detailExpand]="section == expandedSection ? 'expanded' : 'collapsed'">
                             <td colspan="5" >
-                                  <app-question-host *ngFor="let question of questionList; let i = index" [question]="question" [index]="i"></app-question-host> 
+                                  <app-question-host *ngFor="let question of questionList; let i = index" [question]="question" [section]="section" [index]="i"></app-question-host> 
                             </td>
                               
 

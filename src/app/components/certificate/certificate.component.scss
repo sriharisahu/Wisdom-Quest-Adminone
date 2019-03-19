@@ -1,0 +1,18 @@
+.certificate-wrapper{
+    height: 70vh;
+    background: url(../../../assets/images/Certificate.png);
+    background-size: contain;
+    padding: 20px 12px;
+    overflow: hidden;
+    min-width: 700px;
+
+    h2{
+        color: #399dad;
+    }
+
+
+    .candidate{
+        color: #f98e24;
+    }
+
+}

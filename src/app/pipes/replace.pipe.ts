@@ -9,6 +9,7 @@ export class ReplacePipe implements PipeTransform {
     if (!value) {
       return '';
     }
+    value = atob(value);
     value = value.replace(/(\r\n|\n|\r)/gm, '');
     return value.replace(/["]+/g, '');
   }

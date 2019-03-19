@@ -70,7 +70,7 @@ export class SectionComponent implements OnInit {
   getQuestions() {
     const req = {
       examSectionId: this.expandedSection.examSectionId,
-      pageSize: 10,
+      pageSize: 100,
       pageNo: 1
     };
      this.examService.getQuestionList(req).subscribe(

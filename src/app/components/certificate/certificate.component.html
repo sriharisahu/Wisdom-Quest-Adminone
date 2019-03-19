@@ -1,0 +1,39 @@
+<div *ngIf="certificate" class="certificate-wrapper d-flex justify-content-center align-items-center flex-column">
+
+<h2>Wisdom Quest Learning Resources</h2>
+<h5>Certificate of Appreciation</h5>
+<div class="divider"></div>
+<h6>Certificate is awarded to </h6>
+<h4 class="candidate">{{certificate.candidateFirstName}} &nbsp;{{certificate.candidateLastName}}</h4>
+<h6>with ICAT ID {{certificate.certificateCode}} </h6>
+<p>has secured the following grade in</p>
+<h4>
+  Integrated Computer Aptitude Test
+</h4>
+<p>conducted on {{certificate.examDate | date}}</p>
+<div class="mb-2 grade-wrapper d-flex justify-content-center align-items-center">
+
+  <div  *ngFor="let section of certificate.sectionResultList" class="grade mr-2 d-flex justify-content-center align-items-center flex-column">
+      <strong>{{section.examSectionName}}</strong>
+      <strong>{{section.grade}}</strong>
+
+  </div>
+
+
+
+</div>
+<p>
+  Where <strong>A,B,C</strong>represents grades > <strong>65,within 40-64.9,0-39.9 </strong>
+</p>
+<p>
+  This is a computer generated certificate for verification visit 
+  <strong>http://wisdomquest.in/verifyicat</strong>
+</p>
+
+
+
+</div>
+
+<div *ngIf="!certificate" class="p-5">
+You don have permission to see the certificate
+</div>

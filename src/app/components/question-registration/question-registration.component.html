@@ -33,7 +33,7 @@
               <div class="col-sm-10 h-100-p">
                   <quill-editor
                   formControlName="description"
-                  [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                  [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
                    id="inputDescription"
                    required
                    ></quill-editor>
@@ -49,7 +49,7 @@
                 <div class="col-sm-10 h-100-p">
                     <quill-editor
                     formControlName="statement"
-                    [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                    [ngClass]="{ 'is-invalid': submitted && f.statement.errors }"
                      id="inputStatement"
                      required
                      ></quill-editor>
@@ -107,7 +107,6 @@
                           <div class="col-sm-10 h-100-p float-right">
                           <quill-editor
                           [formControlName]="i"
-                          [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
                             id="i"
                             required
                             ></quill-editor>
@@ -146,7 +145,7 @@
                       <div class="col-sm-10 h-100-p">
                           <quill-editor
                           formControlName="explanation"
-                          [ngClass]="{ 'is-invalid': submitted && f.duration.errors }"
+                          [ngClass]="{ 'is-invalid': submitted && f.explanation.errors }"
                            id="inputExplanation"
                            required
                            ></quill-editor>

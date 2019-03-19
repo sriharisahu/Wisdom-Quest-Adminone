@@ -35,7 +35,7 @@ export class QuestionBankComponent implements OnInit {
     this.loading = true;
     const req = {
       pageNo: this.pageNo,
-      pageSize: 50,
+      pageSize: 30,
       active: true};
     this.examService.getQuestionBankList(req).subscribe(
       (response) => {
@@ -133,6 +133,10 @@ export class QuestionBankComponent implements OnInit {
   }
 
   onScroll() {
+    // this.pageNo += 1;
+    // this.get();
+  }
+  loadMore() {
     this.pageNo += 1;
     this.get();
   }

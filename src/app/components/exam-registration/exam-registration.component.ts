@@ -44,7 +44,7 @@ export class ExamRegistrationComponent implements OnInit {
     }
 
     let requestPayload = JSON.parse(JSON.stringify(this.examForm.value));
-    requestPayload.examCategoryVo = requestPayload.category;
+    requestPayload.examCategoryVo = requestPayload.subCategory;
     const hh = new Date(requestPayload.duration).getHours();
     const mm = new Date(requestPayload.duration).getMinutes();
     requestPayload.durationInSeconds = (hh * 3600) + (mm * 60);
@@ -99,8 +99,8 @@ export class ExamRegistrationComponent implements OnInit {
         questionCount: [this.selectedExam.questionCount, Validators.required],
         totalMarks: [this.selectedExam.totalMarks, Validators.required],
         duration: [d, Validators.required],
-        examDescription: [this.selectedExam.examDescription, Validators.required],
-        examInstructions: [this.selectedExam.examInstructions, Validators.required],
+        examDescription: [atob(this.selectedExam.examDescriptionData), Validators.required],
+        examInstructions: [atob(this.selectedExam.examInstructionsData), Validators.required],
       };
     } else {
       const d = new Date();
