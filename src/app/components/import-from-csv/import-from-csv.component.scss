@@ -1,0 +1,16 @@
+input[type="file"] {
+    display: none;
+}
+.pd-5{
+    padding:5px;
+}
+.import-content{
+    width: 100%;
+    padding: 1rem 1rem;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+.import-form-wrap{
+    flex-direction: column;
+    padding: 22px;
+}

@@ -1,0 +1,118 @@
+
+<div class="container">
+  <div class="row">
+    <div class="modal-title w-100 d-flex justify-content-between align-items-center">
+      <span>{{title}}</span>
+      <i-x (click)="bsModalRef.hide()"></i-x>
+    </div>
+    <div class="w-100 d-flex justify-content-between align-items-center pd-5 import-form-wrap">
+      <form [formGroup]="candidateForm" class="w-100">
+        <div class="form-group">
+            <div class="form-group row" *ngIf="authenticationService.currentUser.adminType === 'SUPERADMIN'">
+                <label for="inputCollage" class="col-sm-2 col-form-label">Collage</label>
+                <div class="col-sm-10">
+                  <select [ngClass]="{ 'is-invalid': submitted && f.collegeId?.errors }"
+                   formControlName="collageId" class="form-control"
+                    id="inputCollage" required>
+                    <option value="">--SELECT COLLEGE --</option>
+                    <option *ngFor="let college of collageList" [ngValue]="college.collegeId">{{ college.collegeName }}</option>
+                  </select>
+                  <div *ngIf="submitted && f.collegeId?.errors" class="invalid-feedback">
+                    <div *ngIf="f.collegeId?.errors.required">College is required</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                  <label for="inputSpecialization" class="col-sm-2 col-form-label">Specialization</label>
+                  <div class="col-sm-10">
+                    <select [ngClass]="{ 'is-invalid': submitted && f.specializationId?.errors }"
+                     formControlName="specializationId" class="form-control"
+                      id="inputSpecialization" required>
+                      <option value="">--SELECT SPECIALIZATION --</option>
+                      <option *ngFor="let specialization of specializationList" [ngValue]="specialization.specializationId">{{ specialization.specializationName }}</option>
+                    </select>
+                    <div *ngIf="submitted && f.specializationId?.errors" class="invalid-feedback">
+                      <div *ngIf="f.specializationId?.errors.required">Specialization is required</div>
+                    </div>
+                  </div>
+                </div>
+
+            <input type="file" id="file-upload" (change)="onFileSelect($event.target)" name="myfile">
+        </div>
+      </form>  
+          <label for="file-upload" class="btn btn-outline-primary btn-sm">
+             Upload Csv File
+          </label>
+    </div>
+    <div class="col-sm-12">
+        <div class="wrapper">
+        
+            <!-- Page Content  -->
+            <div class="import-content" [ngClass]="{'w-adjust': toggle}">
+        
+               
+                    <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
+                            <h5 class="mr-auto">Candidate</h5>
+                            <div *ngIf="candidateList && candidateList.length">
+                              
+                              <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="import()">Import</button>
+                            
+                            </div>
+                            <app-search-bar (searchKey)="search($event)"></app-search-bar>
+                          </div>
+                          
+                          <table class="table table-bordered table-hover "
+                                infiniteScroll
+                                [infiniteScrollDistance]="2"
+                                [infiniteScrollThrottle]="50"
+                                [infiniteScrollDisabled]="listEnd || loading"
+                                (scrolled)="onScroll()"
+                          >
+                              <thead>
+                                <tr>
+                                
+                                <th>Candidate Name</th>
+                                <th>Email</th>
+                                <th>Contact</th>
+                                <th *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'">College Name</th>
+                              
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let candidate of candidateList;let i = index">
+                                  <td>
+                                    <i-trash-2 title="delete" (click)="delete(candidate)"></i-trash-2>
+                                    
+                                    {{candidate.firstName + ' ' + candidate.middleName+
+                                    ' ' + candidate.lastName}}</td>
+                                    <td>{{candidate.contactEmail}}</td>
+                                    <td>{{candidate.contactNumber}}</td>
+                                  
+                                  
+        
+                                </tr>
+                                <tr>
+                                    <td colspan="4" >
+                                         <strong *ngIf="listEnd">End Of List </strong>
+                                         <strong *ngIf="!listEnd" (click)="loadMore()">
+                                         <i-arrow-down></i-arrow-down>
+                                          Load More 
+                                         </strong>
+                                         <p>showing {{candidateList.length}} of {{totalCount}}</p>
+                                    </td>
+                                </tr>
+                              </tbody>
+                          </table>
+                          <app-empty-list *ngIf="!(candidateList && candidateList.length) && !loading" (add$)="add()"></app-empty-list>
+                          <app-loading *ngIf="loading"></app-loading>
+                          
+                
+            </div>
+        </div>
+        
+
+    </div>
+ </div>
+</div>
+      

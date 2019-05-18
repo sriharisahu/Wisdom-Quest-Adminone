@@ -11,38 +11,45 @@ export class ExamSettingsComponent implements OnInit {
 
 
   @Output() submit = new EventEmitter<any>();
-  examForm: FormGroup;
+  examSettingForm: FormGroup;
   title: string;
   loading = false;
   submitted = false;
   selectedExam: any;
+  selectedExamSetting: any;
 
   get f() {
-    return this.examForm.controls;
+    return this.examSettingForm.controls;
   }
 
   onSubmit() {
     this.submitted = true;
-    if (this.examForm.invalid) {
+    if (this.examSettingForm.invalid) {
           return;
     }
-    this.submit.emit(this.examForm.value);
+    this.submit.emit(this.examSettingForm.value);
   }
   constructor(private formBuilder: FormBuilder,
               public bsModalRef: BsModalRef) { }
 
   ngOnInit() {
-    let examForm = {};
+ let examSettingForm = {};
     if (this.selectedExam) {
-      examForm = {
-        examName: [this.selectedExam.examName, Validators.required]
+      examSettingForm = {
+        publish: [''],
+        allowReattempts: [],
+        allowExamResume: [],
+        allowBackButton: []
       };
     } else {
-      examForm = {
-        examName: ['', Validators.required]
+      examSettingForm = {
+        publish: [''],
+        allowReattempts: [],
+        allowExamResume: [],
+        allowBackButton: []
       };
     }
-    this.examForm = this.formBuilder.group(examForm);
+    this.examSettingForm = this.formBuilder.group(examSettingForm);
   }
 
 }

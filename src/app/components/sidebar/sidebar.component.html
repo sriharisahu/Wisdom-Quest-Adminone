@@ -75,13 +75,13 @@
                         <span> Candidate </span>
                     </a>
                 </li>
-                <!-- <li routerLink="/examiner" [routerLinkActive]="'active'">
+                <li routerLink="/examiner" [routerLinkActive]="'active'">
                         <a>
                             <i-user></i-user>
                             <span> Examiner </span>
                             
                         </a>
-                </li> -->
+                </li>
                  <li  *ngIf="authenticationService?.currentUser?.adminType === 'ADMIN'" routerLink="/license" 
                  
                  [queryParams]="{clientId: authenticationService?.currentUser?.testConductorId}"

@@ -16,10 +16,13 @@
             <label for="inputCategory" class="col-sm-2 col-form-label">Question Category</label>
             <div class="col-sm-10">
               <select [ngClass]="{ 'is-invalid': submitted && f.category?.errors }"
-               formControlName="categoryId" class="form-control"
+               formControlName="categoryId"
+               (change)="questionCategoryChange()"
+               class="form-control"
+              
                 id="inputCategory" required>
                 <option value="">--SELECT CATEGORY --</option>
-                <option *ngFor="let category of categoryList" [ngValue]="category.questionSubCategoryId">{{ category.questionSubCategoryName }}</option>
+                <option *ngFor="let category of categoryList"   [ngValue]="category.questionSubCategoryId">{{ category.questionSubCategoryName }}</option>
               </select>
               <div *ngIf="submitted && f.category?.errors" class="invalid-feedback">
                 <div *ngIf="f.category?.errors.required">Question Category is required</div>
@@ -35,7 +38,6 @@
                   formControlName="description"
                   [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
                    id="inputDescription"
-                   required
                    ></quill-editor>
                 <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                   <div *ngIf="f.description.errors.required">Question Description is required</div>
@@ -75,24 +77,23 @@
                   </div>
               </div>
   
-                <div class="form-group row"  *ngIf="!isQuestionBank">
+                <div class="form-group row"  *ngIf="!isQuestionBank && !isPsycometric">
                     <label for="inputMarks" class="col-sm-2 col-form-label">Marks</label>
                     <div class="col-sm-10">
                       <input [ngClass]="{ 'is-invalid': submitted && f.marks.errors }"
                        type="number" class="form-control" id="inputMarks"
-                        formControlName="marks" required>
+                        formControlName="marks" >
                       <div *ngIf="submitted && f.marks.errors" class="invalid-feedback">
                         <div *ngIf="f.totalMarks.marks.required">Marks is required</div>
                       </div>
                     </div>
-          
                   </div>
-                <div class="form-group row"  *ngIf="!isQuestionBank">
+                <div class="form-group row"  *ngIf="!isQuestionBank && !isPsycometric">
                     <label for="inputNegativeMarks" class="col-sm-2 col-form-label">Negative Marks</label>
                     <div class="col-sm-10">
                       <input [ngClass]="{ 'is-invalid': submitted && f.negativeMarks.errors }"
                        type="number" class="form-control" id="inputNegativeMarks"
-                        formControlName="negativeMarks" required>
+                        formControlName="negativeMarks" >
                       <div *ngIf="submitted && f.negativeMarks.errors" class="invalid-feedback">
                         <div *ngIf="f.negativeMarks.errors.required">Negative Marks is required</div>
                       </div>
@@ -101,9 +102,8 @@
                   </div>
                   <div class="form-group row">
                   <div formArrayName="options">
-                    
                       <div class="mb-2 d-flex justify-content-start" *ngFor="let option of options.controls; let i=index">
-                          <label for="i" class="col-sm-2 col-form-label">Option {{i}}</label>
+                          <label for="i" class="col-sm-2 col-form-label">Option {{i + 1}}</label>
                           <div class="col-sm-10 h-100-p float-right">
                           <quill-editor
                           [formControlName]="i"
@@ -111,17 +111,30 @@
                             required
                             ></quill-editor>
                           </div>
-                      
                       </div>
                     </div>
                   </div>
+                  <div class="form-group row" *ngIf="isPsycometric">
+                    <div formArrayName="optionMarks" class="col-sm-12 p-0">
+                        <div class="mb-2 d-flex justify-content-start" *ngFor="let marks of optionMarks.controls; let i=index">
+                            <label for="{{'marks'+i}}" class="col-sm-2 col-form-label">Option Mrk {{i + 1}}</label>
+                            <div class="col-sm-10 h-100-p float-right">
+                            <input
+                                  type="text"
+                                  [formControlName]="i"
+                                  id="{{'marks'+i}}"
+                              >
+                            </div>
+                        </div>
+                      </div>
+                    </div>
 
 
-                  <div class="form-group row">
+                  <div class="form-group row" *ngIf="!isPsycometric">
                       <label for="inputCorrectOption" class="col-sm-2 col-form-label">Correct Option</label>
                       <div class="col-sm-10">
                         <div *ngFor="let o of optionRadio;let i=index" >
-                        <label class="col-sm-2 col-form-label">Option {{i}}</label>
+                        <label class="col-sm-2 col-form-label">Option {{i + 1}}</label>
                         <input [ngClass]="{ 'is-invalid': submitted && f.correct.errors }"
                          type="radio"  name="correct" [value]="o"
                          formControlName="correct" required>
@@ -147,7 +160,7 @@
                           formControlName="explanation"
                           [ngClass]="{ 'is-invalid': submitted && f.explanation.errors }"
                            id="inputExplanation"
-                           required
+                           
                            ></quill-editor>
                         <div *ngIf="submitted && f.explanation.errors" class="invalid-feedback">
                           <div *ngIf="f.explanation.errors.required">Question Explanation is required</div>

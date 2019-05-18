@@ -31,8 +31,9 @@ import { SectionCategoryRegistrationComponent } from './components/section-categ
 import { ExamRegistrationComponent } from './components/exam-registration/exam-registration.component';
 import { SectionRegistrationComponent } from './components/section-registration/section-registration.component';
 import { QuestionRegistrationComponent } from './components/question-registration/question-registration.component';
-import { IconModule } from './icon/icon.module';
 import { InformerService } from './service/informer.service';
+import { IconModule } from './icon/icon.module';
+import { ChartsModule } from 'ng2-charts';
 import { ConfigurationService } from './service/configuration.service';
 import { AuthenticationService } from './service/authentecation.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -62,6 +63,10 @@ import { LicenseCandidateMappingComponent } from './license-candidate-mapping/li
 import { CertificateComponent } from './components/certificate/certificate.component';
 import { LicenseKeyComponent } from './components/license-key/license-key.component';
 import { CandidateFilterComponent } from './components/candidate-filter/candidate-filter.component';
+import { DoughnutChartComponent } from './components/doughnut-chart/doughnut-chart.component';
+import { LineChartComponent } from './components/line-chart/line-chart.component';
+import { BarChartComponent } from './components/bar-chart/bar-chart.component';
+import { ImportFromCsvComponent } from './components/import-from-csv/import-from-csv.component';
 
 
 @NgModule({
@@ -110,7 +115,11 @@ import { CandidateFilterComponent } from './components/candidate-filter/candidat
     CandidateComponent,
     LicenseCandidateMappingComponent,
     LicenseKeyComponent,
-    CandidateFilterComponent
+    CandidateFilterComponent,
+    DoughnutChartComponent,
+    LineChartComponent,
+    BarChartComponent,
+    ImportFromCsvComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +128,7 @@ import { CandidateFilterComponent } from './components/candidate-filter/candidat
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ChartsModule,
     AppRoutingModule,
     InfiniteScrollModule,
     QuillModule.forRoot({
@@ -156,6 +166,7 @@ import { CandidateFilterComponent } from './components/candidate-filter/candidat
   ],
   bootstrap: [AppComponent],
   entryComponents: [
+    ImportFromCsvComponent,
     ExamRegistrationComponent,
     SectionRegistrationComponent,
     QuestionRegistrationComponent,
@@ -177,7 +188,8 @@ import { CandidateFilterComponent } from './components/candidate-filter/candidat
     LicenseCandidateMappingComponent,
     CertificateComponent,
     LicenseKeyComponent,
-    CandidateFilterComponent
+    CandidateFilterComponent,
+    DoughnutChartComponent
   ]
 })
 export class AppModule { }

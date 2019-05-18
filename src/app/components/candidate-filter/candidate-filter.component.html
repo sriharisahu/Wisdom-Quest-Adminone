@@ -17,6 +17,20 @@
                     </div> 
                   </div>
                   
+                  <div>
+                    <app-doughnut-chart *ngIf="doughnutChartReady" [doughnutChartLabels]="doughnutChartLabels"
+                    [doughnutChartData]="doughnutChartData"
+                    ></app-doughnut-chart>
+                    
+                    <!-- <app-line-chart [lineChartData]="lineChartData"
+                 [lineChartLabels]="lineChartLabels"></app-line-chart> -->
+                 <!-- <app-bar-chart></app-bar-chart> -->
+                  </div>
+                  
+                  
+                
+                 
+                  
                   <table class="table table-bordered table-hover "
                         infiniteScroll
                         [infiniteScrollDistance]="2"

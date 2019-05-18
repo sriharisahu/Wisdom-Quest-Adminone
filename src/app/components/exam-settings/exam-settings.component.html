@@ -5,24 +5,73 @@
         <i-x (click)="bsModalRef.hide()"></i-x>
       </div>
       <div class="col-sm-12">
-        <form [formGroup]="examForm" (ngSubmit)="onSubmit()" class="p-3">
+        <form [formGroup]="examSettingForm" (ngSubmit)="onSubmit()" class="p-3">
   
           <div class="form-group row">
-            <label for="inputExamName" class="col-sm-2 col-form-label">Exam Name</label>
-            <div class="col-sm-10">
+            <label for="inputPublish" class="col-sm-2 col-form-label">Publish</label>
+            <div class="col-sm-10 d-flex align-items-center justify-content-start">
               <input 
-                    [ngClass]="{ 'is-invalid': submitted && f.examName.errors }"
-                    type="text"
-                    class="form-control"
-                    id="inputExamName" 
-                    formControlName="examName"
-                    required>
-                    <div *ngIf="submitted && f.examName.errors" class="invalid-feedback">
-                        <div *ngIf="f.examName.errors.required">Exam Name is required</div>
+                    [ngClass]="{ 'is-invalid': submitted && f.publish.errors }"
+                    type="checkbox"
+                    class=""
+                    id="inputPublish" 
+                    formControlName="publish"
+                    >
+                    <div *ngIf="submitted && f.publish.errors" class="invalid-feedback">
+                        <div *ngIf="f.publish.errors.required">Publish [Error]</div>
                     </div>
             </div>
            
           </div>
+          <div class="form-group row">
+            <label for="inputAllowBackButton" class="col-sm-2 col-form-label">Allow Back Button</label>
+            <div class="col-sm-10 d-flex align-items-center justify-content-start">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.allowBackButton.errors }"
+                    type="checkbox"
+                    class=""
+                    id="inputAllowBackButton" 
+                    formControlName="allowBackButton"
+                    >
+                    <div *ngIf="submitted && f.allowBackButton.errors" class="invalid-feedback">
+                        <div *ngIf="f.allowBackButton.errors.required">Allow Back Button [Error]</div>
+                    </div>
+            </div>
+           
+          </div>
+          <div class="form-group row">
+            <label for="inputAllowExamResume" class="col-sm-2 col-form-label">Allow Exam Resume</label>
+            <div class="col-sm-10 d-flex align-items-center justify-content-start">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.allowExamResume.errors }"
+                    type="checkbox"
+                    class=""
+                    id="inputAllowExamResume" 
+                    formControlName="allowExamResume"
+                    >
+                    <div *ngIf="submitted && f.allowExamResume.errors" class="invalid-feedback">
+                        <div *ngIf="f.allowExamResume.errors.required">Allow Exam Resume [Error]</div>
+                    </div>
+            </div>
+           
+          </div>
+          <div class="form-group row">
+            <label for="inputAllowReattempts" class="col-sm-2 col-form-label">Allow Reattempts</label>
+            <div class="col-sm-10 d-flex align-items-center justify-content-start">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.allowReattempts.errors }"
+                    type="checkbox"
+                    class=""
+                    id="inputAllowReattempts" 
+                    formControlName="allowReattempts"
+                    >
+                    <div *ngIf="submitted && f.allowReattempts.errors" class="invalid-feedback">
+                        <div *ngIf="f.allowReattempts.errors.required">Allow Reattempts [Error]</div>
+                    </div>
+            </div>
+           
+          </div>
+          
   
           <div class="form-group row">
             <div class="col-sm-10 d-flex justify-content-center">

@@ -37,6 +37,7 @@ export class QuestionRegistrationComponent implements OnInit {
   subCategoryList = [];
   minTime: Date = new Date();
   maxTime: Date = new Date();
+  isPsycometric = false;
   PinitOption = {
     marks: null,
     optionName: '',
@@ -48,6 +49,17 @@ export class QuestionRegistrationComponent implements OnInit {
   correct;
   get f() {
     return this.questionForm.controls;
+  }
+
+  questionCategoryChange = (): void => {
+    const questionSubCategory = this.categoryList.find((category) => {
+     return this.questionForm.get('categoryId').value  === category.questionSubCategoryId;
+    });
+    if (questionSubCategory.questionSubCategoryName === 'Psycometric') {
+      this.isPsycometric = true;
+    } else {
+      this.isPsycometric = false;
+    }
   }
 
   onSubmit() {
@@ -87,6 +99,12 @@ export class QuestionRegistrationComponent implements OnInit {
         options.push(o);
       });
 
+      if (this.isPsycometric) {
+        this.questionForm.value.optionMarks.forEach((optionMarks, i) => {
+          options[i].marks = optionMarks;
+        });
+      }
+
       const explanation = {
         explanationText: this.questionForm.value.explanation,
         explanationTextType: true
@@ -94,7 +112,7 @@ export class QuestionRegistrationComponent implements OnInit {
       const correctAnswer = this.questionForm.value.correct;
       const correctOption = options[this.optionRadio.indexOf(correctAnswer)];
       const questionCategoryVo = {
-        questionCategoryId: this.questionForm.value.categoryId
+        questionSubCategoryId: this.questionForm.value.categoryId
       };
       let target;
       if (this.isQuestionBank) {
@@ -116,7 +134,6 @@ export class QuestionRegistrationComponent implements OnInit {
           examSectionVo: {
             examSectionId: this.section.examSectionId
           },
-          examSectionHasQuestionId: this.selectedQuestion.examSectionHasQuestionId,
           questionNumber: this.questionForm.value.questionNumber,
           marks: this.questionForm.value.marks,
           negativeMarks: this.questionForm.value.negativeMarks,
@@ -132,7 +149,6 @@ export class QuestionRegistrationComponent implements OnInit {
           }
         };
         if (this.selectedQuestion) {
-          debugger;
           target.questionBankVo = {
             ...this.selectedQuestion.questionBankVo,
             ...target.questionBankVo
@@ -184,7 +200,7 @@ export class QuestionRegistrationComponent implements OnInit {
       const questionForm = {
         categoryId: [this.examService.questionToAttach.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
         statement: [atob(this.examService.questionToAttach.questionBankVo.questionStatmentData), Validators.required],
-        description: ['', Validators.required],
+        description: [''],
         questionNumber: ['', Validators.required],
         marks: ['', Validators.required],
         options: this.formBuilder.array([
@@ -211,12 +227,18 @@ export class QuestionRegistrationComponent implements OnInit {
         questionForm = {
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
           statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
-          description: ['', Validators.required],
+          description: [''],
           options: this.formBuilder.array([
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].optionValueData)),
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].optionValueData)),
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].optionValueData)),
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
+          ]),
+          optionMarks: this.formBuilder.array([
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].marks)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].marks)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].marks)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].marks))
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],
@@ -229,14 +251,20 @@ export class QuestionRegistrationComponent implements OnInit {
         questionForm = {
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
           statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
-          description: ['', Validators.required],
+          description: [''],
           questionNumber: [this.selectedQuestion.questionNumber, Validators.required],
-          marks: [this.selectedQuestion.marks, Validators.required],
+          marks: [this.selectedQuestion.marks],
           options: this.formBuilder.array([
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].optionValueData)),
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].optionValueData)),
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].optionValueData)),
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
+          ]),
+          optionMarks: this.formBuilder.array([
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].marks)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].marks)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].marks)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].marks))
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],
@@ -260,6 +288,12 @@ export class QuestionRegistrationComponent implements OnInit {
           this.formBuilder.control(''),
           this.formBuilder.control('')
         ]),
+        optionMarks: this.formBuilder.array([
+          this.formBuilder.control(''),
+          this.formBuilder.control(''),
+          this.formBuilder.control(''),
+          this.formBuilder.control('')
+        ]),
         correctOption: [''],
         negativeMarks: [''],
         explanation: [''],
@@ -274,6 +308,9 @@ export class QuestionRegistrationComponent implements OnInit {
 
   get options() {
     return this.questionForm.get('options') as FormArray;
+  }
+  get optionMarks() {
+    return this.questionForm.get('optionMarks') as FormArray;
   }
 
   createOptions(o): FormGroup {

@@ -11,6 +11,8 @@
                     <div *ngIf="candidateList && candidateList.length">
                       
                       <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="add()">Add Candidate</button>
+                      <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="import()">Import</button>
+                    
                     </div>
                     <app-search-bar (searchKey)="search($event)"></app-search-bar>
                   </div>

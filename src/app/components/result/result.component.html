@@ -27,6 +27,7 @@
                 <thead class="bg-primary text-white">
                   <tr>
                     <th scope="col">Section Name</th>
+                    <th scope="col">Marks Obtained</th>
                     <th scope="col">Grade</th>
                     <th scope="col">Percentile</th>
                   
@@ -36,16 +37,18 @@
                   <ng-template ngFor let-section [ngForOf]="result?.sectionResultList">
                   <tr>
                     <th>{{section.examSectionName}}</th>
+                    <th>{{section.userTotalMarks}}</th>
                     <th>{{section.grade}}</th>
                     <th>{{section.percentile}}</th>
                    
                   </tr>
-                  <!-- <tr>
-                    <td colspan="2">
+                  <tr *ngIf="result?.examCategoryName.includes('ICAT')">
+                    <td colspan="4">
                     <table class="table table-bordered ">
                         <thead class="bg-white text-dark">
                             <tr>
                               <td scope="col">Sub Section</td>
+                              <td scope="col">Marks Obtained</td>
                               <td scope="col">Attempt</td>
                               <td scope="col">Correct</td>
                             </tr>
@@ -55,6 +58,7 @@
                         <ng-template ngFor let-sub [ngForOf]="Object.values(section?.questionCategoryVoList)">
                         <tr>
                           <td>{{sub.questionSubCategoryName}}</td>
+                          <td>{{sub.userTotalMarks}}</td>
                           <td>{{sub.totalAttempt}}</td>
                           <td>{{sub.totalCorrectAnswer}}</td>
                          
@@ -68,7 +72,7 @@
                     </table>
                     </td>
 
-                  </tr> -->
+                  </tr>
                 </ng-template>
                 </tbody>
               </table>

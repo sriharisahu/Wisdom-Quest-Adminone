@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ExamService } from 'src/app/service/exam.service';
 import { ExamRegistrationComponent } from '../exam-registration/exam-registration.component';
+import { ExamSettingsComponent } from '../exam-settings/exam-settings.component';
 
 @Component({
   selector: 'app-exam',
@@ -113,7 +114,7 @@ export class ExamComponent implements OnInit {
       },
       class: 'modal-lg'
     };
-    this.bsModalService.show(ExamRegistrationComponent, configuartion)
+    this.bsModalService.show(ExamSettingsComponent, configuartion)
     .content
     .submit
     .subscribe(

@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/service/authentecation.service';
 import { CertificateComponent } from '../certificate/certificate.component';
 import { ResultComponent } from '../result/result.component';
 import { CandidateFilterComponent } from '../candidate-filter/candidate-filter.component';
+import { ImportFromCsvComponent } from '../import-from-csv/import-from-csv.component';
 
 @Component({
   selector: 'app-candidate',
@@ -220,6 +221,31 @@ this.get();
             this.bsModalService.hide(1);
           }
         );
+      }
+    );
+  }
+
+  import = () => {
+    const configuartion = {
+      initialState : {
+        title: 'Candidate Import',
+      },
+      class: 'modal-lg'
+    };
+    this.bsModalService.show(ImportFromCsvComponent, configuartion)
+    .content
+    .submit$
+    .subscribe(
+      (request) => {
+        // this.userService.updateCandidate(request).subscribe(
+        //   (response) => {
+        //     this.licenseList = [];
+        //     this.candidateList = [];
+        //     this.pageNo = 1;
+        //     this.get();
+        //     this.bsModalService.hide(1);
+        //   }
+        // );
       }
     );
   }
