@@ -41,9 +41,6 @@ export class ExamComponent implements OnInit {
         this.loading = false;
         if (response['status'] === 'success') {
                 this.examList = [...this.examList, ...response['object']['examVoList']];
-                // if (req.pageNo === 1) {
-                //   this.totalCount = response['object']['count'];
-                // }
                   this.totalCount = this.examList.length;
                 if ((req.pageNo * req.pageSize) >= this.totalCount) {
                    this.listEnd = true;
@@ -120,14 +117,33 @@ export class ExamComponent implements OnInit {
     .subscribe(
       () => {
         this.bsModalService.hide(1);
+        this.get();
       }
     );
   }
 
-  delete(selectedExam): void {}
-
-  onScroll() {
-    console.log('scrolling...');
+  delete(selectedExam): void {
+    selectedExam.active = false;
+    this.examService.updateExam(selectedExam).subscribe(
+      (response) => {
+        this.examList = [];
+        this.pageNo = 1;
+        this.get();
+      }
+    );
   }
-
+  publish(selectedExam): void {
+    this.examService.publish(selectedExam.examId).subscribe(
+      (response) => {
+        selectedExam.publish = true;
+      }
+    );
+  }
+  unpublish(selectedExam): void {
+    this.examService.unpublish(selectedExam).subscribe(
+      (response) => {
+        selectedExam.publish = false;
+      }
+    );
+  }
 }

@@ -13,10 +13,13 @@ export class ImportFromCsvComponent implements OnInit {
 
   csvContent: string;
   title: string;
-  candidateList: [] ;
+  candidateList =  [] ;
   specializationList = [];
-  collageList = [];
+  collegeList = [];
   loading = false;
+  submitted: boolean;
+  toggle: boolean;
+  listEnd: boolean;
   @Output() submit$ = new EventEmitter < any > ();
   candidateForm: FormGroup;
   get f() {
@@ -27,14 +30,18 @@ export class ImportFromCsvComponent implements OnInit {
     public bsModalRef: BsModalRef,
     private configurationService: ConfigurationService,
     public authenticationService: AuthenticationService) {}
+
+    save() {
+   this.submit$.emit(this.candidateList);
+    }
   ngOnInit() {
     this.getSpecializationList();
-    this.getCollageList();
+    this.getCollegeList();
     this.candidateList = [];
     let candidateForm = {};
     candidateForm = {
       specializationId: ['', Validators.required],
-      collageId: ['', Validators.required],
+      collegeId: ['', Validators.required],
     };
     this.candidateForm = this.formBuilder.group(candidateForm);
   }
@@ -42,8 +49,6 @@ export class ImportFromCsvComponent implements OnInit {
   onFileLoad(fileLoadedEvent) {
     const textFromFileLoaded = fileLoadedEvent.target.result;
     this.csvContent = textFromFileLoaded;
-    alert(this.csvContent);
-    debugger;
   }
 
   onFileSelect(input: HTMLInputElement) {
@@ -51,42 +56,50 @@ export class ImportFromCsvComponent implements OnInit {
     const files = input.files;
 
    if (files && files.length) {
-        console.log('Filename: ' + files[0].name);
-        console.log('Type: ' + files[0].type);
-        console.log('Size: ' + files[0].size + ' bytes');
-
         const fileToRead = files[0];
-
         const fileReader = new FileReader();
         fileReader.onload = this.onFileLoad;
 
         fileReader.readAsText(fileToRead, 'UTF-8');
+        const candidateList = [];
         fileReader.onload = (e) => {
           const csv = fileReader.result;
           const allTextLines = csv.toString().split(/\r|\n|\r/);
           const headers = allTextLines[0].split(',');
           const lines = [];
-          for (let i = 0; i < allTextLines.length; i++) {
-            // split content based on comma
+          for (let i = 1; i < allTextLines.length; i++) {
             const data = allTextLines[i].split(',');
             if (data.length === headers.length) {
-              const tarr = [];
-              for (let j = 0; j < headers.length; j++) {
-                tarr.push(data[j]);
-              }
-              // log each row to see output 
-              console.log(tarr);
-              lines.push(tarr);
+                const cadidate = {
+                  contactEmail: data[0],
+                  contactNumber: data[1],
+                  firstName: data[2],
+                  lastName: data[3],
+                  gender: data[4].toUpperCase(),
+                  specializationVo: {
+                    specializationId: this.candidateForm.value.specializationId
+                  },
+                  collegeVo: {
+                    collegeId: this.candidateForm.value.collegeId
+                  }
+                };
+                candidateList.push(cadidate);
             }
           }
-          // all rows in the csv file 
-          console.log(">>>>>>>>>>>>>>>>>", lines);
+          this.candidateList =  candidateList;
         };
    }
+   input.value = '';
 
   }
 
-  getCollageList(): void {
+  delete(candidate) {
+      this.candidateList = this.candidateList.filter((can) => {
+          return can.contactEmail !== candidate.contactEmail;
+      });
+  }
+
+  getCollegeList(): void {
     const req = {
       pageNo: 1,
       pageSize: 100,
@@ -96,7 +109,7 @@ export class ImportFromCsvComponent implements OnInit {
       (response) => {
         this.loading = false;
         if (response['status'] === 'success') {
-                this.collageList = response['object']['collegeVoList'];
+                this.collegeList = response['object']['collegeVoList'];
         }
       }
     );

@@ -35,7 +35,7 @@ export class QuestionBankComponent implements OnInit {
     this.loading = true;
     const req = {
       pageNo: this.pageNo,
-      pageSize: 1000,
+      pageSize: 100,
       active: true};
     this.examService.getQuestionBankList(req).subscribe(
       (response) => {

@@ -4,21 +4,21 @@
         <span>{{title}}</span>
         <i-x (click)="bsModalRef.hide()"></i-x>
       </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12" *ngIf="!loading">
         <form [formGroup]="examSettingForm" (ngSubmit)="onSubmit()" class="p-3">
   
           <div class="form-group row">
-            <label for="inputPublish" class="col-sm-2 col-form-label">Publish</label>
+            <label for="inputActive" class="col-sm-2 col-form-label">Active</label>
             <div class="col-sm-10 d-flex align-items-center justify-content-start">
               <input 
-                    [ngClass]="{ 'is-invalid': submitted && f.publish.errors }"
+                    [ngClass]="{ 'is-invalid': submitted && f.active.errors }"
                     type="checkbox"
                     class=""
-                    id="inputPublish" 
-                    formControlName="publish"
+                    id="inputActive" 
+                    formControlName="active"
                     >
-                    <div *ngIf="submitted && f.publish.errors" class="invalid-feedback">
-                        <div *ngIf="f.publish.errors.required">Publish [Error]</div>
+                    <div *ngIf="submitted && f.active.errors" class="invalid-feedback">
+                        <div *ngIf="f.active.errors.required">Active [Error]</div>
                     </div>
             </div>
            
@@ -56,6 +56,22 @@
            
           </div>
           <div class="form-group row">
+            <label for="inputExamResumeCount" class="col-sm-2 col-form-label">Exam Resume Count</label>
+            <div class="col-sm-10 d-flex align-items-center justify-content-start">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.allowExamResumeCount.errors }"
+                    type="number"
+                    class=""
+                    id="inputExamResumeCount" 
+                    formControlName="allowExamResumeCount"
+                    >
+                    <div *ngIf="submitted && f.allowExamResumeCount.errors" class="invalid-feedback">
+                        <div *ngIf="f.allowExamResumeCount.errors.required">Exam Resume Count [Error]</div>
+                    </div>
+            </div>
+           
+          </div>
+          <div class="form-group row">
             <label for="inputAllowReattempts" class="col-sm-2 col-form-label">Allow Reattempts</label>
             <div class="col-sm-10 d-flex align-items-center justify-content-start">
               <input 
@@ -71,6 +87,37 @@
             </div>
            
           </div>
+          <div class="form-group row">
+            <label for="inputReattemptCount" class="col-sm-2 col-form-label">Reattempt Count</label>
+            <div class="col-sm-10 d-flex align-items-center justify-content-start">
+              <input 
+                    [ngClass]="{ 'is-invalid': submitted && f.reattemptCount.errors }"
+                    type="number"
+                    class=""
+                    id="inputReattemptCount" 
+                    formControlName="reattemptCount"
+                    >
+                    <div *ngIf="submitted && f.reattemptCount.errors" class="invalid-feedback">
+                        <div *ngIf="f.reattemptCount.errors.required">Reattempt Count [Error]</div>
+                    </div>
+            </div>
+           
+          </div>
+
+          <div class="form-group row">
+              <label for="input" class="col-sm-2 col-form-label">Display Format</label>
+              <div class="col-sm-10">
+                <select [ngClass]="{ 'is-invalid': submitted && f.category?.errors }"
+                 formControlName="displayQuestion" class="form-control"
+                  id="inputDisplayQuestion" required>
+                  <option value="">--SELECT FORMAT --</option>
+                  <option *ngFor="let format of displayQuestionFormats" [ngValue]="format.value">{{ format.displayName }}</option>
+                </select>
+                <div *ngIf="submitted && f.displayQuestion?.errors" class="invalid-feedback">
+                  <div *ngIf="f.displayQuestion?.errors.required"> Display Format is required</div>
+                </div>
+              </div>
+            </div>
           
   
           <div class="form-group row">
@@ -83,4 +130,6 @@
       </div>
     </div>
   </div>
+
+  <p *ngIf="loading" class="text-center"> Please wait . . .</p>
   

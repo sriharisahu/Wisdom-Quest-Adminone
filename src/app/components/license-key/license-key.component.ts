@@ -25,7 +25,7 @@ export class LicenseKeyComponent implements OnInit {
 
   ngOnInit() {
     const request = {
-      testConductorLicenseId: this.license.testConductorLicenseId
+      testConductorLicenseId: Number(this.license.testConductorLicenseId)
     };
     this.userService.viewLicenseKey(request).subscribe(
       (response) => {

@@ -77,6 +77,25 @@
                 </tbody>
               </table>
 
+              <table class="table table-bordered" *ngIf="eaiSummary">
+                <thead class="bg-primary text-white">
+                  <tr>
+                    <th>APPTITUDE</th>
+                    <th>TECHNICAL</th>
+                    <th>DESCRIPTION</th>
+                  
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr>
+                    <td>{{eaiSummary.quantativeLevel}}</td>
+                    <td>{{eaiSummary.technicalLevel}}</td>
+                    <td>{{eaiSummary.summary}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
               <table class="table table-bordered" *ngIf="eai.length">
                 <thead class="bg-primary text-white">
                   <tr>
@@ -95,6 +114,8 @@
                   </tr>
                 </tbody>
               </table>
+
+              
        
       </div>
       </div>

@@ -37,7 +37,8 @@ export class QuestionRegistrationComponent implements OnInit {
   subCategoryList = [];
   minTime: Date = new Date();
   maxTime: Date = new Date();
-  isPsycometric = false;
+  isPsychometric = false;
+  levelList = [ {levelName: 'HIGH'}, {levelName: 'LOW'}, {levelName: 'MEDIUM'} ];
   PinitOption = {
     marks: null,
     optionName: '',
@@ -55,18 +56,18 @@ export class QuestionRegistrationComponent implements OnInit {
     const questionSubCategory = this.categoryList.find((category) => {
      return this.questionForm.get('categoryId').value  === category.questionSubCategoryId;
     });
-    if (questionSubCategory.questionSubCategoryName === 'Psycometric') {
-      this.isPsycometric = true;
+    if (questionSubCategory.questionSubCategoryName === 'Psychometric') {
+      this.isPsychometric = true;
     } else {
-      this.isPsycometric = false;
+      this.isPsychometric = false;
     }
   }
 
   onSubmit() {
     this.submitted = true;
-    // if (this.questionForm.invalid) {
-    //   return;
-    // }
+    if (this.questionForm.invalid) {
+      return;
+    }
 
     if (this.examService.questionToAttach) {
       const target = {
@@ -76,6 +77,7 @@ export class QuestionRegistrationComponent implements OnInit {
         active: true,
         questionBankVo: {
           questionId: this.examService.questionToAttach.questionBankVo.questionId
+          
         }
       };
       const requestPayload = JSON.parse(JSON.stringify(target));
@@ -99,10 +101,11 @@ export class QuestionRegistrationComponent implements OnInit {
         options.push(o);
       });
 
-      if (this.isPsycometric) {
+      if (this.isPsychometric) {
         this.questionForm.value.optionMarks.forEach((optionMarks, i) => {
           options[i].marks = optionMarks;
         });
+       
       }
 
       const explanation = {
@@ -125,7 +128,8 @@ export class QuestionRegistrationComponent implements OnInit {
             options: options,
             explanation: explanation,
             correctOption: correctOption,
-            correctAnswer: correctAnswer
+            correctAnswer: correctAnswer,
+            level: this.questionForm.value.level
           }
         };
 
@@ -145,7 +149,8 @@ export class QuestionRegistrationComponent implements OnInit {
             options: options,
             explanation: explanation,
             correctOption: correctOption,
-            correctAnswer: correctAnswer
+            correctAnswer: correctAnswer,
+            level: this.questionForm.value.level
           }
         };
         if (this.selectedQuestion) {
@@ -167,6 +172,7 @@ export class QuestionRegistrationComponent implements OnInit {
             });
           }
 
+          target.examSectionHasQuestionId = this.selectedQuestion.examSectionHasQuestionId;
           if (target.questionBankVo.questionDescriptionVo) {
             target.questionBankVo.questionDescriptionVo.descriptionData = null;
             target.questionBankVo.questionDescriptionVo.descriptionTextData = null;
@@ -178,6 +184,12 @@ export class QuestionRegistrationComponent implements OnInit {
         }
 
       }
+      if (this.isPsychometric) {
+           target.marks = 0;
+           target.sicoFlag = true;
+           target.questionBankVo.correctAnswer = 'A';
+      }
+        target.negativeMarks = Number(target.negativeMarks);
       const requestPayload = JSON.parse(JSON.stringify(target));
       this.submit$.emit(requestPayload);
 
@@ -202,7 +214,7 @@ export class QuestionRegistrationComponent implements OnInit {
         statement: [atob(this.examService.questionToAttach.questionBankVo.questionStatmentData), Validators.required],
         description: [''],
         questionNumber: ['', Validators.required],
-        marks: ['', Validators.required],
+        marks: [''],
         options: this.formBuilder.array([
           this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[0].optionValueData)),
           this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[1].optionValueData)),
@@ -221,13 +233,16 @@ export class QuestionRegistrationComponent implements OnInit {
   ngOnInit() {
 
     let questionForm = {};
+    debugger;
     if (this.selectedQuestion) {
       if (this.isQuestionBank) {
 
         questionForm = {
+          examSectionHasQuestionId: [this.selectedQuestion.examSectionHasQuestionId],
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
           statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
           description: [''],
+          level: [this.selectedQuestion.questionBankVo.level],
           options: this.formBuilder.array([
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].optionValueData)),
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].optionValueData)),
@@ -249,9 +264,11 @@ export class QuestionRegistrationComponent implements OnInit {
       } else {
 
         questionForm = {
+          examSectionHasQuestionId: [this.selectedQuestion.examSectionHasQuestionId],
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
           statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
           description: [''],
+          level: [this.selectedQuestion.questionBankVo.level],
           questionNumber: [this.selectedQuestion.questionNumber, Validators.required],
           marks: [this.selectedQuestion.marks],
           options: this.formBuilder.array([
@@ -280,6 +297,7 @@ export class QuestionRegistrationComponent implements OnInit {
         categoryId: [''],
         statement: [''],
         description: [''],
+        level: [''],
         questionNumber: [''],
         marks: [''],
         options: this.formBuilder.array([

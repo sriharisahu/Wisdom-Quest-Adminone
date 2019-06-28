@@ -9,13 +9,26 @@ import { LicenseCandidateMappingComponent } from 'src/app/license-candidate-mapp
 import { AuthenticationService } from 'src/app/service/authentecation.service';
 import { CertificateComponent } from '../certificate/certificate.component';
 import { ResultComponent } from '../result/result.component';
-import { CandidateFilterComponent } from '../candidate-filter/candidate-filter.component';
 import { ImportFromCsvComponent } from '../import-from-csv/import-from-csv.component';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-candidate',
   templateUrl: './candidate.component.html',
-  styleUrls: ['./candidate.component.scss']
+  styleUrls: ['./candidate.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state(
+        'collapsed',
+        style({ height: '0px', minHeight: '0', display: 'none' })
+      ),
+      state('expanded', style({ height: '*', display: 'table-row' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ]
 })
 export class CandidateComponent implements OnInit {
 
@@ -37,6 +50,7 @@ export class CandidateComponent implements OnInit {
   totalCount = 0;
   pageNo = 1;
   searchKey = '';
+  selectedExamVoList;
 
   ngOnInit() {
     this.route.queryParams.pipe()
@@ -56,6 +70,15 @@ this.pageNo = 1;
 this.get();
 
   }
+
+  toggleExamList = (candidate) => {
+    if (this.selectedExamVoList === candidate.examVoList) {
+      this.selectedExamVoList = null;
+
+    } else {
+      this.selectedExamVoList = candidate.examVoList;
+    }
+  }
   get(): void {
     if (this.pageNo === 1) {
       this.licenseList = [];
@@ -67,7 +90,7 @@ this.get();
       const req = {
         pageNo: this.pageNo,
         pageSize: 10,
-        testConductorLicenseId: this.currentParams.licenseId,
+        testConductorLicenseId: Number(this.currentParams.licenseId),
         searchKey: this.searchKey
         };
 
@@ -77,9 +100,8 @@ this.get();
           if (response['status'] === 'success') {
                   this.licenseList = [...this.licenseList, ...response['object']['testConductorHasTestCodeVoList']];
                   for (const license of this.licenseList) {
-                    license.examVo.status = license.status;
-                    license.userVo.exam = license.examVo;
-                    this.candidateList.push(license.userVo);
+                    license.candidateVo.examVoList = license.examVoList;
+                    this.candidateList.push(license.candidateVo);
                   }
                   if (req.pageNo === 1) {
                     this.totalCount = response['object']['count'];
@@ -125,7 +147,8 @@ this.get();
     const configuartion = {
       initialState : {
         examId: req.examId,
-        candidateId: req.candidateId
+        candidateId: req.candidateId ? req.candidateId : req.userVo.userId,
+        testConductorHasTestCodeId: req.testConductorHasTestCodeId
       },
       class: 'modal-lg'
     };
@@ -136,9 +159,10 @@ this.get();
   showResult(req): void {
     const configuartion = {
       initialState : {
-        examId: req.exam.examId,
-        candidateId: req.userId
-      },
+        examId: req.examId,
+        candidateId: req.candidateId ? req.candidateId : req.userVo.userId,
+        testConductorHasTestCodeId: req.testConductorHasTestCodeId
+            },
       class: 'modal-lg'
     };
     this.bsModalService.show(ResultComponent, configuartion);
@@ -159,6 +183,9 @@ this.get();
       .subscribe(
         (request) => {
           request.testConductorLicenseId = Number(this.currentParams.licenseId);
+          if (this.currentParams.clientId) {
+            request.testConductorId = Number(this.currentParams.clientId);
+          }
           this.userService.allocateCandidate(request).subscribe(
             (response) => {
               this.licenseList = [];
@@ -237,15 +264,15 @@ this.get();
     .submit$
     .subscribe(
       (request) => {
-        // this.userService.updateCandidate(request).subscribe(
-        //   (response) => {
-        //     this.licenseList = [];
-        //     this.candidateList = [];
-        //     this.pageNo = 1;
-        //     this.get();
-        //     this.bsModalService.hide(1);
-        //   }
-        // );
+        this.userService.createCandidateBulk(request).subscribe(
+          (response) => {
+            this.licenseList = [];
+            this.candidateList = [];
+            this.pageNo = 1;
+            this.get();
+            this.bsModalService.hide(1);
+          }
+        );
       }
     );
   }
@@ -255,6 +282,9 @@ this.get();
 
   license(selectedCandidate): void {
     this.router.navigate(['/license'], { queryParams: { candidateId : selectedCandidate.userId}, queryParamsHandling: 'merge' });
+  }
+  analysis(selectedCandidate): void {
+    this.router.navigate(['/analysis'], { queryParams: { candidateId : selectedCandidate.userId}, queryParamsHandling: 'merge' });
   }
 
   delete(selectedCandidate): void {

@@ -17,6 +17,8 @@ import {
 } from 'src/app/service/exam.service';
 import { ActivatedRoute } from '@angular/router';
 
+const QUANTATIVE = 'Quantitative';
+
 @Component({
   selector: 'app-section-registration',
   templateUrl: './section-registration.component.html',
@@ -35,6 +37,12 @@ export class SectionRegistrationComponent implements OnInit {
   minTime: Date = new Date();
   maxTime: Date = new Date();
   examId;
+  isPsychometric = false;
+  categoryTypeList = [{
+    categoryTypeName: 'Aptitude'
+  },
+  {categoryTypeName: 'Technical'}
+  ];
   get f() {
     return this.sectionForm.controls;
   }
@@ -53,6 +61,8 @@ export class SectionRegistrationComponent implements OnInit {
     requestPayload.examVo = {
       examId: this.examId
     };
+    requestPayload.sicoFlag = this.isPsychometric;
+    requestPayload.sectionName = requestPayload.sectionName === 'Aptitude' ? QUANTATIVE : 'Technical';
     this.submit$.emit(requestPayload);
   }
 
@@ -68,6 +78,17 @@ export class SectionRegistrationComponent implements OnInit {
     this.maxTime.setMinutes(0);
   }
 
+  sectionCategoryChange = (): void => {
+    const questionSubCategory = this.categoryList.find((category) => {
+     return this.sectionForm.get('category').value.questionCategoryId  === category.questionCategoryId;
+    });
+    if (questionSubCategory.questionCategoryName === 'Psychometric') {
+      this.isPsychometric = true;
+    } else {
+      this.isPsychometric = false;
+    }
+  }
+
   ngOnInit() {
     this.route.queryParamMap.subscribe(data => {
       this.examId = data['params']['examId'];
@@ -81,6 +102,7 @@ export class SectionRegistrationComponent implements OnInit {
       d.setHours(hh);
       d.setMinutes(mm);
       sectionForm = {
+        sectionName: [this.selectedSection.sectionName === QUANTATIVE ? 'Aptitude' : 'Technical', Validators.required],
         examId : [this.selectedSection.examVo.examId, Validators.required],
         examSectionId : [this.selectedSection.examSectionId, Validators.required],
         category: ['', Validators.required],
@@ -88,15 +110,24 @@ export class SectionRegistrationComponent implements OnInit {
         totalQuestion: [this.selectedSection.totalQuestion, Validators.required],
         totalMarks: [this.selectedSection.totalMarks, Validators.required],
         duration: [d, Validators.required],
-        examSectionDescription: [this.selectedSection.examSectionDescription, Validators.required],
-        examSectionInstructions: [this.selectedSection.examSectionInstructions, Validators.required],
       };
+      if (this.selectedSection.examSectionDescriptionData) {
+        sectionForm['examSectionDescription'] =  [atob(this.selectedSection.examSectionDescriptionData), Validators.required];
+      } else {
+        sectionForm['examSectionDescription'] = [''];
+      }
+      if (this.selectedSection.examSectionInstructionsData) {
+        sectionForm['examSectionInstructions'] = [atob(this.selectedSection.examSectionInstructionsData), Validators.required];
+      } else {
+        sectionForm['examSectionInstructions'] = [''];
+      }
     } else {
       const d = new Date();
       d.setHours(0);
       d.setMinutes(30);
 
       sectionForm = {
+        sectionName: ['', Validators.required],
         category: ['', Validators.required],
         sequence: ['', Validators.required],
         totalQuestion: ['', Validators.required],

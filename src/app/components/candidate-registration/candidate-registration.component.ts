@@ -124,7 +124,7 @@ export class CandidateRegistrationComponent implements OnInit {
       }
     }
 
-    if (this.authenticationService.currentUser.adminType === 'SUPERADMIN'){
+    if (this.authenticationService.currentUser.adminType === 'SUPERADMIN') {
       this.getCollegeList();
     }
     this.getSpecializationList();

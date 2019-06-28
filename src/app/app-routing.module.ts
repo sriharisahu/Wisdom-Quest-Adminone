@@ -15,6 +15,7 @@ import { CollegeComponent } from './components/college/college.component';
 import { SectionCategoryComponent } from './components/section-category/section-category.component';
 import { LicenseComponent } from './components/license/license.component';
 import { QuestionBankComponent } from './components/question-bank/question-bank.component';
+import { ExamAnalysisComponent } from './components/exam-analysis/exam-analysis.component';
 
 const routes: Routes = [ {
   path: 'login',
@@ -48,6 +49,11 @@ const routes: Routes = [ {
 {
   path: 'license',
   component: LicenseComponent,
+  canActivate : [AuthGuard]
+},
+{
+  path: 'analysis',
+  component: ExamAnalysisComponent,
   canActivate : [AuthGuard]
 },
 {

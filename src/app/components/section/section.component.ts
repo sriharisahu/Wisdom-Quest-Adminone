@@ -170,6 +170,7 @@ export class SectionComponent implements OnInit {
         this.examService.createSection(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.get(this.examId);
           }
         );
       }
@@ -192,6 +193,7 @@ export class SectionComponent implements OnInit {
         this.examService.updateSection(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.get(this.examId);
           }
         );
       }

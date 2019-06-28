@@ -1,0 +1,203 @@
+
+  
+       
+            <div class="d-flex  justify-content-between align-items-center analysis-header">
+                    <h5 class="mr-auto">Analysis</h5>
+                   
+                    <div class="m-2 " >
+                        <div class="input-group">
+                          <input type="text" style="height:34px" class="form-control" [(ngModel)]="percentile" placeholder="Percentile..." #search>
+                          <div class="input-group-append">
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="button-addon2" (click)="filter()"><i-hash></i-hash></button>
+                          </div>
+                        </div>
+                    </div> 
+            </div>
+
+            <div class="container-fulid">
+                <div class="d-flex">
+                  <div class="col-sm-4"></div>
+                  <div class="col-sm-4 side-bar">
+                      <table class="table table-bordered table-hover table-sm"
+                      infiniteScroll
+                      [infiniteScrollDistance]="2"
+                      [infiniteScrollThrottle]="50"
+                      [infiniteScrollDisabled]="listEnd || loading"
+                      (scrolled)="onScroll()"
+                >
+                    <thead>
+                      <tr>
+                          <th>Rank</th>
+                          <th>Percentile</th>
+                      <th>Candidate Name</th>
+                      <!-- <th>Email</th>
+                      <th>Contact Number</th> -->
+                      
+                    
+                      </tr>
+                    </thead>
+                    <tbody>
+                   <ng-template ngFor let-candidate [ngForOf]="candidateList">
+                      <tr>
+                          
+                          <td>
+                             
+                            {{candidate.rank}}</td>
+                          <td>{{candidate.percentile | number: '1.1-2'}}</td>
+                        <td>
+                            {{candidate.candidateFirstName + ' ' + candidate.candidateLastName}}
+                        
+                         <i-arrow-right *ngIf="candidate.sectionResultList !== selectedSectionResult" title="View Section Result" (click)="toggleSection(candidate)"></i-arrow-right>
+                              <i-arrow-down *ngIf="candidate.sectionResultList === selectedSectionResult" title=" Hide Section Result" (click)="toggleSection(candidate)"></i-arrow-down> 
+                        </td>
+                       <!-- <td>{{candidate.contactEmail}}</td>
+                       <td>{{candidate.contactNumber}}</td> -->
+                      </tr>
+                     
+                      </ng-template>
+                      <tr>
+                          <td colspan="5" >
+                               <strong *ngIf="listEnd">End Of List </strong>
+                               <p>showing {{candidateList.length}} of {{totalCount}}</p>
+                          </td>
+                      </tr>
+                    </tbody>
+                </table>
+
+                  </div>
+                  <div class="col-sm-8 analysis-content">
+                        <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
+                                <h5 class="mr-auto">Overall</h5>
+                        </div>
+                      <app-doughnut-chart *ngIf="doughnutChartReady" [doughnutChartLabels]="doughnutChartLabels"
+                      [doughnutChartData]="doughnutChartData"
+                      ></app-doughnut-chart>
+                      <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-sm-4 d-flex flex-column">
+                                  <div class="w-100 bold">Name</div>
+                                  <div class="w-100">{{selectedCandidate?.candidateFirstName}} {{selectedCandidate?.candidateLast}}</div>
+                                </div>
+                                <div class="col-sm-4 d-flex flex-column">
+                                  <div class="w-100 bold">Exam</div>
+                                  <div class="w-100">{{selectedCandidate?.examName}} </div>
+                                </div>
+                                <div class="col-sm-4 d-flex flex-column">
+                                  <div class="w-100 bold">Marks</div>
+                                  <div class="w-100">{{ selectedCandidate?.userTotalMarks}} / {{ selectedCandidate?.totalMarks }}</div>
+                                </div>
+                              </div>
+                            </div>
+                      </div>
+
+                      <div class="col-sm-12" *ngIf="result['sectionResultList']">
+                       
+                          <table class="table table-bordered">
+                              <thead class="bg-primary text-white">
+                                <tr>
+                                  <th scope="col">Section Name</th>
+                                  <th scope="col">Marks Obtained</th>
+                                  <th scope="col">Grade</th>
+                                  <th scope="col">Percentile</th>
+                                
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <ng-template ngFor let-section [ngForOf]="result?.sectionResultList">
+                                <tr>
+                                  <th>{{section.examSectionName}}</th>
+                                  <th>{{section.userTotalMarks}}</th>
+                                  <th>{{section.grade}}</th>
+                                  <th>{{section.percentile}}</th>
+                                 
+                                </tr>
+                                <tr *ngIf="result?.examCategoryName.includes('ICAT')">
+                                  <td colspan="4">
+                                  <table class="table table-bordered ">
+                                      <thead class="bg-white text-dark">
+                                          <tr>
+                                            <td scope="col">Sub Section</td>
+                                            <td scope="col">Marks Obtained</td>
+                                            <td scope="col">Attempt</td>
+                                            <td scope="col">Correct</td>
+                                          </tr>
+                                        </thead>
+                              
+                                    <tbody>
+                                      <ng-template ngFor let-sub [ngForOf]="Object.values(section?.questionCategoryVoList)">
+                                      <tr>
+                                        <td>{{sub.questionSubCategoryName}}</td>
+                                        <td>{{sub.userTotalMarks}}</td>
+                                        <td>{{sub.totalAttempt}}</td>
+                                        <td>{{sub.totalCorrectAnswer}}</td>
+                                       
+                                      </tr>
+                                      <tr>
+                    
+                                        
+                                      </tr>
+                                    </ng-template>
+                                    </tbody>
+                                  </table>
+                                  </td>
+              
+                                </tr>
+                              </ng-template>
+                              </tbody>
+                            </table>
+              
+                            <table class="table table-bordered" *ngIf="eaiSummary">
+                              <thead class="bg-primary text-white">
+                                <tr>
+                                  <th>APPTITUDE</th>
+                                  <th>TECHNICAL</th>
+                                  <th>DESCRIPTION</th>
+                                
+                                </tr>
+                              </thead>
+                              <tbody>
+                                
+                                <tr>
+                                  <td>{{eaiSummary.quantativeLevel}}</td>
+                                  <td>{{eaiSummary.technicalLevel}}</td>
+                                  <td>{{eaiSummary.summary}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+              
+                            <table class="table table-bordered" *ngIf="eai.length">
+                              <thead class="bg-primary text-white">
+                                <tr>
+                                  <th>Designation</th>
+                                  <th>Level &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                  <th>Job Eligibility</th>
+                                
+                                </tr>
+                              </thead>
+                              <tbody>
+                                
+                                <tr *ngFor="let e of eai">
+                                  <td>{{e.designation}}</td>
+                                  <td>{{e.level}}</td>
+                                  <td>{{e.jobEligibility}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+              
+                            
+                     
+                    </div>
+                  </div>
+                </div>
+            </div>
+                  
+                                    
+                
+                 
+                  
+                 
+                  <app-loading *ngIf="loading"></app-loading>
+                  
+
+  

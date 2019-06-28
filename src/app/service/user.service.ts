@@ -5,7 +5,8 @@ import { GlobalVariable } from '../constant/global.variable';
 const GET_CLIENT_LIST = 'test-conductor/list';
 const GET_EXAMINER_LIST = 'test-conductor/list';
 const GET_CANDIDATE_LIST = 'user/list';
-const GET_FILTER_CANDIDATE_LIST = 'exam/result-list';
+// const GET_FILTER_CANDIDATE_LIST = 'exam/result-list';
+const GET_FILTER_CANDIDATE_LIST = 'exam/result-list-by-examId';
 const GET_LICENSE_LIST = 'license/list';
 const GET_EXTERNAL_LICENSE_LIST = 'test-conductor-license/external-license-list';
 const GET_EXAMINER_LICENSE_LIST = 'test-conductor-license/list-by-tc-id';
@@ -24,6 +25,7 @@ const CREATE_EXTERNAL_LICENSE_LIST = 'test-conductor-license/external-license-as
 const UPDATE_CLIENT = 'test-conductor/update';
 const UPDATE_EXAMINER = 'examiner/update';
 const UPDATE_CANDIDATE = 'user/update';
+const UPDATE_CANDIDATE_BULK = 'user/create-batch';
 const UPDATE_LICENSE = 'test-conductor-license/update';
 const ALLOCATE_CANDIDATE = 'test-conductor-test-code/test-code-assign-user';
 
@@ -136,6 +138,9 @@ export class UserService {
 
   updateCandidate(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_CANDIDATE}`, request);
+  }
+  createCandidateBulk(request) {
+    return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_CANDIDATE_BULK}`, request);
   }
   updateLicense(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_LICENSE}`, request);

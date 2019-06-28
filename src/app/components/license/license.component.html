@@ -34,7 +34,7 @@
                       <tbody>
                         <tr *ngFor="let license of licenseList;let i = index">
                           <td>
-                              <i-bar-chart-2 title="exam progress" (click)="filter(license)"></i-bar-chart-2>
+                              <i-bar-chart-2 title="exam progress" (click)="analysis(license)"></i-bar-chart-2>
                         
                               <i-award   *ngIf="license?.examVo?.examStatus === 'COMPLETED'"  title="certificate" (click)="showCertificate(exam)"></i-award>
                               <i-bar-chart-2   *ngIf="license?.examVo?.examStatus === 'COMPLETED'" title="result" (click)="showResult(exam)"></i-bar-chart-2>

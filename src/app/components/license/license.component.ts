@@ -5,14 +5,12 @@ import { LicenseRegistrationComponent } from '../license-registration/license-re
 import { UserService } from 'src/app/service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { filter } from 'rxjs/operators';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { LicensePermissionMappingComponent } from '../license-permission-mapping/license-permission-mapping.component';
 import { CertificateComponent } from '../certificate/certificate.component';
 import { ResultComponent } from '../result/result.component';
 import { AuthenticationService } from 'src/app/service/authentecation.service';
 import { LicenseKeyComponent } from '../license-key/license-key.component';
-import { CandidateFilterComponent } from '../candidate-filter/candidate-filter.component';
 
 @Component({
   selector: 'app-license',
@@ -75,24 +73,8 @@ export class LicenseComponent implements OnInit {
 
   }
 
-  filter(license): void {
-
-    const configuartion = {
-      initialState : {
-        title: 'Candidate Filter & Export ',
-        examId: license.examVo.examId
-      },
-      class: 'modal-lg'
-    };
-    this.bsModalService.show(CandidateFilterComponent, configuartion)
-    .content
-    .submit$
-    .subscribe(
-      (confirm) => {
-           if (confirm) {
-      }
-    }
-    );
+  analysis(license): void {
+    this.router.navigate(['/analysis'], { queryParams: { examId : license.examVo.examId}, queryParamsHandling: 'merge' });
   }
 
   get(): void {

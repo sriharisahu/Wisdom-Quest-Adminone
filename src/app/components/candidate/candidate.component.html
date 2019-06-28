@@ -35,23 +35,39 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let candidate of candidateList;let i = index">
+                  <ng-template ngFor let-candidate [ngForOf]="candidateList">
+                        <tr>
                           <td>
+                            <span *ngIf="!currentParams.licenseId">
                             <!-- <i-award   *ngIf="license?.examVo?.examStatus === 'COMPLETED'"  title="certificate" (click)="showCertificate(exam)"></i-award> -->
-                            <i-bar-chart-2   *ngIf="candidate.exam && candidate?.exam?.status === 'COMPLETED'" title="result" (click)="showResult(candidate)"></i-bar-chart-2>
                             <i-edit-2 title="edit" (click)="edit(candidate)"></i-edit-2>
                             <i-trash-2 title="delete" (click)="delete(candidate)"></i-trash-2>
                             <i-credit-card  *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'" title="license" (click)="license(candidate)"></i-credit-card>
-                            
+                          </span>
+
+                          <span>
+                              <i-arrow-right *ngIf="candidate.examVoList !== selectedExamVoList" title="View Exams" (click)="toggleExamList(candidate)"></i-arrow-right>
+                              <i-arrow-down *ngIf="candidate.examVoList === selectedExamVoList" title=" Hide Exams" (click)="toggleExamList(candidate)"></i-arrow-down>
+                          </span>
+                          <i-bar-chart-2   *ngIf="candidate.exam && candidate?.exam?.status === 'COMPLETED'" title="result" (click)="showResult(candidate)"></i-bar-chart-2>
                             {{candidate.firstName + ' ' + candidate.middleName+
                             ' ' + candidate.lastName}}</td>
                             <td>{{candidate.contactEmail}}</td>
                             <td>{{candidate.contactNumber}}</td>
                             <td *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'">{{candidate.collegeVo?.collegeName}}</td>
-                          
-                          
-
                         </tr>
+                            <tr class="sub-panel" *ngFor="let exam of selectedExamVoList" [@detailExpand]="candidate.examVoList === selectedExamVoList 
+                            ? 'expanded' : 'collapsed'">
+                                <td>
+                                    <i-bar-chart-2   *ngIf="exam.status === 'COMPLETED'" title="result" (click)="showResult(exam)"></i-bar-chart-2>
+                                  <i-award   *ngIf="exam.status === 'COMPLETED'"  title="certificate" (click)="showCertificate(exam)"></i-award>
+                                  {{exam.status}}</td>
+                                <td>{{exam.examVo?.examCategoryVo?.examCategoryName}}</td>
+                                <td>{{exam.examStartDate | date: 'fullDate'}}</td>
+                                <td>{{exam.testCode}}</td>
+                              </tr>
+                        
+                        </ng-template>
                         <tr>
                             <td colspan="4" >
                                  <strong *ngIf="listEnd">End Of List </strong>

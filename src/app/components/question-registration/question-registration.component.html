@@ -30,6 +30,23 @@
             </div>
           </div>
 
+          <div class="form-group row">
+              <label for="inputLevel" class="col-sm-2 col-form-label">Level</label>
+              <div class="col-sm-10">
+                <select [ngClass]="{ 'is-invalid': submitted && f.level?.errors }"
+                 formControlName="level"
+                 class="form-control"
+                
+                  id="inputLevel" required>
+                  <option value="">--SELECT LEVEL--</option>
+                  <option *ngFor="let level of levelList"   [ngValue]="level.levelName">{{ level.levelName }}</option>
+                </select>
+                <div *ngIf="submitted && f.level?.errors" class="invalid-feedback">
+                  <div *ngIf="f.level?.errors.required"> Level is required</div>
+                </div>
+              </div>
+            </div>
+
           
           <div class="form-group row">
               <label for="inputDescription" class="col-sm-2 col-form-label">Question Description</label>
@@ -77,7 +94,7 @@
                   </div>
               </div>
   
-                <div class="form-group row"  *ngIf="!isQuestionBank && !isPsycometric">
+                <div class="form-group row"  *ngIf="!isQuestionBank && !isPsychometric">
                     <label for="inputMarks" class="col-sm-2 col-form-label">Marks</label>
                     <div class="col-sm-10">
                       <input [ngClass]="{ 'is-invalid': submitted && f.marks.errors }"
@@ -88,7 +105,7 @@
                       </div>
                     </div>
                   </div>
-                <div class="form-group row"  *ngIf="!isQuestionBank && !isPsycometric">
+                <div class="form-group row"  *ngIf="!isQuestionBank && !isPsychometric">
                     <label for="inputNegativeMarks" class="col-sm-2 col-form-label">Negative Marks</label>
                     <div class="col-sm-10">
                       <input [ngClass]="{ 'is-invalid': submitted && f.negativeMarks.errors }"
@@ -114,7 +131,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group row" *ngIf="isPsycometric">
+                  <div class="form-group row" *ngIf="isPsychometric">
                     <div formArrayName="optionMarks" class="col-sm-12 p-0">
                         <div class="mb-2 d-flex justify-content-start" *ngFor="let marks of optionMarks.controls; let i=index">
                             <label for="{{'marks'+i}}" class="col-sm-2 col-form-label">Option Mrk {{i + 1}}</label>
@@ -130,14 +147,14 @@
                     </div>
 
 
-                  <div class="form-group row" *ngIf="!isPsycometric">
+                  <div class="form-group row" *ngIf="!isPsychometric">
                       <label for="inputCorrectOption" class="col-sm-2 col-form-label">Correct Option</label>
                       <div class="col-sm-10">
                         <div *ngFor="let o of optionRadio;let i=index" >
                         <label class="col-sm-2 col-form-label">Option {{i + 1}}</label>
                         <input [ngClass]="{ 'is-invalid': submitted && f.correct.errors }"
                          type="radio"  name="correct" [value]="o"
-                         formControlName="correct" required>
+                         formControlName="correct" >
                         </div>
         
                       </div>

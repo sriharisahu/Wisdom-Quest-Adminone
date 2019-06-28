@@ -25,7 +25,9 @@ import {
   IconSquare,
   IconAward,
   IconBarChart2,
-  IconFilter
+  IconFilter,
+  IconZap,
+  IconZapOff
 } from 'angular-feather';
 
 const icons = [
@@ -52,7 +54,9 @@ const icons = [
   IconSquare,
   IconAward,
   IconBarChart2,
-  IconFilter
+  IconFilter,
+  IconZap,
+  IconZapOff
 ];
 
 @NgModule({

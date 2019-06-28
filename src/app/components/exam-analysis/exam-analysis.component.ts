@@ -4,14 +4,33 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
 import { Label, MultiDataSet } from 'ng2-charts';
 import { ChartDataSets } from 'chart.js';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { GlobalVariable } from 'src/app/constant/global.variable';
+import { HttpClient } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
-  selector: 'app-candidate-filter',
-  templateUrl: './candidate-filter.component.html',
-  styleUrls: ['./candidate-filter.component.scss']
-})
-export class CandidateFilterComponent implements OnInit {
+  selector: 'app-exam-analysis',
+  templateUrl: './exam-analysis.component.html',
+  styleUrls: ['./exam-analysis.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state(
+        'collapsed',
+        style({ height: '0px', minHeight: '0', display: 'none' })
+      ),
+      state('expanded', style({ height: '*', display: 'table-row' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ]
 
+})
+export class ExamAnalysisComponent implements OnInit {
+  Object = Object;
   loading = false;
   candidateList = [];
   listEnd = true;
@@ -21,8 +40,12 @@ export class CandidateFilterComponent implements OnInit {
   userIdAllocatedList = [];
   licenseUserList = [];
   currentParams;
+  selectedCandidate;
   examId;
   percentile = 0 ;
+  result = [];
+  eai = [];
+  eaiSummary;
   @Output() submit$ = new EventEmitter();
  public doughnutChartLabels: Label[] = ['0%-30%', '30%-60%', '60%-80%', '80%-100%'];
  public doughnutChartData: MultiDataSet = [];
@@ -41,9 +64,14 @@ export class CandidateFilterComponent implements OnInit {
     { data: [], label: 'Marks' },
   ];
   public lineChartLabels: Label[] = [];
+  public lineChartSectionData: ChartDataSets[] = [
+    { data: [], label: 'Marks' },
+  ];
+  public lineChartSectionLabels: Label[] = [];
 
   constructor(private configurationService: ConfigurationService,
               private route: ActivatedRoute,
+              private http: HttpClient,
               private userService: UserService) { }
 
   ngOnInit() {
@@ -52,6 +80,27 @@ export class CandidateFilterComponent implements OnInit {
       this.currentParams = params;
       this.get();
     });
+  }
+
+  toggleSection = (candidate) => {
+    if (this.selectedCandidate === candidate) {
+      this.selectedCandidate = null;
+
+    } else {
+      this.selectedCandidate = candidate;
+      this.getCandidateDetails(candidate);
+      const userData = [];
+      if (this.selectedCandidate.sectionResultList) {
+        this.selectedCandidate.sectionResultList.forEach((section) => {
+          userData.push(section.userMarks);
+        });
+      }
+
+      this.lineChartSectionData = [
+        {data: userData, label: 'Marks'}
+      ];
+
+    }
   }
   filter() {
     this.candidateList = [];
@@ -74,9 +123,9 @@ get(): void {
   this.loading = true;
     const req = {
       pageNo: 1,
-      pageSize: 1000,
+      pageSize: 100,
       searchKey: '',
-      examId: this.examId,
+      examId: this.currentParams.examId,
       percentile: Number(this.percentile),
       active: true
     };
@@ -175,7 +224,7 @@ get(): void {
             [this.lessThan30Count[2], this.between30And60Count[2], this.between60And80Count[2], this.between80And100Count[2]],
             // tslint:disable-next-line:no-unused-expression
             [this.lessThan30Count[3], this.between30And60Count[3], this.between60And80Count[3], this.between80And100Count[3]]
-          ]
+          ];
           this.lineChartData = [
             { data: this.userMarks, label: 'Marks' },
           ];
@@ -195,6 +244,78 @@ get(): void {
     );
 
 
+}
+
+
+getCandidateDetails = (candidate) => {
+  const req = {
+    examId: candidate.examId,
+    candidateId: candidate.candidateId,
+    testConductorHasTestCodeId: candidate.testConductorHasTestCodeId ? candidate.testConductorHasTestCodeId : 1491
+
+  };
+  this.http.post<any>(`${GlobalVariable.BASE_API_URL}exam/result-by-examId`, req)
+      .pipe( map(response => {
+          if (response['status'] === 'success') {
+              if (response['object']) {
+                  return response['object'];
+              }
+          } else {
+              return of({});
+          }
+      },
+      err => {
+        return of({});
+      }
+      ), catchError((_err) => {
+        return of({});
+      })).subscribe(
+        (result) => {
+          debugger;
+         this.result = result;
+        }
+      );
+      this.http.post<any>(`${GlobalVariable.BASE_API_URL}exam/get-eai-certificate`, req)
+      .pipe( map(response => {
+          if (response['status'] === 'success') {
+              if (response['list']) {
+                  return response['list'];
+              }
+          } else {
+              return of([]);
+          }
+      },
+      err => {
+        return of([]);
+      }
+      ), catchError((_err) => {
+        return of({});
+      })).subscribe(
+        (eai) => {
+         this.eai = eai;
+        }
+      );
+
+      this.http.post<any>(`${GlobalVariable.BASE_API_URL}exam/get-eai-summary`, req)
+      .pipe( map(response => {
+          if (response['status'] === 'success') {
+              if (response['object']) {
+                  return response['object'];
+              }
+          } else {
+              return of([]);
+          }
+      },
+      err => {
+        return of([]);
+      }
+      ), catchError((_err) => {
+        return of({});
+      })).subscribe(
+        (eaiSummary) => {
+         this.eaiSummary = eaiSummary;
+        }
+      );
 }
 
 

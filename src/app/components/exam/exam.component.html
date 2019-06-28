@@ -19,7 +19,6 @@
                         [infiniteScrollDistance]="2"
                         [infiniteScrollThrottle]="50"
                         [infiniteScrollDisabled]="listEnd || loading"
-                        (scrolled)="onScroll()"
                   >
                       <thead>
                         <tr>
@@ -42,6 +41,8 @@
                             <i-edit-2 title="edit" (click)="edit(exam)"></i-edit-2>
                             <i-trash-2 title="delete" (click)="delete(exam)"></i-trash-2>
                             <i-settings title="setting" (click)="setting(exam)"></i-settings>
+                            <i-zap *ngIf="!exam.publish" title="publish" (click)="publish(exam)"></i-zap>
+                            <!-- <i-zap-off *ngIf="exam.publish" title="unpublish" (click)="publish(exam)"></i-zap-off> -->
                             
                             {{exam.testCode}}</td>
                             <td>{{exam.examName}}</td>
