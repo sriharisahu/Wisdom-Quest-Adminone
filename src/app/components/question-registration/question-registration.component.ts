@@ -56,7 +56,7 @@ export class QuestionRegistrationComponent implements OnInit {
     const questionSubCategory = this.categoryList.find((category) => {
      return this.questionForm.get('categoryId').value  === category.questionSubCategoryId;
     });
-    if (questionSubCategory.questionSubCategoryName === 'Psychometric') {
+    if (questionSubCategory.questionCategoryName === 'Psychometric') {
       this.isPsychometric = true;
     } else {
       this.isPsychometric = false;
@@ -105,7 +105,6 @@ export class QuestionRegistrationComponent implements OnInit {
         this.questionForm.value.optionMarks.forEach((optionMarks, i) => {
           options[i].marks = optionMarks;
         });
-       
       }
 
       const explanation = {
@@ -236,7 +235,11 @@ export class QuestionRegistrationComponent implements OnInit {
     debugger;
     if (this.selectedQuestion) {
       if (this.isQuestionBank) {
-
+        if (this.selectedQuestion.questionBankVo.questionCategoryVo.questionCategoryName === 'Psychometric') {
+          this.isPsychometric = true;
+        } else {
+          this.isPsychometric = false;
+        }
         questionForm = {
           examSectionHasQuestionId: [this.selectedQuestion.examSectionHasQuestionId],
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
@@ -250,10 +253,10 @@ export class QuestionRegistrationComponent implements OnInit {
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
           ]),
           optionMarks: this.formBuilder.array([
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].marks)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].marks)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].marks)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].marks))
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[0].marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[1].marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[2].marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[3].marks)
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],
@@ -262,6 +265,11 @@ export class QuestionRegistrationComponent implements OnInit {
 
 
       } else {
+        if (this.selectedQuestion.questionBankVo.questionCategoryVo.questionCategoryName === 'Psychometric') {
+          this.isPsychometric = true;
+        } else {
+          this.isPsychometric = false;
+        }
 
         questionForm = {
           examSectionHasQuestionId: [this.selectedQuestion.examSectionHasQuestionId],
@@ -278,10 +286,10 @@ export class QuestionRegistrationComponent implements OnInit {
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
           ]),
           optionMarks: this.formBuilder.array([
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].marks)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].marks)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].marks)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].marks))
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[0].marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[1].marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[2].marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[3].marks)
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],

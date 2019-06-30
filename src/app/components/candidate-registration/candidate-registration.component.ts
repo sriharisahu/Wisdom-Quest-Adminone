@@ -88,12 +88,14 @@ export class CandidateRegistrationComponent implements OnInit {
         middleName: [this.selectedCandidate.middleName],
         password: [''],
         pinCode: [this.selectedCandidate.pinCode],
-        specializationId: [this.selectedCandidate.specializationVo.specializationId, Validators.required],
+        // tslint:disable-next-line:max-line-length
+        specializationId: [this.selectedCandidate.specializationVo ? this.selectedCandidate.specializationVo.specializationId : 1, Validators.required],
         state: [this.selectedCandidate.state],
         tenthPercentage: [this.selectedCandidate.tenthPercentage]
       };
       if (this.authenticationService.currentUser.adminType === 'SUPERADMIN') {
-        candidateForm['collegeId']  =  [this.selectedCandidate.collegeVo.collegeId, Validators.required];
+        // tslint:disable-next-line:max-line-length
+        candidateForm['collegeId']  =  [this.selectedCandidate.collegeVo ? this.selectedCandidate.collegeVo.collegeId : 1, Validators.required];
       }
     } else {
 

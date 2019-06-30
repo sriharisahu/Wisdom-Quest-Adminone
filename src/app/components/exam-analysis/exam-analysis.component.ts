@@ -271,7 +271,6 @@ getCandidateDetails = (candidate) => {
         return of({});
       })).subscribe(
         (result) => {
-          debugger;
          this.result = result;
         }
       );
