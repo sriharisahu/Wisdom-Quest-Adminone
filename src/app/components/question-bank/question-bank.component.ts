@@ -36,6 +36,9 @@ export class QuestionBankComponent implements OnInit {
     const req = {
       pageNo: this.pageNo,
       pageSize: 100,
+      questionCategoryVo: {
+        questionCategoryId: 59,
+      },
       active: true};
     this.examService.getQuestionBankList(req).subscribe(
       (response) => {
