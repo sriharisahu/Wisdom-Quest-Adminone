@@ -138,7 +138,7 @@ export class PermissionComponent implements OnInit {
     );
   }
 
-  onScroll() {
+  loadMore() {
     this.pageNo += 1;
     this.get();
   }

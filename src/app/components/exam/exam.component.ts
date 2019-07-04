@@ -32,7 +32,7 @@ export class ExamComponent implements OnInit {
   get(): void {
     this.loading = true;
     const req = {
-      pageNo: 1,
+      pageNo: this.pageNo,
       pageSize: 100,
       searchKey: '',
       active: true};
@@ -145,5 +145,10 @@ export class ExamComponent implements OnInit {
         selectedExam.publish = false;
       }
     );
+  }
+
+  loadMore() {
+    this.pageNo += 1;
+    this.get();
   }
 }

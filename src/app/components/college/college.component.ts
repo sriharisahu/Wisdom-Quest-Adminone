@@ -135,7 +135,7 @@ export class CollegeComponent implements OnInit {
     );
   }
 
-  onScroll() {
+  loadMore() {
     this.pageNo += 1;
     this.get();
   }

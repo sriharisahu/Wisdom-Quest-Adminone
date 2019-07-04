@@ -13,41 +13,34 @@
                     <app-search-bar ></app-search-bar>
       </div>
                   
-                  <table class="table table-bordered table-hover "
-                        infiniteScroll
-                        [infiniteScrollDistance]="2"
-                        [infiniteScrollThrottle]="50"
-                        [infiniteScrollDisabled]="listEnd || loading"
-                        (scrolled)="onScroll()"
-                  >
+                  <table class="table table-bordered table-hover">
                       <thead>
                         <tr>
-                        
                         <th>College Code</th>
                         <th>College Name</th>
                         <th>College Address</th>
-                      
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let college of collegeList;let i = index">
                           <td>
-                         
                             <i-edit-2 title="edit" (click)="edit(college)"></i-edit-2>
                             <i-trash-2 title="delete" (click)="delete(college)"></i-trash-2>
-                            
-                            {{college.collegeCode}}</td>
+                            {{college.collegeCode}}
+                          </td>
                             <td>{{college.collegeName}}</td>
                             <td>{{college.addressLine1 + ' ' + college.addressLine2 + ' ' + college.city 
-                                   + ' ' + college.state + ' '+ college.country + ' '+ college.pinCode }}</td>
-                          
-                          
-
+                                   + ' ' + college.state + ' '+ college.country + ' '+ college.pinCode }}
+                            </td>
                         </tr>
                         <tr>
                           <td colspan="3" >
-                               <strong *ngIf="listEnd">End Of List </strong>
-                               <p>showing {{collegeList.length}} of {{totalCount}}</p>
+                            <strong *ngIf="listEnd">End Of List </strong>
+                            <strong *ngIf="!listEnd" (click)="loadMore()">
+                            <i-arrow-down></i-arrow-down>
+                             Load More 
+                            </strong>
+                            <p>showing {{collegeList.length}} of {{totalCount}}</p>
                           </td>
                         </tr>
                       </tbody>

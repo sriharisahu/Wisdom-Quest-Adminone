@@ -16,24 +16,21 @@
 
             <div class="container-fulid">
                 <div class="d-flex">
-                  <div class="col-sm-4"></div>
-                  <div class="col-sm-4 side-bar">
-                      <table class="table table-bordered table-hover table-sm"
-                      infiniteScroll
-                      [infiniteScrollDistance]="2"
-                      [infiniteScrollThrottle]="50"
-                      [infiniteScrollDisabled]="listEnd || loading"
-                      (scrolled)="onScroll()"
-                >
+                  <!-- <div class="col-sm-4"></div> -->
+                  <div class="col-sm-12 side-bar">
+                      <table class="table table-bordered table-hover table-sm">
                     <thead>
                       <tr>
                           <th>Rank</th>
-                          <th>Percentile</th>
-                      <th>Candidate Name</th>
-                      <!-- <th>Email</th>
-                      <th>Contact Number</th> -->
-                      
-                    
+                          <th>Technical Percentile</th>
+                          <th>Apptitude Percentile</th>
+                          <th>Candidate Name</th>
+                          <ng-container *ngIf="isPsychometric">
+                          <th>Positive Attitude</th>
+                          <th>Critical Thinking</th>
+                          <th>Problem Solving</th>
+                          <th>Effective Communication</th>
+                        </ng-container>
                       </tr>
                     </thead>
                     <tbody>
@@ -44,12 +41,19 @@
                              
                             {{candidate.rank}}</td>
                           <td>{{candidate.percentile | number: '1.1-2'}}</td>
+                          <td>{{candidate.percentile | number: '1.1-2'}}</td>
                         <td>
                             {{candidate.candidateFirstName + ' ' + candidate.candidateLastName}}
                         
-                         <i-arrow-right *ngIf="candidate.sectionResultList !== selectedSectionResult" title="View Section Result" (click)="toggleSection(candidate)"></i-arrow-right>
-                              <i-arrow-down *ngIf="candidate.sectionResultList === selectedSectionResult" title=" Hide Section Result" (click)="toggleSection(candidate)"></i-arrow-down> 
+                         <!-- <i-arrow-right *ngIf="candidate.sectionResultList !== selectedSectionResult" title="View Section Result" (click)="toggleSection(candidate)"></i-arrow-right>
+                              <i-arrow-down *ngIf="candidate.sectionResultList === selectedSectionResult" title=" Hide Section Result" (click)="toggleSection(candidate)"></i-arrow-down>  -->
                         </td>
+                        <ng-container *ngIf="isPsychometric">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </ng-container>
                        <!-- <td>{{candidate.contactEmail}}</td>
                        <td>{{candidate.contactNumber}}</td> -->
                       </tr>
@@ -65,7 +69,7 @@
                 </table>
 
                   </div>
-                  <div class="col-sm-8 analysis-content">
+                  <div class="col-sm-8 analysis-content" *ngIf="false">
                         <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
                                 <h5 class="mr-auto">Overall</h5>
                         </div>

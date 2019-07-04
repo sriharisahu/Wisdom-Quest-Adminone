@@ -128,8 +128,9 @@ export class SpecializationComponent implements OnInit {
     );
   }
 
-  onScroll() {
-    console.log('scrolling...');
+  loadMore() {
+    this.pageNo += 1;
+    this.get();
   }
 
 }

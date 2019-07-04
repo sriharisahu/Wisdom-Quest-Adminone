@@ -96,7 +96,7 @@ getAllocated() {
 
   }
 
-  onScroll() {
+  loadMore() {
     this.pageNo += 1;
     this.get();
   }

@@ -14,13 +14,7 @@
                     <app-search-bar ></app-search-bar>
                   </div>
                   
-                  <table class="table table-bordered table-hover "
-                        infiniteScroll
-                        [infiniteScrollDistance]="2"
-                        [infiniteScrollThrottle]="50"
-                        [infiniteScrollDisabled]="listEnd || loading"
-                        (scrolled)="onScroll()"
-                  >
+                  <table class="table table-bordered table-hover">
                       <thead>
                         <tr>
                         
@@ -46,6 +40,10 @@
                         </tr>
                         <tr>
                             <td colspan="4" >
+                                <strong *ngIf="!listEnd" (click)="loadMore()">
+                                    <i-arrow-down></i-arrow-down>
+                                     Load More 
+                                </strong>
                                  <strong *ngIf="listEnd">End Of List </strong>
                                  <p>showing {{examinerList.length}} of {{totalCount}}</p>
                             </td>

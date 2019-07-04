@@ -177,8 +177,9 @@ export class ClientComponent implements OnInit {
     );
   }
 
-  onScroll() {
-    console.log('scrolling...');
+  loadMore() {
+    this.pageNo += 1;
+    this.get();
   }
 
 }

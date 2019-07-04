@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { QuillModule } from 'ngx-quill';
 import { TimepickerModule } from 'ngx-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap';
@@ -132,7 +131,6 @@ import { PieChartComponent } from './components/pie-chart/pie-chart.component';
     HttpClientModule,
     ChartsModule,
     AppRoutingModule,
-    InfiniteScrollModule,
     QuillModule.forRoot({
       modules: {
         toolbar: [
