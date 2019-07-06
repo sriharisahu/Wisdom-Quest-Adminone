@@ -87,9 +87,10 @@ export class ExamRegistrationComponent implements OnInit {
     if (this.selectedExam) {
       const d = new Date();
       const hh = Math.trunc(this.selectedExam.durationInSeconds / 3600);
-      const mm = Math.trunc((this.selectedExam.durationInSeconds - hh) / 60);
+      const mm = Math.trunc((this.selectedExam.durationInSeconds - (hh * 3600))  / 60);
       d.setHours(hh);
       d.setMinutes(mm);
+      debugger;
       examForm = {
         examId : [this.selectedExam.examId, Validators.required],
         examName: [this.selectedExam.examName, Validators.required],

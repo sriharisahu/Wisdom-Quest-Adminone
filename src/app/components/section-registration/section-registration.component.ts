@@ -98,7 +98,7 @@ export class SectionRegistrationComponent implements OnInit {
     if (this.selectedSection) {
       const d = new Date();
       const hh = Math.trunc(this.selectedSection.durationInSeconds / 3600);
-      const mm = Math.trunc((this.selectedSection.durationInSeconds - hh) / 60);
+      const mm = Math.trunc((this.selectedSection.durationInSeconds - (hh * 3600)) / 60);
       d.setHours(hh);
       d.setMinutes(mm);
       sectionForm = {
