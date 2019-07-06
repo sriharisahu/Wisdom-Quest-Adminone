@@ -77,7 +77,6 @@ export class QuestionRegistrationComponent implements OnInit {
         active: true,
         questionBankVo: {
           questionId: this.examService.questionToAttach.questionBankVo.questionId
-          
         }
       };
       const requestPayload = JSON.parse(JSON.stringify(target));
@@ -215,10 +214,14 @@ export class QuestionRegistrationComponent implements OnInit {
         questionNumber: ['', Validators.required],
         marks: [''],
         options: this.formBuilder.array([
-          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[0].optionValueData)),
-          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[1].optionValueData)),
-          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[2].optionValueData)),
-          this.formBuilder.control(atob(this.examService.questionToAttach.questionBankVo.options[3].optionValueData))
+          this.formBuilder.control(
+            atob(this.examService.questionToAttach.questionBankVo.options.find((o) => o.optionName === 'A').optionValueData)),
+          this.formBuilder.control(
+            atob(this.examService.questionToAttach.questionBankVo.options.find((o) => o.optionName === 'B').optionValueData)),
+          this.formBuilder.control(
+            atob(this.examService.questionToAttach.questionBankVo.options.find((o) => o.optionName === 'C').optionValueData)),
+          this.formBuilder.control(
+            atob(this.examService.questionToAttach.questionBankVo.options.find((o) => o.optionName === 'D').optionValueData))
         ]),
         correct: [this.examService.questionToAttach.questionBankVo.correctOption.optionName],
         correctOption: [this.examService.questionToAttach.questionBankVo.correctOption],
@@ -230,9 +233,7 @@ export class QuestionRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-
     let questionForm = {};
-    debugger;
     if (this.selectedQuestion) {
       if (this.isQuestionBank) {
         if (this.selectedQuestion.questionBankVo.questionCategoryVo.questionCategoryName === 'Psychometric') {
@@ -247,16 +248,16 @@ export class QuestionRegistrationComponent implements OnInit {
           description: [''],
           level: [this.selectedQuestion.questionBankVo.level],
           options: this.formBuilder.array([
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].optionValueData)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].optionValueData)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].optionValueData)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'A').optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'B').optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'C').optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'D').optionValueData))
           ]),
           optionMarks: this.formBuilder.array([
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[0].marks),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[1].marks),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[2].marks),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[3].marks)
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'A').marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'B').marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'C').marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'D').marks)
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],
@@ -280,16 +281,16 @@ export class QuestionRegistrationComponent implements OnInit {
           questionNumber: [this.selectedQuestion.questionNumber, Validators.required],
           marks: [this.selectedQuestion.marks],
           options: this.formBuilder.array([
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[0].optionValueData)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[1].optionValueData)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[2].optionValueData)),
-            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options[3].optionValueData))
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'A').optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'B').optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'C').optionValueData)),
+            this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'D').optionValueData))
           ]),
           optionMarks: this.formBuilder.array([
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[0].marks),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[1].marks),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[2].marks),
-            this.formBuilder.control(this.selectedQuestion.questionBankVo.options[3].marks)
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'A').marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'B').marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'C').marks),
+            this.formBuilder.control(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'D').marks)
           ]),
           correct: [this.selectedQuestion.questionBankVo.correctOption.optionName],
           correctOption: [this.selectedQuestion.questionBankVo.correctOption],
