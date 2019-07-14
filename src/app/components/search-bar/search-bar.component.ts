@@ -20,5 +20,9 @@ export class SearchBarComponent implements OnInit {
 trigger() {
   this.searchKey.emit(this.search.nativeElement.value);
 }
+clear() {
+  this.search.nativeElement.value = '';
+  this.trigger();
+}
 
 }

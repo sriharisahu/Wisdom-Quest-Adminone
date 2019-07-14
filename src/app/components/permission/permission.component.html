@@ -9,7 +9,7 @@
                     <div *ngIf="permissionList && permissionList.length">
                       <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="add()">Add Permission</button>
                     </div>
-                    <app-search-bar ></app-search-bar>
+                    <app-search-bar (searchKey)="search($event)"></app-search-bar>
                   </div>
                   
                   <table class="table table-bordered table-hover">
