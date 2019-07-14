@@ -41,6 +41,7 @@ export class ExamAnalysisComponent implements OnInit {
   licenseUserList = [];
   currentParams;
   selectedCandidate;
+  isPsychometric = false;
   examId;
   percentile = 0 ;
   result = [];

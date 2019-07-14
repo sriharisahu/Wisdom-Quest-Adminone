@@ -39,9 +39,13 @@ export class SectionRegistrationComponent implements OnInit {
   examId;
   isPsychometric = false;
   categoryTypeList = [{
-    categoryTypeName: 'Aptitude'
+    categoryTypeName: 'Aptitude'  // Quantitative
   },
-  {categoryTypeName: 'Technical'}
+  {categoryTypeName: 'Technical'},
+  {categoryTypeName: 'Other'},
+  {categoryTypeName: 'Reasoning'},
+  {categoryTypeName: 'Psychometric'},
+  {categoryTypeName: 'English'}
   ];
   get f() {
     return this.sectionForm.controls;
