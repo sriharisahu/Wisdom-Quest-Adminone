@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { CandidateRegistrationComponent } from '../candidate-registration/candidate-registration.component';
@@ -11,6 +11,7 @@ import { CertificateComponent } from '../certificate/certificate.component';
 import { ResultComponent } from '../result/result.component';
 import { ImportFromCsvComponent } from '../import-from-csv/import-from-csv.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-candidate',
@@ -35,6 +36,8 @@ export class CandidateComponent implements OnInit {
   constructor(
     private bsModalService: BsModalService,
     private configurationService: ConfigurationService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
@@ -193,6 +196,7 @@ this.get();
               this.pageNo = 1;
               this.get();
               this.bsModalService.hide(1);
+              this.renderer.removeClass(this.document.body, 'modal-open');
             }
           );
         }
@@ -218,6 +222,7 @@ this.get();
               this.pageNo = 1;
               this.get();
               this.bsModalService.hide(1);
+              this.renderer.removeClass(this.document.body, 'modal-open');
             }
           );
         }
@@ -246,6 +251,7 @@ this.get();
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -271,6 +277,7 @@ this.get();
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -316,6 +323,7 @@ this.get();
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }

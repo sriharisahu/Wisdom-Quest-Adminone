@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, Inject } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { ClientRegistrationComponent } from '../client-registration/client-registration.component';
 import { UserService } from 'src/app/service/user.service';
 import { Router } from '@angular/router';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-client',
@@ -15,6 +16,8 @@ export class ClientComponent implements OnInit {
 
   constructor(
     private bsModalService: BsModalService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private configurationService: ConfigurationService,
     private router: Router,
     private userService: UserService) { }
@@ -104,6 +107,7 @@ export class ClientComponent implements OnInit {
                 this.get();
             }
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -132,6 +136,7 @@ export class ClientComponent implements OnInit {
               this.get();
           }
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -173,6 +178,7 @@ export class ClientComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }

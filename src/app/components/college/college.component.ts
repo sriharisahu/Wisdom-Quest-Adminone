@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { CollegeRegistrationComponent } from '../college-registration/college-registration.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { AuthenticationService } from 'src/app/service/authentecation.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-college',
@@ -15,6 +16,8 @@ export class CollegeComponent implements OnInit {
   constructor(
     private bsModalService: BsModalService,
     private configurationService: ConfigurationService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     public authenticationService: AuthenticationService) { }
 
   toggle = false;
@@ -74,6 +77,7 @@ export class CollegeComponent implements OnInit {
               this.pageNo = 1;
               this.get();
               this.bsModalService.hide(1);
+              this.renderer.removeClass(this.document.body, 'modal-open');
             }
           }
         );
@@ -100,6 +104,7 @@ export class CollegeComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -131,6 +136,7 @@ export class CollegeComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }

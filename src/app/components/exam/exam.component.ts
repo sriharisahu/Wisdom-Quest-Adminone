@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ExamService } from 'src/app/service/exam.service';
 import { ExamRegistrationComponent } from '../exam-registration/exam-registration.component';
 import { ExamSettingsComponent } from '../exam-settings/exam-settings.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-exam',
@@ -13,6 +14,8 @@ export class ExamComponent implements OnInit {
 
   constructor(
     private bsModalService: BsModalService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private examService: ExamService) { }
 
   toggle = false;
@@ -70,7 +73,7 @@ export class ExamComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
-            this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -96,7 +99,7 @@ export class ExamComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
-            this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -117,6 +120,7 @@ export class ExamComponent implements OnInit {
     .subscribe(
       () => {
         this.bsModalService.hide(1);
+        this.renderer.removeClass(this.document.body, 'modal-open');
         this.get();
       }
     );

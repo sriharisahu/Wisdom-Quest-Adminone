@@ -57,7 +57,7 @@ return formData;
   unpublish(examId: number) {
     return this.http.get(`${GlobalVariable.BASE_API_URL}${UNPUBLISH_EXAM}/${examId}`);
   }
- 
+
   updateExamSettings(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_EXAM_SETTINGS}`, request);
   }
@@ -67,7 +67,7 @@ return formData;
   createExam(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${CREATE_EXAM}`, request);
   }
- 
+
   updateExam(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_EXAM}`, request);
   }

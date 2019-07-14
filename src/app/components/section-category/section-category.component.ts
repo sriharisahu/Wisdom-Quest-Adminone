@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { SectionCategoryRegistrationComponent } from '../section-category-registration/section-category-registration.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-section-category',
@@ -28,6 +29,8 @@ export class SectionCategoryComponent implements OnInit {
 
   constructor(
     private bsModalService: BsModalService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private configurationService: ConfigurationService) { }
 
   toggle = false;
@@ -117,6 +120,7 @@ export class SectionCategoryComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -147,6 +151,7 @@ export class SectionCategoryComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -174,6 +179,7 @@ export class SectionCategoryComponent implements OnInit {
               this.getSubCategory(this.expandedCategory);
             }
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -208,6 +214,7 @@ export class SectionCategoryComponent implements OnInit {
               this.getSubCategory(this.expandedCategory);
             }
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -252,6 +259,7 @@ export class SectionCategoryComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }

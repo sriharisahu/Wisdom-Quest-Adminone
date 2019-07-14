@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap';
 import { ExamService } from 'src/app/service/exam.service';
 import { QuestionRegistrationComponent } from '../question-registration/question-registration.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-question-host',
@@ -19,6 +20,8 @@ export class QuestionHostComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private bsModalService: BsModalService,
     private examService: ExamService) { }
 
@@ -51,6 +54,7 @@ export class QuestionHostComponent implements OnInit {
           this.examService.updateQuestion(request).subscribe(
             (response) => {
               this.bsModalService.hide(1);
+              this.renderer.removeClass(this.document.body, 'modal-open');
             }
           );
         }

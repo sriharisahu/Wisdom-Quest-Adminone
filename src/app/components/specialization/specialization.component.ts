@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { SpecializationRegistrationComponent } from '../specialization-registration/specialization-registration.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-specialization',
@@ -13,6 +14,8 @@ export class SpecializationComponent implements OnInit {
 
   constructor(
     private bsModalService: BsModalService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private configurationService: ConfigurationService) { }
 
   toggle = false;
@@ -70,6 +73,7 @@ export class SpecializationComponent implements OnInit {
           (response) => {
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -93,6 +97,7 @@ export class SpecializationComponent implements OnInit {
           (response) => {
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -124,6 +129,7 @@ export class SpecializationComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }

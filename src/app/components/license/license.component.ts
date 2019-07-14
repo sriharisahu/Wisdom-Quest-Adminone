@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { LicenseRegistrationComponent } from '../license-registration/license-registration.component';
 import { UserService } from 'src/app/service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, DOCUMENT } from '@angular/common';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { LicensePermissionMappingComponent } from '../license-permission-mapping/license-permission-mapping.component';
 import { CertificateComponent } from '../certificate/certificate.component';
@@ -23,6 +23,8 @@ export class LicenseComponent implements OnInit {
     private bsModalService: BsModalService,
     private userService: UserService,
     private route: ActivatedRoute,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private router: Router,
     private location: Location,
     private configurationService: ConfigurationService,
@@ -198,6 +200,7 @@ export class LicenseComponent implements OnInit {
             (response) => {
               this.get();
               this.bsModalService.hide(1);
+              this.renderer.removeClass(this.document.body, 'modal-open');
             }
           );
         } else {
@@ -211,6 +214,7 @@ export class LicenseComponent implements OnInit {
               (response) => {
                 this.get();
                 this.bsModalService.hide(1);
+                this.renderer.removeClass(this.document.body, 'modal-open');
               }
             );
           } else {
@@ -218,6 +222,7 @@ export class LicenseComponent implements OnInit {
               (response) => {
                 this.get();
                 this.bsModalService.hide(1);
+                this.renderer.removeClass(this.document.body, 'modal-open');
               }
             );
           }
@@ -260,6 +265,7 @@ export class LicenseComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -302,6 +308,7 @@ export class LicenseComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }
@@ -322,6 +329,7 @@ export class LicenseComponent implements OnInit {
     .subscribe(
       (confirm) => {
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }

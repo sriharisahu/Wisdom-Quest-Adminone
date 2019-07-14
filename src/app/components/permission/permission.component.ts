@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { PermissionRegistrationComponent } from '../permission-registration/permission-registration.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-permission',
@@ -13,6 +14,8 @@ export class PermissionComponent implements OnInit {
 
   constructor(
     private bsModalService: BsModalService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private configurationService: ConfigurationService) { }
 
   toggle = false;
@@ -72,6 +75,7 @@ export class PermissionComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -97,6 +101,7 @@ export class PermissionComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -134,6 +139,7 @@ export class PermissionComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }
