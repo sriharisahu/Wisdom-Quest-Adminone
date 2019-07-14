@@ -26,6 +26,8 @@ export class CollegeComponent implements OnInit {
   collegeList = [];
   totalCount = 0;
   pageNo = 1;
+  searchKey = '';
+  pageSize = 10;
 
   ngOnInit() {
     this.get();
@@ -33,20 +35,28 @@ export class CollegeComponent implements OnInit {
   toggleSideMenu(event) {
     this.toggle = !this.toggle;
   }
+  search(searchKey): void {
+    this.searchKey = searchKey;
+    this.pageNo = 1;
+    this.loading = true;
+    this.get();
+  }
   get(): void {
     this.loading = true;
     const req = {
       pageNo: this.pageNo,
-      pageSize: 10,
-      searchKey: '',
+      pageSize: this.pageSize,
+      searchKey: this.searchKey,
       active: true};
     this.configurationService.getCollegeList(req).subscribe(
       (response) => {
         this.loading = false;
         if (response['status'] === 'success') {
-                this.collegeList = [...this.collegeList, ...response['object']['collegeVoList']];
                 if (req.pageNo === 1) {
+                  this.collegeList = [...response['object']['collegeVoList']];
                   this.totalCount = response['object']['count'];
+                } else {
+                  this.collegeList = [...this.collegeList, ...response['object']['collegeVoList']];
                 }
                 if ((req.pageNo * req.pageSize) >= this.totalCount) {
                    this.listEnd = true;
