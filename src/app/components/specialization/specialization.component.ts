@@ -24,10 +24,17 @@ export class SpecializationComponent implements OnInit {
   listEnd = true;
   totalCount = 0;
   pageNo = 1;
+  searchKey = '';
+  pageSize = 10;
 
   ngOnInit() {
     this.get();
-
+  }
+  search(searchKey): void {
+    this.searchKey = searchKey;
+    this.pageNo = 1;
+    this.loading = true;
+    this.get();
   }
   toggleSideMenu(event) {
     this.toggle = !this.toggle;
@@ -36,16 +43,18 @@ export class SpecializationComponent implements OnInit {
     this.loading = true;
     const req = {
       pageNo: this.pageNo,
-      pageSize: 10,
-      searchKey: '',
+      pageSize: this.pageSize,
+      searchKey: this.searchKey,
       active: true};
     this.configurationService.getSpecializationList(req).subscribe(
       (response) => {
         this.loading = false;
         if (response['status'] === 'success') {
-                this.specializationList = [...this.specializationList, ...response['object']['specializationVoList']];
                 if (req.pageNo === 1) {
+                  this.specializationList = [...response['object']['specializationVoList']];
                   this.totalCount = response['object']['count'];
+                } else {
+                  this.specializationList = [...this.specializationList, ...response['object']['specializationVoList']];
                 }
                 if ((req.pageNo * req.pageSize) >= this.totalCount) {
                    this.listEnd = true;
