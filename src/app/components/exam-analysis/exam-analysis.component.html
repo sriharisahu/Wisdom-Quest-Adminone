@@ -23,7 +23,7 @@
                       <tr>
                           <th>Rank</th>
                           <th>Technical Percentile</th>
-                          <th>Apptitude Percentile</th>
+                          <th>Aptitude Percentile</th>
                           <th>Candidate Name</th>
                           <ng-container *ngIf="isPsychometric">
                           <th>Positive Attitude</th>
@@ -37,11 +37,9 @@
                    <ng-template ngFor let-candidate [ngForOf]="candidateList">
                       <tr>
                           
-                          <td>
-                             
-                            {{candidate.rank}}</td>
-                          <td>{{candidate.percentile | number: '1.1-2'}}</td>
-                          <td>{{candidate.percentile | number: '1.1-2'}}</td>
+                          <td>{{candidate.rank}}</td>
+                          <td>{{candidate.quantitativePercentile}}</td>
+                          <td>{{candidate.technicalPercentile}}</td>
                         <td>
                             {{candidate.candidateFirstName + ' ' + candidate.candidateLastName}}
                         
@@ -49,10 +47,10 @@
                               <i-arrow-down *ngIf="candidate.sectionResultList === selectedSectionResult" title=" Hide Section Result" (click)="toggleSection(candidate)"></i-arrow-down>  -->
                         </td>
                         <ng-container *ngIf="isPsychometric">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>candidate.effectiveCommunication</td>
+                        <td>candidate.positiveAttitude</td>
+                        <td>candidate.criticalThinking</td>
+                        <td>candidate.problemSolving</td>
                       </ng-container>
                        <!-- <td>{{candidate.contactEmail}}</td>
                        <td>{{candidate.contactNumber}}</td> -->

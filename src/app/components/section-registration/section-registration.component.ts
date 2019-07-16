@@ -66,7 +66,7 @@ export class SectionRegistrationComponent implements OnInit {
       examId: this.examId
     };
     requestPayload.sicoFlag = this.isPsychometric;
-    requestPayload.sectionName = requestPayload.sectionName === 'Aptitude' ? QUANTATIVE : 'Technical';
+    requestPayload.sectionName = requestPayload.sectionName === 'Aptitude' ? QUANTATIVE : requestPayload.sectionName;
     this.submit$.emit(requestPayload);
   }
 
