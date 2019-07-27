@@ -253,11 +253,11 @@ export class LicenseComponent implements OnInit {
           examId: request.examId
         };
         if (this.currentParams.clientId) {
-          request.testConductorLicenseId = this.currentParams.clientId;
+          request.testConductorLicenseId = Number(this.currentParams.clientId);
         }
 
         if (this.currentParams.examinerId) {
-          request.testConductorLicenseId = this.currentParams.examinerId;
+          request.testConductorLicenseId = Number(this.currentParams.clientId);
         }
         this.userService.updateLicense(request).subscribe(
           (response) => {

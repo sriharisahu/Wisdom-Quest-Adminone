@@ -84,8 +84,8 @@ export class QuestionRegistrationComponent implements OnInit {
 
     } else {
       const questionDescriptionVo = {
-        descriptionText: this.questionForm.value.description,
-        description: this.questionForm.value.description,
+        descriptionText: this.questionForm.value.description ?  this.questionForm.value.description : '',
+        description: this.questionForm.value.description ?  this.questionForm.value.description : '',
         descriptionTextType: true,
         descriptionId: null
       };
@@ -207,10 +207,15 @@ export class QuestionRegistrationComponent implements OnInit {
 
   attach() {
     if (this.examService.questionToAttach) {
+      let desc = '';
+        if (this.examService.questionToAttach.questionDescriptionVo &&
+          this.examService.questionToAttach.questionDescriptionVo.descriptionTextData) {
+            desc = atob(this.examService.questionToAttach.questionDescriptionVo.descriptionTextData);
+          }
       const questionForm = {
         categoryId: [this.examService.questionToAttach.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
         statement: [atob(this.examService.questionToAttach.questionBankVo.questionStatmentData), Validators.required],
-        description: [''],
+        description: [desc],
         questionNumber: ['', Validators.required],
         marks: [''],
         options: this.formBuilder.array([
@@ -241,11 +246,16 @@ export class QuestionRegistrationComponent implements OnInit {
         } else {
           this.isPsychometric = false;
         }
+        let desc = '';
+        if (this.selectedQuestion.questionBankVo.questionDescriptionVo &&
+          this.selectedQuestion.questionBankVo.questionDescriptionVo.descriptionTextData) {
+            desc = atob(this.selectedQuestion.questionBankVo.questionDescriptionVo.descriptionTextData);
+          }
         questionForm = {
           examSectionHasQuestionId: [this.selectedQuestion.examSectionHasQuestionId],
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
           statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
-          description: [''],
+          description: [desc],
           level: [this.selectedQuestion.questionBankVo.level],
           options: this.formBuilder.array([
             this.formBuilder.control(atob(this.selectedQuestion.questionBankVo.options.find((o) => o.optionName === 'A').optionValueData)),
@@ -271,12 +281,17 @@ export class QuestionRegistrationComponent implements OnInit {
         } else {
           this.isPsychometric = false;
         }
+        let desc = '';
+        if (this.selectedQuestion.questionBankVo.questionDescriptionVo &&
+          this.selectedQuestion.questionBankVo.questionDescriptionVo.descriptionTextData) {
+            desc = atob(this.selectedQuestion.questionBankVo.questionDescriptionVo.descriptionTextData);
+          }
 
         questionForm = {
           examSectionHasQuestionId: [this.selectedQuestion.examSectionHasQuestionId],
           categoryId: [this.selectedQuestion.questionBankVo.questionCategoryVo.questionSubCategoryId, Validators.required],
           statement: [atob(this.selectedQuestion.questionBankVo.questionStatmentData), Validators.required],
-          description: [''],
+          description: [desc],
           level: [this.selectedQuestion.questionBankVo.level],
           questionNumber: [this.selectedQuestion.questionNumber, Validators.required],
           marks: [this.selectedQuestion.marks],
