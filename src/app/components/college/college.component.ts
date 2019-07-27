@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { CollegeRegistrationComponent } from '../college-registration/college-registration.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { AuthenticationService } from 'src/app/service/authentecation.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-college',
@@ -15,6 +16,8 @@ export class CollegeComponent implements OnInit {
   constructor(
     private bsModalService: BsModalService,
     private configurationService: ConfigurationService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     public authenticationService: AuthenticationService) { }
 
   toggle = false;
@@ -23,6 +26,8 @@ export class CollegeComponent implements OnInit {
   collegeList = [];
   totalCount = 0;
   pageNo = 1;
+  searchKey = '';
+  pageSize = 10;
 
   ngOnInit() {
     this.get();
@@ -30,20 +35,28 @@ export class CollegeComponent implements OnInit {
   toggleSideMenu(event) {
     this.toggle = !this.toggle;
   }
+  search(searchKey): void {
+    this.searchKey = searchKey;
+    this.pageNo = 1;
+    this.loading = true;
+    this.get();
+  }
   get(): void {
     this.loading = true;
     const req = {
       pageNo: this.pageNo,
-      pageSize: 10,
-      searchKey: '',
+      pageSize: this.pageSize,
+      searchKey: this.searchKey,
       active: true};
     this.configurationService.getCollegeList(req).subscribe(
       (response) => {
         this.loading = false;
         if (response['status'] === 'success') {
-                this.collegeList = [...this.collegeList, ...response['object']['collegeVoList']];
                 if (req.pageNo === 1) {
+                  this.collegeList = [...response['object']['collegeVoList']];
                   this.totalCount = response['object']['count'];
+                } else {
+                  this.collegeList = [...this.collegeList, ...response['object']['collegeVoList']];
                 }
                 if ((req.pageNo * req.pageSize) >= this.totalCount) {
                    this.listEnd = true;
@@ -74,6 +87,7 @@ export class CollegeComponent implements OnInit {
               this.pageNo = 1;
               this.get();
               this.bsModalService.hide(1);
+              this.renderer.removeClass(this.document.body, 'modal-open');
             }
           }
         );
@@ -100,6 +114,7 @@ export class CollegeComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -131,11 +146,12 @@ export class CollegeComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }
 
-  onScroll() {
+  loadMore() {
     this.pageNo += 1;
     this.get();
   }

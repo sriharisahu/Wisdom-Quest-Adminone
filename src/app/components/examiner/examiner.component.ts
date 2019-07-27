@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { ExaminerRegistrationComponent } from '../examiner-registration/examiner-registration.component';
 import { UserService } from 'src/app/service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-examiner',
@@ -16,6 +17,8 @@ export class ExaminerComponent implements OnInit {
   constructor(
     private bsModalService: BsModalService,
     private configurationService: ConfigurationService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
@@ -120,6 +123,7 @@ export class ExaminerComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }
@@ -139,6 +143,7 @@ export class ExaminerComponent implements OnInit {
         this.userService.createExaminer(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -161,6 +166,7 @@ export class ExaminerComponent implements OnInit {
         this.userService.updateExaminer(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -173,9 +179,9 @@ export class ExaminerComponent implements OnInit {
 
 
 
-
-  onScroll() {
-    console.log('scrolling...');
+  loadMore() {
+    this.pageNo += 1;
+    this.get();
   }
 
 }

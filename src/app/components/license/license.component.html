@@ -14,16 +14,9 @@
                     <app-search-bar ></app-search-bar>
                   </div>
                   
-                  <table class="table table-bordered table-hover "
-                        infiniteScroll
-                        [infiniteScrollDistance]="2"
-                        [infiniteScrollThrottle]="50"
-                        [infiniteScrollDisabled]="listEnd || loading"
-                        (scrolled)="onScroll()"
-                  >
+                  <table class="table table-bordered table-hover">
                       <thead>
                         <tr>
-                        
                           <th>Exam Name</th>
                           <th>Exam Code</th>
                           <th>Remaining License Count</th>
@@ -34,7 +27,7 @@
                       <tbody>
                         <tr *ngFor="let license of licenseList;let i = index">
                           <td>
-                              <i-bar-chart-2 title="exam progress" (click)="filter(license)"></i-bar-chart-2>
+                              <i-bar-chart-2 title="exam progress" (click)="analysis(license)"></i-bar-chart-2>
                         
                               <i-award   *ngIf="license?.examVo?.examStatus === 'COMPLETED'"  title="certificate" (click)="showCertificate(exam)"></i-award>
                               <i-bar-chart-2   *ngIf="license?.examVo?.examStatus === 'COMPLETED'" title="result" (click)="showResult(exam)"></i-bar-chart-2>
@@ -42,8 +35,6 @@
                               <i-shield title="pemission" (click)="permission(license)"></i-shield>
                             <i-edit-2 title="edit" (click)="edit(license)"></i-edit-2>
                             <i-trash-2 title="delete" (click)="delete(license)"></i-trash-2>
-                        
-                            
                             {{license.examVo.examName}}</td>
                             <td>
                                 <i-user-check title="candidate"  *ngIf="!currentParams.candidateId" (click)="candidate(license)"></i-user-check>
@@ -53,12 +44,13 @@
                               {{license.examVo.testCode}}</td>
                             <td>{{license.remainingLicenseCount}}</td>
                             <td>{{license.licenseCount}}</td>
-                          
-                          
-
                         </tr>
                         <tr>
                             <td colspan="4" >
+                                <strong *ngIf="!listEnd" (click)="loadMore()">
+                                    <i-arrow-down></i-arrow-down>
+                                     Load More 
+                                </strong>
                                  <strong *ngIf="listEnd">End Of List </strong>
                                  <p>showing {{licenseList.length}} of {{totalCount}}</p>
                             </td>

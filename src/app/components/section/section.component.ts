@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { SectionRegistrationComponent } from '../section-registration/section-registration.component';
 import { ExamService } from 'src/app/service/exam.service';
@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Location } from '@angular/common';
 import { QuestionRegistrationComponent } from '../question-registration/question-registration.component';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-section',
@@ -30,6 +31,8 @@ export class SectionComponent implements OnInit {
   constructor(
     private location: Location,
     private route: ActivatedRoute,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private bsModalService: BsModalService,
     private examService: ExamService) { }
 
@@ -128,6 +131,8 @@ export class SectionComponent implements OnInit {
         this.examService.createQuestion(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
+
           }
         );
       }
@@ -149,6 +154,8 @@ export class SectionComponent implements OnInit {
         this.examService.createQuestion(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
+
           }
         );
       }
@@ -170,6 +177,8 @@ export class SectionComponent implements OnInit {
         this.examService.createSection(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
+            this.get(this.examId);
           }
         );
       }
@@ -192,6 +201,8 @@ export class SectionComponent implements OnInit {
         this.examService.updateSection(request).subscribe(
           (response) => {
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
+            this.get(this.examId);
           }
         );
       }

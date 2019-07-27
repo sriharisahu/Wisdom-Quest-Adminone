@@ -4,8 +4,6 @@
 
     <!-- Page Content  -->
     <div id="content" [ngClass]="{'w-adjust': toggle}">
-
-       
             <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
                     <h5 class="mr-auto">Exams</h5>
                     <div *ngIf="examList && examList.length">
@@ -14,16 +12,9 @@
                     <app-search-bar ></app-search-bar>
                   </div>
                   
-                  <table class="table table-bordered table-hover "
-                        infiniteScroll
-                        [infiniteScrollDistance]="2"
-                        [infiniteScrollThrottle]="50"
-                        [infiniteScrollDisabled]="listEnd || loading"
-                        (scrolled)="onScroll()"
-                  >
+                  <table class="table table-bordered table-hover">
                       <thead>
                         <tr>
-                        
                         <th>Exam Code</th>
                         <th>Exam Name</th>
                         <th>Category</th>
@@ -42,6 +33,8 @@
                             <i-edit-2 title="edit" (click)="edit(exam)"></i-edit-2>
                             <i-trash-2 title="delete" (click)="delete(exam)"></i-trash-2>
                             <i-settings title="setting" (click)="setting(exam)"></i-settings>
+                            <i-zap *ngIf="!exam.publish" title="publish" (click)="publish(exam)"></i-zap>
+                            <!-- <i-zap-off *ngIf="exam.publish" title="unpublish" (click)="publish(exam)"></i-zap-off> -->
                             
                             {{exam.testCode}}</td>
                             <td>{{exam.examName}}</td>
@@ -56,6 +49,10 @@
                         </tr>
                         <tr>
                             <td colspan="8" >
+                                <strong *ngIf="!listEnd" (click)="loadMore()">
+                                    <i-arrow-down></i-arrow-down>
+                                     Load More 
+                                  </strong>
                                  <strong *ngIf="listEnd">End Of List </strong>
                                  <p>showing {{examList.length}} of {{totalCount}}</p>
                             </td>

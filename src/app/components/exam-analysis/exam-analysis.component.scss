@@ -1,0 +1,26 @@
+.content{
+    width: 100%;
+    padding: 10px;
+}
+.analysis-header{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    padding: 2px 15px;
+    box-shadow: 1px 1px 0px 1px #dddddd69;
+    background: #fff;
+    z-index: 10;
+}
+
+.side-bar{
+    height: calc(100vh - 55px);
+    overflow-y: auto;
+    position: fixed;
+    top:55px;
+
+}
+
+.analysis-content{
+    height: 100vh;
+    overflow-y: auto;
+}

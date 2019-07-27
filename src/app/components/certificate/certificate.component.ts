@@ -13,13 +13,15 @@ export class CertificateComponent implements OnInit {
   examId;
   candidateId;
   certificate;
+  testConductorHasTestCodeId: number;
   constructor(private http: HttpClient) {
    }
 
   ngOnInit() {
     const req = {
       examId: this.examId,
-      candidateId: this.candidateId
+      candidateId: this.candidateId,
+      testConductorHasTestCodeId: this.testConductorHasTestCodeId
     };
     this.http.post<any>(`${GlobalVariable.BASE_API_URL}exam/get-certificate`, req)
         .pipe( map(response => {

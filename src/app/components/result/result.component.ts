@@ -18,7 +18,10 @@ export class ResultComponent implements OnInit {
   candidateId;
   result;
   eai;
+  eaiSummary;
   title;
+  testConductorHasTestCodeId;
+
 
   constructor(private http: HttpClient,
     public bsModalRef: BsModalRef) {
@@ -28,7 +31,9 @@ export class ResultComponent implements OnInit {
     this.title = 'Result of Exam';
     const req = {
       examId: this.examId,
-      candidateId: this.candidateId
+      candidateId: this.candidateId,
+      testConductorHasTestCodeId: this.testConductorHasTestCodeId
+
     };
     this.http.post<any>(`${GlobalVariable.BASE_API_URL}exam/result-by-examId`, req)
         .pipe( map(response => {
@@ -68,6 +73,27 @@ export class ResultComponent implements OnInit {
         })).subscribe(
           (eai) => {
            this.eai = eai;
+          }
+        );
+
+        this.http.post<any>(`${GlobalVariable.BASE_API_URL}exam/get-eai-summary`, req)
+        .pipe( map(response => {
+            if (response['status'] === 'success') {
+                if (response['object']) {
+                    return response['object'];
+                }
+            } else {
+                return of([]);
+            }
+        },
+        err => {
+          return of([]);
+        }
+        ), catchError((_err) => {
+          return of({});
+        })).subscribe(
+          (eaiSummary) => {
+           this.eaiSummary = eaiSummary;
           }
         );
   }

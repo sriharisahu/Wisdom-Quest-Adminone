@@ -4,29 +4,18 @@
 
     <!-- Page Content  -->
     <div id="content" [ngClass]="{'w-adjust': toggle}">
-
-       
             <div class="d-flex  justify-content-between align-items-center wq-table-wrapper-header">
                     <h5 class="mr-auto">Permission</h5>
                     <div *ngIf="permissionList && permissionList.length">
                       <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="add()">Add Permission</button>
                     </div>
-                    <app-search-bar ></app-search-bar>
+                    <app-search-bar (searchKey)="search($event)"></app-search-bar>
                   </div>
                   
-                  <table class="table table-bordered table-hover "
-                        infiniteScroll
-                        [infiniteScrollDistance]="2"
-                        [infiniteScrollThrottle]="50"
-                        [infiniteScrollDisabled]="listEnd || loading"
-                        (scrolled)="onScroll()"
-                  >
+                  <table class="table table-bordered table-hover">
                       <thead>
                         <tr>
-                        
                         <th>Permission Name</th>
-                        
-                      
                         </tr>
                       </thead>
                       <tbody>
@@ -39,15 +28,15 @@
                             
                             {{permission.permissionName}}
                           </td>
-                            
-                          
-                          
-
                         </tr>
                         </ng-template>
                         <tr>
                             <td colspan="3" >
-                                 <strong *ngIf="listEnd">End Of List </strong>
+                                <strong *ngIf="listEnd">End Of List </strong>
+                                <strong *ngIf="!listEnd" (click)="loadMore()">
+                                <i-arrow-down></i-arrow-down>
+                                 Load More 
+                                </strong>
                                  <p>showing {{permissionList.length}} of {{totalCount}}</p>
                             </td>
                         </tr>

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { ExamService } from 'src/app/service/exam.service';
 import { QuestionRegistrationComponent } from '../question-registration/question-registration.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-question-bank',
@@ -15,6 +16,8 @@ export class QuestionBankComponent implements OnInit {
   constructor(
     private bsModalService: BsModalService,
     private examService: ExamService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private configurationService: ConfigurationService) { }
 
   toggle = false;
@@ -35,7 +38,10 @@ export class QuestionBankComponent implements OnInit {
     this.loading = true;
     const req = {
       pageNo: this.pageNo,
-      pageSize: 1000,
+      pageSize: 100,
+      questionCategoryVo: {
+        questionCategoryId: 59,
+      },
       active: true};
     this.examService.getQuestionBankList(req).subscribe(
       (response) => {
@@ -74,6 +80,7 @@ export class QuestionBankComponent implements OnInit {
           (response) => {
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -97,6 +104,7 @@ export class QuestionBankComponent implements OnInit {
           (response) => {
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -128,6 +136,7 @@ export class QuestionBankComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }

@@ -16,15 +16,9 @@
                     <app-search-bar ></app-search-bar>
                   </div>
                   
-                  <table class="table table-bordered table-hover "
-                        infiniteScroll
-                        [infiniteScrollDistance]="2"
-                        [infiniteScrollThrottle]="50"
-                        (scrolled)="onScroll()"
-                  >
+                  <table class="table table-bordered table-hover">
                       <thead>
                         <tr>
-                        
                         <th>#</th>
                         <th>Section Name</th>
                         <th>Question Count</th>
@@ -69,8 +63,6 @@
                             <td colspan="5" >
                                   <app-question-host *ngFor="let question of questionList; let i = index" [question]="question" [section]="section" [index]="i"></app-question-host> 
                             </td>
-                              
-
                         </tr>
                       </ng-template>
                       </tbody>

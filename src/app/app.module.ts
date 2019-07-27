@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { QuillModule } from 'ngx-quill';
 import { TimepickerModule } from 'ngx-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap';
@@ -62,11 +61,12 @@ import { ResultComponent } from './components/result/result.component';
 import { LicenseCandidateMappingComponent } from './license-candidate-mapping/license-candidate-mapping.component';
 import { CertificateComponent } from './components/certificate/certificate.component';
 import { LicenseKeyComponent } from './components/license-key/license-key.component';
-import { CandidateFilterComponent } from './components/candidate-filter/candidate-filter.component';
+import { ExamAnalysisComponent } from './components/exam-analysis/exam-analysis.component';
 import { DoughnutChartComponent } from './components/doughnut-chart/doughnut-chart.component';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
 import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { ImportFromCsvComponent } from './components/import-from-csv/import-from-csv.component';
+import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 
 
 @NgModule({
@@ -115,11 +115,12 @@ import { ImportFromCsvComponent } from './components/import-from-csv/import-from
     CandidateComponent,
     LicenseCandidateMappingComponent,
     LicenseKeyComponent,
-    CandidateFilterComponent,
+    ExamAnalysisComponent,
     DoughnutChartComponent,
     LineChartComponent,
     BarChartComponent,
-    ImportFromCsvComponent
+    ImportFromCsvComponent,
+    PieChartComponent
   ],
   imports: [
     BrowserModule,
@@ -130,7 +131,6 @@ import { ImportFromCsvComponent } from './components/import-from-csv/import-from
     HttpClientModule,
     ChartsModule,
     AppRoutingModule,
-    InfiniteScrollModule,
     QuillModule.forRoot({
       modules: {
         toolbar: [
@@ -188,7 +188,7 @@ import { ImportFromCsvComponent } from './components/import-from-csv/import-from
     LicenseCandidateMappingComponent,
     CertificateComponent,
     LicenseKeyComponent,
-    CandidateFilterComponent,
+    ExamAnalysisComponent,
     DoughnutChartComponent
   ]
 })

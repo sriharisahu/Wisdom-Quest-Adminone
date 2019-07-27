@@ -57,16 +57,17 @@ export class ExamRegistrationComponent implements OnInit {
       reattemptGap : 1,
       allowExamResume : true,
       allowResumeCount : 10,
-      displayQuestion: 'one by one',
+      displayQuestion: 'A',
       allowBackButton : false,
-      sectionNavigation : 'one by one',
+      sectionNavigation : 'A',
       passingPercentage: 33,
       negativeMarking : 0,
       privacyType : 'public',
       startDate: new Date().getTime(),
       endDate: new Date().getTime()
     };
-    requestPayload = {...setting, ...requestPayload};
+    requestPayload.examSettingsVo = setting;
+    requestPayload = {...requestPayload};
     this.submit$.emit(requestPayload);
   }
 
@@ -82,12 +83,11 @@ export class ExamRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-
     let examForm = {};
     if (this.selectedExam) {
       const d = new Date();
       const hh = Math.trunc(this.selectedExam.durationInSeconds / 3600);
-      const mm = Math.trunc((this.selectedExam.durationInSeconds - hh) / 60);
+      const mm = Math.trunc((this.selectedExam.durationInSeconds - (hh * 3600))  / 60);
       d.setHours(hh);
       d.setMinutes(mm);
       examForm = {

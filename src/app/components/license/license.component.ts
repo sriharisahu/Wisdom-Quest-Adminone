@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ConfigurationService } from 'src/app/service/configuration.service';
 import { LicenseRegistrationComponent } from '../license-registration/license-registration.component';
 import { UserService } from 'src/app/service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { filter } from 'rxjs/operators';
+import { Location, DOCUMENT } from '@angular/common';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { LicensePermissionMappingComponent } from '../license-permission-mapping/license-permission-mapping.component';
 import { CertificateComponent } from '../certificate/certificate.component';
 import { ResultComponent } from '../result/result.component';
 import { AuthenticationService } from 'src/app/service/authentecation.service';
 import { LicenseKeyComponent } from '../license-key/license-key.component';
-import { CandidateFilterComponent } from '../candidate-filter/candidate-filter.component';
 
 @Component({
   selector: 'app-license',
@@ -25,6 +23,8 @@ export class LicenseComponent implements OnInit {
     private bsModalService: BsModalService,
     private userService: UserService,
     private route: ActivatedRoute,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private router: Router,
     private location: Location,
     private configurationService: ConfigurationService,
@@ -75,24 +75,8 @@ export class LicenseComponent implements OnInit {
 
   }
 
-  filter(license): void {
-
-    const configuartion = {
-      initialState : {
-        title: 'Candidate Filter & Export ',
-        examId: license.examVo.examId
-      },
-      class: 'modal-lg'
-    };
-    this.bsModalService.show(CandidateFilterComponent, configuartion)
-    .content
-    .submit$
-    .subscribe(
-      (confirm) => {
-           if (confirm) {
-      }
-    }
-    );
+  analysis(license): void {
+    this.router.navigate(['/analysis'], { queryParams: { examId : license.examVo.examId}, queryParamsHandling: 'merge' });
   }
 
   get(): void {
@@ -216,6 +200,7 @@ export class LicenseComponent implements OnInit {
             (response) => {
               this.get();
               this.bsModalService.hide(1);
+              this.renderer.removeClass(this.document.body, 'modal-open');
             }
           );
         } else {
@@ -229,6 +214,7 @@ export class LicenseComponent implements OnInit {
               (response) => {
                 this.get();
                 this.bsModalService.hide(1);
+                this.renderer.removeClass(this.document.body, 'modal-open');
               }
             );
           } else {
@@ -236,6 +222,7 @@ export class LicenseComponent implements OnInit {
               (response) => {
                 this.get();
                 this.bsModalService.hide(1);
+                this.renderer.removeClass(this.document.body, 'modal-open');
               }
             );
           }
@@ -266,11 +253,11 @@ export class LicenseComponent implements OnInit {
           examId: request.examId
         };
         if (this.currentParams.clientId) {
-          request.testConductorLicenseId = this.currentParams.clientId;
+          request.testConductorLicenseId = Number(this.currentParams.clientId);
         }
 
         if (this.currentParams.examinerId) {
-          request.testConductorLicenseId = this.currentParams.examinerId;
+          request.testConductorLicenseId = Number(this.currentParams.clientId);
         }
         this.userService.updateLicense(request).subscribe(
           (response) => {
@@ -278,6 +265,7 @@ export class LicenseComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -320,6 +308,7 @@ export class LicenseComponent implements OnInit {
             );
            }
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }
@@ -340,6 +329,7 @@ export class LicenseComponent implements OnInit {
     .subscribe(
       (confirm) => {
            this.bsModalService.hide(1);
+           this.renderer.removeClass(this.document.body, 'modal-open');
       }
     );
   }
@@ -421,8 +411,9 @@ export class LicenseComponent implements OnInit {
 
   }
 
-  onScroll() {
-    console.log('scrolling...');
+  loadMore() {
+    this.pageNo += 1;
+    this.get();
   }
 
 }

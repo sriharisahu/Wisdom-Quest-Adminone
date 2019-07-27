@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
+import { ExamService } from 'src/app/service/exam.service';
 
 @Component({
   selector: 'app-exam-settings',
@@ -16,7 +17,12 @@ export class ExamSettingsComponent implements OnInit {
   loading = false;
   submitted = false;
   selectedExam: any;
-  selectedExamSetting: any;
+  displayQuestionFormats = [
+    {
+      value: 'A',
+      displayName: 'ONE BY ONE'
+    }
+  ];
 
   get f() {
     return this.examSettingForm.controls;
@@ -27,29 +33,42 @@ export class ExamSettingsComponent implements OnInit {
     if (this.examSettingForm.invalid) {
           return;
     }
-    this.submit.emit(this.examSettingForm.value);
+    this.updateExamSettings();
   }
   constructor(private formBuilder: FormBuilder,
+              private examService: ExamService,
               public bsModalRef: BsModalRef) { }
 
   ngOnInit() {
- let examSettingForm = {};
-    if (this.selectedExam) {
+    this.loading = true;
+    let examSettingForm = {};
+    if (this.selectedExam.examSettingsVo) {
       examSettingForm = {
-        publish: [''],
-        allowReattempts: [],
-        allowExamResume: [],
-        allowBackButton: []
-      };
-    } else {
-      examSettingForm = {
-        publish: [''],
-        allowReattempts: [],
-        allowExamResume: [],
-        allowBackButton: []
+        allowReattempts: [this.selectedExam.examSettingsVo.allowReattempts],
+        reattemptCount: [this.selectedExam.examSettingsVo.reattemptCount],
+        allowExamResume: [this.selectedExam.examSettingsVo.allowExamResume],
+        allowExamResumeCount: [this.selectedExam.examSettingsVo.allowExamResumeCount],
+        allowBackButton: [this.selectedExam.examSettingsVo.allowBackButton],
+        privacy: true,
+        active: [this.selectedExam.examSettingsVo.active],
+        displayQuestion: [this.selectedExam.examSettingsVo.displayQuestion]
       };
     }
     this.examSettingForm = this.formBuilder.group(examSettingForm);
+    this.loading = false;
+  }
+
+  updateExamSettings() {
+    const req = this.examSettingForm.value;
+    req.examSettingId = this.selectedExam.examSettingsVo.examSettingId;
+    this.examService.updateExamSettings(req).subscribe(
+      (response) => {
+        this.loading = false;
+        if (response['status'] === 'success') {
+          this.submit.emit(this.examSettingForm.value);
+        }
+      }
+    );
   }
 
 }

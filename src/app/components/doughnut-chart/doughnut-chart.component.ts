@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ChartType } from 'chart.js';
+import { ChartType, ChartOptions } from 'chart.js';
 import { MultiDataSet, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 
@@ -16,6 +16,20 @@ export class DoughnutChartComponent implements OnInit {
  public doughnutChartType: ChartType = 'doughnut';
  public doughnutChartLegend = true;
   public doughnutChartPlugins = [pluginAnnotations];
+  public doughnutChartOptions: ChartOptions = {
+    responsive: true,
+    legend: {
+      position: 'left',
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = value;
+          return label;
+        },
+      },
+    }
+  };
  colorScheme = {
   domain: [
     '#FF8A80',

@@ -29,9 +29,11 @@ export class SectionCategoryRegistrationComponent implements OnInit {
   submitted = false;
   selectedSectionCategory: any;
   isCategory;
+ 
   get f() {
     return this.sectionCategoryForm.controls;
   }
+
 
   onSubmit() {
     this.submitted = true;
@@ -43,7 +45,7 @@ export class SectionCategoryRegistrationComponent implements OnInit {
     this.submit$.emit(requestPayload);
   }
 
-
+  
   constructor(private formBuilder: FormBuilder,
     public bsModalRef: BsModalRef,
     private configurationService: ConfigurationService) {
@@ -59,12 +61,14 @@ export class SectionCategoryRegistrationComponent implements OnInit {
         categoryName: [this.isCategory ?
           this.selectedSectionCategory.questionCategoryName : this.selectedSectionCategory.questionSubCategoryName, Validators.required]
       };
+
     } else {
 
 
       sectionCategoryForm = {
         categoryName: ['', Validators.required],
       };
+     
     }
 
     this.sectionCategoryForm = this.formBuilder.group(sectionCategoryForm);

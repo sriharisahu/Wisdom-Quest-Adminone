@@ -9,13 +9,13 @@
       <form [formGroup]="candidateForm" class="w-100">
         <div class="form-group">
             <div class="form-group row" *ngIf="authenticationService.currentUser.adminType === 'SUPERADMIN'">
-                <label for="inputCollage" class="col-sm-2 col-form-label">Collage</label>
+                <label for="inputCollege" class="col-sm-2 col-form-label">College</label>
                 <div class="col-sm-10">
                   <select [ngClass]="{ 'is-invalid': submitted && f.collegeId?.errors }"
-                   formControlName="collageId" class="form-control"
-                    id="inputCollage" required>
+                   formControlName="collegeId" class="form-control"
+                    id="inputCollege" required>
                     <option value="">--SELECT COLLEGE --</option>
-                    <option *ngFor="let college of collageList" [ngValue]="college.collegeId">{{ college.collegeName }}</option>
+                    <option *ngFor="let college of collegeList" [ngValue]="college.collegeId">{{ college.collegeName }}</option>
                   </select>
                   <div *ngIf="submitted && f.collegeId?.errors" class="invalid-feedback">
                     <div *ngIf="f.collegeId?.errors.required">College is required</div>
@@ -56,26 +56,18 @@
                             <h5 class="mr-auto">Candidate</h5>
                             <div *ngIf="candidateList && candidateList.length">
                               
-                              <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="import()">Import</button>
+                              <button class="btn btn-sm btn-outline-primary mr-2" type="button" (click)="save()">Save</button>
                             
                             </div>
-                            <app-search-bar (searchKey)="search($event)"></app-search-bar>
                           </div>
                           
-                          <table class="table table-bordered table-hover "
-                                infiniteScroll
-                                [infiniteScrollDistance]="2"
-                                [infiniteScrollThrottle]="50"
-                                [infiniteScrollDisabled]="listEnd || loading"
-                                (scrolled)="onScroll()"
-                          >
+                          <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
                                 
                                 <th>Candidate Name</th>
                                 <th>Email</th>
                                 <th>Contact</th>
-                                <th *ngIf="authenticationService?.currentUser?.adminType === 'SUPERADMIN'">College Name</th>
                               
                                 </tr>
                               </thead>
@@ -99,7 +91,7 @@
                                          <i-arrow-down></i-arrow-down>
                                           Load More 
                                          </strong>
-                                         <p>showing {{candidateList.length}} of {{totalCount}}</p>
+                                         <p>showing {{candidateList.length}} of {{candidateList.length}}</p>
                                     </td>
                                 </tr>
                               </tbody>

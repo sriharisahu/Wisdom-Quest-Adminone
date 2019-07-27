@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ExamService } from 'src/app/service/exam.service';
 import { ExamRegistrationComponent } from '../exam-registration/exam-registration.component';
 import { ExamSettingsComponent } from '../exam-settings/exam-settings.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-exam',
@@ -13,6 +14,8 @@ export class ExamComponent implements OnInit {
 
   constructor(
     private bsModalService: BsModalService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
     private examService: ExamService) { }
 
   toggle = false;
@@ -32,7 +35,7 @@ export class ExamComponent implements OnInit {
   get(): void {
     this.loading = true;
     const req = {
-      pageNo: 1,
+      pageNo: this.pageNo,
       pageSize: 100,
       searchKey: '',
       active: true};
@@ -41,9 +44,6 @@ export class ExamComponent implements OnInit {
         this.loading = false;
         if (response['status'] === 'success') {
                 this.examList = [...this.examList, ...response['object']['examVoList']];
-                // if (req.pageNo === 1) {
-                //   this.totalCount = response['object']['count'];
-                // }
                   this.totalCount = this.examList.length;
                 if ((req.pageNo * req.pageSize) >= this.totalCount) {
                    this.listEnd = true;
@@ -73,7 +73,7 @@ export class ExamComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
-            this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -99,7 +99,7 @@ export class ExamComponent implements OnInit {
             this.pageNo = 1;
             this.get();
             this.bsModalService.hide(1);
-            this.bsModalService.hide(1);
+            this.renderer.removeClass(this.document.body, 'modal-open');
           }
         );
       }
@@ -120,14 +120,39 @@ export class ExamComponent implements OnInit {
     .subscribe(
       () => {
         this.bsModalService.hide(1);
+        this.renderer.removeClass(this.document.body, 'modal-open');
+        this.get();
       }
     );
   }
 
-  delete(selectedExam): void {}
-
-  onScroll() {
-    console.log('scrolling...');
+  delete(selectedExam): void {
+    selectedExam.active = false;
+    this.examService.updateExam(selectedExam).subscribe(
+      (response) => {
+        this.examList = [];
+        this.pageNo = 1;
+        this.get();
+      }
+    );
+  }
+  publish(selectedExam): void {
+    this.examService.publish(selectedExam.examId).subscribe(
+      (response) => {
+        selectedExam.publish = true;
+      }
+    );
+  }
+  unpublish(selectedExam): void {
+    this.examService.unpublish(selectedExam).subscribe(
+      (response) => {
+        selectedExam.publish = false;
+      }
+    );
   }
 
+  loadMore() {
+    this.pageNo += 1;
+    this.get();
+  }
 }

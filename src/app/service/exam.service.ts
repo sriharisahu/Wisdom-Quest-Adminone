@@ -5,6 +5,9 @@ import { GlobalVariable } from '../constant/global.variable';
 const GET_EXAM = 'exam/list';
 const CREATE_EXAM = 'exam/create';
 const UPDATE_EXAM = 'exam/update';
+const PUBLISH_EXAM = 'exam/publish';
+const UNPUBLISH_EXAM = 'exam/unpublish';
+const UPDATE_EXAM_SETTINGS = 'exam-setting/update';
 const UPDATE_QUESTION = 'exam-section-question/update';
 const UPDATE_QUESTION_BANK = 'question-bank/update';
 const CREATE_SECTION = 'exam-section/create';
@@ -48,13 +51,23 @@ return formData;
   getExamList(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${GET_EXAM}`, request);
   }
+  publish(examId: number) {
+    return this.http.get(`${GlobalVariable.BASE_API_URL}${PUBLISH_EXAM}/${examId}`);
+  }
+  unpublish(examId: number) {
+    return this.http.get(`${GlobalVariable.BASE_API_URL}${UNPUBLISH_EXAM}/${examId}`);
+  }
+
+  updateExamSettings(request) {
+    return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_EXAM_SETTINGS}`, request);
+  }
   getQuestionBankList(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${GET_QUESTION_BANK}`, request);
   }
   createExam(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${CREATE_EXAM}`, request);
   }
- 
+
   updateExam(request) {
     return this.http.post(`${GlobalVariable.BASE_API_URL}${UPDATE_EXAM}`, request);
   }
