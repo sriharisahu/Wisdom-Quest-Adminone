@@ -10,6 +10,7 @@ export class LicensePermissionMappingComponent implements OnInit {
 
   loading = false;
   permissionList = [];
+  selectedLicense;
   listEnd = true;
   totalCount = 0;
   pageNo = 1;
@@ -19,6 +20,11 @@ export class LicensePermissionMappingComponent implements OnInit {
 
   ngOnInit() {
     this.get();
+    if (this.selectedLicense && this.selectedLicense.testConductorVo && this.selectedLicense.testConductorVo.permissionVos) {
+      this.selectedLicense.testConductorVo.permissionVos.forEach(permission => {
+        this.select(permission);
+      });
+    }
   }
 select(permission) {
   this.permissionIdList.push(permission.permissionId);

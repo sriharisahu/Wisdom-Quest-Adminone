@@ -253,11 +253,11 @@ export class LicenseComponent implements OnInit {
           examId: request.examId
         };
         if (this.currentParams.clientId) {
-          request.testConductorLicenseId = Number(this.currentParams.clientId);
+          request.testConductorId = Number(this.currentParams.clientId);
         }
 
         if (this.currentParams.examinerId) {
-          request.testConductorLicenseId = Number(this.currentParams.clientId);
+          request.testConductorId = Number(this.currentParams.clientId);
         }
         this.userService.updateLicense(request).subscribe(
           (response) => {
@@ -378,7 +378,8 @@ export class LicenseComponent implements OnInit {
 
     const configuartion = {
       initialState : {
-        title: 'License Permission Mapping'
+        title: 'License Permission Mapping',
+        selectedLicense: selectedLicense
       },
       class: 'modal-lg'
     };
