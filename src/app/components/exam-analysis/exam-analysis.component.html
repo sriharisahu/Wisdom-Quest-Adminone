@@ -25,6 +25,8 @@
                           <th>Technical Percentile</th>
                           <th>Aptitude Percentile</th>
                           <th>Candidate Name</th>
+                          <th>Phone Number</th>
+                          <th>Email Id</th>
                           <ng-container *ngIf="isPsychometric">
                           <th>Positive Attitude</th>
                           <th>Critical Thinking</th>
@@ -46,6 +48,8 @@
                          <!-- <i-arrow-right *ngIf="candidate.sectionResultList !== selectedSectionResult" title="View Section Result" (click)="toggleSection(candidate)"></i-arrow-right>
                               <i-arrow-down *ngIf="candidate.sectionResultList === selectedSectionResult" title=" Hide Section Result" (click)="toggleSection(candidate)"></i-arrow-down>  -->
                         </td>
+                        <td>{{candidate.contactNumber}}</td>
+                        <td>{{candidate.contactEmail}}</td>
                         <ng-container *ngIf="isPsychometric">
                         <td>candidate.effectiveCommunication</td>
                         <td>candidate.positiveAttitude</td>

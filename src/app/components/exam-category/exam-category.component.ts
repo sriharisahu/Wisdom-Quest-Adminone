@@ -4,7 +4,7 @@ import { ConfigurationService } from 'src/app/service/configuration.service';
 import { ExamCategoryRegistrationComponent } from '../exam-category-registration/exam-category-registration.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: 'app-exam-category',

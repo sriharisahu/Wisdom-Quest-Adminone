@@ -152,22 +152,24 @@ get(): void {
                          this.isPsychometric = true;
                     }
                     // Effective Communication, Problem Solving, Critical Thinking, Positive Attitude
-                    section.questionCategoryVoList.forEach((subSection) => {
-                      if (subSection.questionSubCategoryName === 'Effective Communication') {
-                        this.isEffectiveCommunication = true;
-                        candidate.effectiveCommunication = subSection.userTotalMarks;
-                      }
-                      if (subSection.questionSubCategoryName === 'Problem Solving') {
-                        this.isProblemSolving = true;
-                        candidate.problemSolving = subSection.userTotalMarks;
-                      }
-                      if (subSection.questionSubCategoryName === 'Critical Thinking') {
-                        candidate.criticalThinking = subSection.userTotalMarks;
-                      }
-                      if (subSection.questionSubCategoryName === 'Positive Attitude') {
-                        candidate.positiveAttitude = true;
-                      }
-                    });
+                    if(section && section.hasOwnProperty("questionCategoryVoList") && section.questionCategoryVoList.length > 0){
+                      section.questionCategoryVoList.forEach((subSection) => {
+                        if (subSection.questionSubCategoryName === 'Effective Communication') {
+                          this.isEffectiveCommunication = true;
+                          candidate.effectiveCommunication = subSection.userTotalMarks;
+                        }
+                        if (subSection.questionSubCategoryName === 'Problem Solving') {
+                          this.isProblemSolving = true;
+                          candidate.problemSolving = subSection.userTotalMarks;
+                        }
+                        if (subSection.questionSubCategoryName === 'Critical Thinking') {
+                          candidate.criticalThinking = subSection.userTotalMarks;
+                        }
+                        if (subSection.questionSubCategoryName === 'Positive Attitude') {
+                          candidate.positiveAttitude = true;
+                        }
+                      });
+                    }
               });
             }
             this.userMarks.push(Number(candidate.userTotalMarks));

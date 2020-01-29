@@ -4,7 +4,7 @@ import { ConfigurationService } from 'src/app/service/configuration.service';
 import { ExamService } from 'src/app/service/exam.service';
 import { QuestionRegistrationComponent } from '../question-registration/question-registration.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: 'app-question-bank',

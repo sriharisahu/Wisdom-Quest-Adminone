@@ -9,7 +9,7 @@ import { query } from '@angular/animations';
 })
 export class SearchBarComponent implements OnInit {
 
-  @ViewChild('search') search;
+  @ViewChild('search', { static: true }) search;
   @Output() searchKey =  new EventEmitter<string>();
   constructor() { }
 

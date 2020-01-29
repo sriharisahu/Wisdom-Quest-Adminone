@@ -11,7 +11,7 @@ import { CertificateComponent } from '../certificate/certificate.component';
 import { ResultComponent } from '../result/result.component';
 import { ImportFromCsvComponent } from '../import-from-csv/import-from-csv.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: 'app-candidate',

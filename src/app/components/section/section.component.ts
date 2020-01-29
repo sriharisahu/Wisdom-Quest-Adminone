@@ -4,9 +4,9 @@ import { SectionRegistrationComponent } from '../section-registration/section-re
 import { ExamService } from 'src/app/service/exam.service';
 import { ActivatedRoute } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Location } from '@angular/common';
+import { Location, DOCUMENT } from '@angular/common';
 import { QuestionRegistrationComponent } from '../question-registration/question-registration.component';
-import { DOCUMENT } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-section',
